@@ -37,7 +37,7 @@ public class ReviewController {
     private String form(@ModelAttribute Review review, Model model){
         Review newReview = reviewService.updateOrSaveReview(review);
         model.addAttribute("review",newReview);
-        return "reviews";
+        return "redirect:/reviews";
     }
 
 }
