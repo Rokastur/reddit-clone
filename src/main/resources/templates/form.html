@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method="post"
+
+      th:action="@{/reviews/submit}"
+      th:object="${review}">
+
+    <input th:field="*{id}" type="hidden"/>
+
+    <p>Reviewer: <input th:field="*{reviewer}" type="text"/></p>
+    <p>Author: <input th:field="*{author}" type="text"/></p>
+    <p>Title: <input th:field="*{title}" type="text"/></p>
+    <p>Rating</p>
+    <select name="rating" th:field="*{rating}">
+
+        <option th:value="1">1</option>
+        <option th:value="2">2</option>
+        <option th:value="3">3</option>
+        <option th:value="4">4</option>
+        <option th:value="5">5</option>
+
+    </select>
+
+    <p> Review: <input th:field="*{reviewText}" type="text"/></p>
+
+    <p><input th:value="${review.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
+
+
+</form>
+
+</body>
+</html>

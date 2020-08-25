@@ -16,8 +16,12 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    public Page<Review> getAllReviews(int pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber,4);
+    public Page<Review> getAllReviews(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAll(pageable);
+    }
+
+    public Review updateOrSaveReview(Review review) {
+        return reviewRepository.save(review);
     }
 }

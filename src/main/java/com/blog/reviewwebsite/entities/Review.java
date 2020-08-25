@@ -27,5 +27,5 @@ public class Review {
     private int rating;
 
     @Column(name = "review", columnDefinition = "text")
-    private String review;
+    private String reviewText;
 }

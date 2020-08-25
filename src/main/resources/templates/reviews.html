@@ -22,6 +22,7 @@
                 </tr>
                 <tr th:each="review : ${reviews}">
                     <td th:text="${review.id}"></td>
+                    <td th:text="${review.reviewer}"></td>
                     <td th:text="${review.author}"></td>
                     <td th:text="${review.title}"></td>
                     <td th:text="${review.rating}"></td>
