@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/content.css}">
+    <title>Title</title>
+
 </head>
-<body>
-$END$
+<body class="background">
+
+    <div class="column middle">
+        <th:block>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Reviewer</th>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>Rating</th>
+                </tr>
+                <tr th:each="review : ${reviews}">
+                    <td th:text="${review.id}"></td>
+                    <td th:text="${review.author}"></td>
+                    <td th:text="${review.title}"></td>
+                    <td th:text="${review.rating}"></td>
+                </tr>
+            </table>
+        </th:block>
+    </div>
+
+    </div>
+</section>
+
+
 </body>
 </html>
