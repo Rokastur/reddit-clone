@@ -14,6 +14,9 @@ public class Review {
     @Column(name = "review_id")
     private Long id;
 
+    @Column(name = "reviewer")
+    private String reviewer;
+
     @Column(name = "author")
     private String author;
 
