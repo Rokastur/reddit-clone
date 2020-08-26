@@ -19,6 +19,9 @@
                 <th>Author</th>
                 <th>Title</th>
                 <th>Rating</th>
+
+                <th>view</th>
+                <th>more</th>
             </tr>
             <tr th:each="review : ${reviews}">
                 <td th:text="${review.id}"></td>
@@ -29,6 +32,11 @@
 
                 <td>
                     <a th:href="@{/reviews/review/{id}/(id=${review.id})}">view review</a>
+                </td>
+
+                <td>
+                    <a th:href="@{reviews/byReviewer/{reviewer}/(reviewer=${review.reviewer})}">more by this
+                        reviewer</a>
                 </td>
             </tr>
         </table>

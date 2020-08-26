@@ -21,6 +21,11 @@ public class ReviewService {
         return reviewRepository.findAll(pageable);
     }
 
+    public Page<Review> getAllReviewsByReviewer(int pageNumber, String reviewer) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByReviewer(reviewer, pageable);
+    }
+
     public Review updateOrSaveReview(Review review) {
         return reviewRepository.save(review);
     }

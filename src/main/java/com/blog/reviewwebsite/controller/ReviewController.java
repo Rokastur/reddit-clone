@@ -26,6 +26,15 @@ public class ReviewController {
         return "reviews";
     }
 
+    @GetMapping("/byReviewer/{reviewer}")
+    private String getReviewsByReviewer(@RequestParam(defaultValue = "0") int pageNumber, @PathVariable String reviewer, Model model) {
+        Page<Review> reviews = reviewService.getAllReviewsByReviewer(pageNumber, reviewer);
+        model.addAttribute("reviews", reviews.getContent());
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("hasNext", reviews.hasNext());
+        return "reviews";
+    }
+
     @GetMapping("/review/{id}")
     private String getReview(Model model, @PathVariable Long id) {
         Review review = reviewService.getReview(id);
