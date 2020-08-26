@@ -33,6 +33,13 @@ public class ReviewController {
         return "form";
     }
 
+    @GetMapping("/edit/{id}")
+    private String editReview(Model model, @PathVariable Long id){
+        Review review = reviewService.getReview(id);
+        model.addAttribute("review",review);
+        return "form";
+    }
+
     @PostMapping("/submit")
     private String form(@ModelAttribute Review review, Model model){
         Review newReview = reviewService.updateOrSaveReview(review);

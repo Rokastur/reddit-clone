@@ -24,4 +24,9 @@ public class ReviewService {
     public Review updateOrSaveReview(Review review) {
         return reviewRepository.save(review);
     }
+
+    public Review getReview(Long id) {
+        Review review = reviewRepository.getOne(id);
+        return review;
+    }
 }
