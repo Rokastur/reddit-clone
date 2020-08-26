@@ -10,30 +10,30 @@
 </head>
 <body class="background">
 
-    <div class="column middle">
-        <th:block>
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Reviewer</th>
-                    <th>Author</th>
-                    <th>Title</th>
-                    <th>Rating</th>
-                </tr>
-                <tr th:each="review : ${reviews}">
-                    <td th:text="${review.id}"></td>
-                    <td th:text="${review.reviewer}"></td>
-                    <td th:text="${review.author}"></td>
-                    <td th:text="${review.title}"></td>
-                    <td th:text="${review.rating}"></td>
-                </tr>
-            </table>
-        </th:block>
-    </div>
+<div class="column middle">
+    <th:block>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Reviewer</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Rating</th>
+            </tr>
+            <tr th:each="review : ${reviews}">
+                <td th:text="${review.id}"></td>
+                <td th:text="${review.reviewer}"></td>
+                <td th:text="${review.author}"></td>
+                <td th:text="${review.title}"></td>
+                <td th:text="${review.rating}"></td>
 
-    </div>
-</section>
-
+                <td>
+                    <a th:href="@{/reviews/review/{id}/(id=${review.id})}">view review</a>
+                </td>
+            </tr>
+        </table>
+    </th:block>
+</div>
 
 </body>
 </html>

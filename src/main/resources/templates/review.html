@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <p th:text="${review.id}"></p>
+    <p th:text="${review.reviewer}"></p>
+    <p th:text="${review.author}"></p>
+    <p th:text="${review.title}"></p>
+    <p th:text="${review.rating}"></p>
+
+    <p th:text="${review.reviewText}"></p>
+</div>
+
+<div>
+    <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit review</a>
+    <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
+</div>
+
+</body>
+</html>

@@ -26,6 +26,13 @@ public class ReviewController {
         return "reviews";
     }
 
+    @GetMapping("/review/{id}")
+    private String getReview(Model model, @PathVariable Long id) {
+        Review review = reviewService.getReview(id);
+        model.addAttribute("review", review);
+        return "review";
+    }
+
     @GetMapping("/form")
     private String createReview(Model model) {
         Review review = new Review();
