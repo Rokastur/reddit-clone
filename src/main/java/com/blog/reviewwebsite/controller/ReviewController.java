@@ -34,16 +34,22 @@ public class ReviewController {
     }
 
     @GetMapping("/edit/{id}")
-    private String editReview(Model model, @PathVariable Long id){
+    private String editReview(Model model, @PathVariable Long id) {
         Review review = reviewService.getReview(id);
-        model.addAttribute("review",review);
+        model.addAttribute("review", review);
         return "form";
     }
 
+    @GetMapping("/delete/{id}")
+    private String deleteReview(@PathVariable Long id) {
+        reviewService.deleteReview(id);
+        return "redirect:/reviews";
+    }
+
     @PostMapping("/submit")
-    private String form(@ModelAttribute Review review, Model model){
+    private String form(@ModelAttribute Review review, Model model) {
         Review newReview = reviewService.updateOrSaveReview(review);
-        model.addAttribute("review",newReview);
+        model.addAttribute("review", newReview);
         return "redirect:/reviews";
     }
 

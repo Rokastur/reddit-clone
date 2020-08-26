@@ -30,7 +30,7 @@
     <p> Review: <input th:field="*{reviewText}" type="text"/></p>
 
     <p><input th:value="${review.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
-
+    <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
 
 </form>
 
