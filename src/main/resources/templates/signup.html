@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method="post" th:action="@{/user/submit}" th:object="${user}">
+    <input th:field="*{id}" type="hidden"/>
+
+    <p>User Name: <input th:field="*{username}" type="text"/></p>
+    <p>Password: <input th:field="*{password}" type="password"/></p>
+
+    <p><input th:value="${user.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
+</form>
+
+</body>
+</html>
