@@ -10,6 +10,13 @@
 </head>
 <body class="background">
 
+
+<div>
+    <a th:href="@{/reviews/(pageNumber=${pageNumber - 1})}"
+       th:if="${pageNumber != 0}">
+        < </a>
+</div>
+
 <div class="column middle">
     <th:block>
         <table>
@@ -41,6 +48,12 @@
             </tr>
         </table>
     </th:block>
+</div>
+
+<div>
+    <a th:href="@{/reviews/(pageNumber=${pageNumber + 1})}"
+       th:if="${hasNextPage}">
+        > </a>
 </div>
 
 </body>
