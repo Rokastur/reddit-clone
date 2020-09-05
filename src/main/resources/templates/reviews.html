@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1" name="viewport">
@@ -8,7 +8,25 @@
     <title>Title</title>
 
 </head>
+
 <body class="background">
+
+<ul th:with="user = ${#authentication.principal} ">
+    <li class="authenticationBlock">
+        <form method="post"
+              sec:authorize="isAuthenticated()" th:action="@{/logout}">
+            <button th:text="logout" type="submit"/>
+        </form>
+        <a sec:authorize="isAnonymous()" th:href="@{user/login}">sign in</a>
+    </li>
+
+
+    <li class="authenticationBlock">
+        <!--                    <span sec:authorize="isAnonymous()" th:text="'signed out'"></span>-->
+        <span sec:authorize="isAuthenticated()" th:text="|Hello, ${user.username}|"></span>
+    </li>
+
+</ul>
 
 
 <div>
