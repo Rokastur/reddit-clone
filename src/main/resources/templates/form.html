@@ -13,7 +13,10 @@
 
     <input th:field="*{id}" type="hidden"/>
 
-    <p>Reviewer: <input th:field="*{reviewer}" type="text"/></p>
+    <p>Reviewer: <input readonly th:field="*{reviewer}" th:value=${user.username}
+                        th:with="user = ${#authentication.principal}"
+                        type="text"/></p>
+
     <p>Author: <input th:field="*{author}" type="text"/></p>
     <p>Title: <input th:field="*{title}" type="text"/></p>
     <p>Rating</p>

@@ -1,6 +1,7 @@
 package com.blog.reviewwebsite.services;
 
 import com.blog.reviewwebsite.entities.Review;
+import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +27,9 @@ public class ReviewService {
         return reviewRepository.findAllByReviewer(reviewer, pageable);
     }
 
-    public Review updateOrSaveReview(Review review) {
+    public Review updateOrSaveReview(Review review, User user) {
+//        sets currently authenticated user as a "owner" of the new or updated review
+        review.setUser(user);
         return reviewRepository.save(review);
     }
 

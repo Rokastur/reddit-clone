@@ -26,6 +26,9 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private Set<Review> reviews;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,8 +1,10 @@
 package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.Review;
+import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.services.ReviewService;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +45,8 @@ public class ReviewController {
     }
 
     @GetMapping("/form")
-    private String createReview(Model model) {
-        Review review = new Review();
+    private String createReview(Model model, @AuthenticationPrincipal User user) {
+        Review review = new Review(user.getUsername());
         model.addAttribute("review", review);
         return "form";
     }
@@ -63,8 +65,8 @@ public class ReviewController {
     }
 
     @PostMapping("/submit")
-    private String form(@ModelAttribute Review review, Model model) {
-        Review newReview = reviewService.updateOrSaveReview(review);
+    private String form(@ModelAttribute Review review, Model model, @AuthenticationPrincipal User user) {
+        Review newReview = reviewService.updateOrSaveReview(review, user);
         model.addAttribute("review", newReview);
         return "redirect:/reviews";
     }

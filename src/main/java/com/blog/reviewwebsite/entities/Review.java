@@ -3,11 +3,19 @@ package com.blog.reviewwebsite.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "Review")
 public class Review {
+
+    public Review() {
+    }
+
+    public Review(String username) {
+        this.reviewer = username;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +36,8 @@ public class Review {
 
     @Column(name = "review", columnDefinition = "text")
     private String reviewText;
+
+    @ManyToOne
+    @JoinColumn(name = "id", nullable = false)
+    private User user;
 }
