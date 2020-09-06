@@ -1,5 +1,6 @@
 package com.blog.reviewwebsite.controller;
 
+import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import com.blog.reviewwebsite.services.UserService;
@@ -8,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -48,5 +49,15 @@ public class UserController {
         List<User> userList = userService.getUsers();
         model.addAttribute("users", userList);
         return "users";
+    }
+
+    @GetMapping("/user/{id}")
+    public String getUser(@PathVariable Long id, Model model) {
+        User user = userService.getUser(id);
+        List<Review> reviews = userService.getUserReviews(id);
+        model.addAttribute("user", user);
+        model.addAttribute("reviewCount", reviews.size());
+        model.addAttribute("titles", reviews);
+        return "user";
     }
 }

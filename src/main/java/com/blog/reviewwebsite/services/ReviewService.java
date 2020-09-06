@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ReviewService {
 
@@ -20,6 +22,10 @@ public class ReviewService {
     public Page<Review> getAllReviews(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAll(pageable);
+    }
+
+    public List<Review> findAllReviewsByReviewer(String reviewer) {
+        return reviewRepository.findAllByReviewer(reviewer);
     }
 
     public Page<Review> getAllReviewsByReviewer(int pageNumber, String reviewer) {

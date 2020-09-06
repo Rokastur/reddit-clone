@@ -1,6 +1,8 @@
 package com.blog.reviewwebsite.services;
 
+import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,12 +17,19 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ReviewRepository reviewRepository) {
         this.userRepository = userRepository;
+        this.reviewRepository = reviewRepository;
+    }
+
+    public List<Review> getUserReviews(Long id) {
+        User user = userRepository.getOne(id);
+        return reviewRepository.findAllByReviewer(user.getUsername());
     }
 
     public User getUser(Long id) {

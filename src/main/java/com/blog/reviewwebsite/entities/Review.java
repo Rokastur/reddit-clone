@@ -3,7 +3,6 @@ package com.blog.reviewwebsite.entities;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity
@@ -37,7 +36,9 @@ public class Review {
     @Column(name = "review", columnDefinition = "text")
     private String reviewText;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id", nullable = false)
     private User user;
+
 }
