@@ -33,6 +33,9 @@ public class Review {
     @Column(name = "rating")
     private int rating;
 
+    @Column(name = "review_title")
+    private String reviewTitle;
+
     @Column(name = "review", columnDefinition = "text")
     private String reviewText;
 
