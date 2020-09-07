@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll()
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/reviews")
                 .deleteCookies();
 
 
