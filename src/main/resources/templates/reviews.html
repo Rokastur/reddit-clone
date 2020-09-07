@@ -12,8 +12,6 @@
     <link rel="stylesheet" th:href="@{/css/tooltip.css}">
     <!--[if IE 6]>
     <link href="default_ie6.css" rel="stylesheet" type="text/css"/>
-
-
     <![endif]-->
 </head>
 <body>
@@ -64,7 +62,7 @@
                 <div style="clear: both;"></div>
                 <div class="entry">
                     <p th:text="${review.reviewText}">Review</p>
-                    <p class="links"><a th:href="@{reviews/review/{id}/(id=${review.id})}" class="more">Read more</a><a
+                    <p class="links"><a th:href="@{/reviews/review/{id}/(id=${review.id})}" class="more">Read more</a><a
                             href="#" title="b0x"
                             class="comments">Comments</a></p>
                 </div>

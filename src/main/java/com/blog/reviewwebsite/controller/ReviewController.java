@@ -50,6 +50,7 @@ public class ReviewController {
 
     @GetMapping("/form")
     private String createReview(Model model, @AuthenticationPrincipal User user) {
+//        TODO: figure out if this is a good way to assign user to a review
         Review review = new Review(user.getUsername());
         model.addAttribute("review", review);
         return "form";
