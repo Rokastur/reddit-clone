@@ -24,15 +24,16 @@
         <div id="menu">
             <ul>
                 <li><a href="#" accesskey="1" title="">Homepage</a></li>
-                <li><a href="#" accesskey="2" title="">Our Clients</a></li>
-                <li><a href="#" accesskey="3" title="">About Us</a></li>
+                <li><a th:href="@{/reviews/form}" accesskey="2" title="">New Review</a></li>
+                <li>
+                    <div th:replace="fragments/main.html :: authentication"></div>
+                </li>
                 <li><a href="#" accesskey="4" title="">Careers</a></li>
                 <li><a href="#" accesskey="5" title="">Contact Us</a></li>
             </ul>
         </div>
     </div>
 </div>
-
 
 <div id="page" class="container">
 
@@ -59,13 +60,25 @@
         </div>
 
         <div>
+            <p>
+                <a th:href="@{/reviews/(pageNumber=${pageNumber - 1})}"
+                   th:if="${pageNumber != 0}">
+                    < </a>
+                <span th:text="${pageNumber} + 1">current page</span>
+                <span>/</span>
+                <span th:text="${pageCount}">total pages</span>
+                <a th:href="@{/reviews/(pageNumber=${pageNumber + 1})}"
+                   th:if="${hasNextPage}">
+                    > </a>
+
+            </p>
 
         </div>
     </div>
 
 
     <!-- end #content -->
-    <div id="sidebar">
+    <div id="sidebar" class="container">
         <ul>
             <li>
                 <h2>Categories</h2>
@@ -103,10 +116,11 @@
         </ul>
     </div>
     <!-- end #sidebar -->
-</div>
-<div id="footer" class="container">
-    <p>&copy; Untitled. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.
-        Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
-</div>
+
+
+    <div id="footer" class="container">
+        <p>&copy; Untitled. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.
+            Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
+    </div>
 </body>
 </html>

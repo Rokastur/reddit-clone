@@ -25,6 +25,10 @@ public class ReviewController {
         model.addAttribute("reviews", reviews.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
+
+        int pageCount = reviewService.getAllReviews(pageNumber).getTotalPages();
+        model.addAttribute("pageCount", pageCount);
+
         return "reviews";
     }
 

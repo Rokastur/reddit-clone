@@ -1,30 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="https://www.thymeleaf.org">
 
-<div th:fragment="header">
-    <section class="content">
-        <div class="column side"></div>
-        <div class="column middle">
-            <h3><a th:href="@{/reviews}">Home </a></h3>
+<div th:fragment="authentication">
+    <div th:with="user =${#authentication.principal}">
+        <div sec:authorize="isAuthenticated()">
+            <p th:text="|Hello, ${user.username}|"></p>
+            <form method="post" th:action="@{/logout}">
+                <button th:text="logout" type="submit"></button>
+            </form>
         </div>
-        <div class="column side">
-            <ul th:with="user = ${#authentication.principal} ">
-                <li class="authenticationBlock">
-                    <form method="post"
-                          sec:authorize="isAuthenticated()" th:action="@{/logout}">
-                        <button th:text="logout" type="submit"/>
-                    </form>
-                    <a sec:authorize="isAnonymous()" th:href="@{/login}">sign in</a>
-                </li>
-
-
-                <li class="authenticationBlock">
-                    <span sec:authorize="isAuthenticated()" th:text="|Hello, ${user.username}|"></span>
-                </li>
-
-            </ul>
+        <div sec:authorize="isAnonymous()">
+            <a th:href="@{login}" th:text="|sign in|"></a>
         </div>
-    </section>
+    </div>
 </div>
 
 
