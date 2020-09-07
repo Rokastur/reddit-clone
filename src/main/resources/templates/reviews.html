@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
@@ -6,10 +6,14 @@
     <meta name="description" content=""/>
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700|Archivo+Narrow:400,700"
           rel="stylesheet" type="text/css">
-    <link href="default.css" rel="stylesheet" type="text/css" media="all"/>
+    <link href="styles.css" rel="stylesheet" type="text/css" media="all"/>
+
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/tooltip.css}">
     <!--[if IE 6]>
     <link href="default_ie6.css" rel="stylesheet" type="text/css"/>
+
+
     <![endif]-->
 </head>
 <body>
@@ -28,8 +32,16 @@
                 <li>
                     <div th:replace="fragments/main.html :: authentication"></div>
                 </li>
-                <li><a href="#" accesskey="4" title="">Careers</a></li>
+                <li>
+                    <div sec:authorize="isAuthenticated()"><a
+                            th:with="user = ${#authentication.principal}"
+                            th:href="@{/user/user/{id}/(id=${user.id})}" accesskey="4" title="">My profile</a></div>
+                    <div sec:authorize="isAnonymous()" class="tooltip"><span class="tooltiptext">sign in to view your profile</span>My
+                        profile
+                    </div>
+                </li>
                 <li><a href="#" accesskey="5" title="">Contact Us</a></li>
+
             </ul>
         </div>
     </div>
@@ -42,6 +54,7 @@
         <div th:each="review: ${reviews}">
             <div class="post">
                 <h2 class="title"><a href="#" th:text="${review.reviewTitle}">Title</a></h2>
+                <h3 class="title" th:text="|${review.title} by ${review.author}|"></h3>
                 <p class="meta"><span class="date">today's date</span><span class="posted">Posted by <a
                         th:with="user=${review.user}"
                         th:href="@{/user/user/{id}/(id=${user.id})}"
