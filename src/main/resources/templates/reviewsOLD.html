@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/content.css}">
+    <title>Title</title>
+
+</head>
+
+<body>
+<div th:replace="fragments/main.html :: header"></div>
+
+
+<div>
+    <a th:href="@{/reviews/(pageNumber=${pageNumber - 1})}"
+       th:if="${pageNumber != 0}">
+        < </a>
+</div>
+
+<div class="column middle">
+    <th:block>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Reviewer</th>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Rating</th>
+
+                <th>view</th>
+                <th>more</th>
+            </tr>
+            <tr th:each="review : ${reviews}">
+                <td th:text="${review.id}"></td>
+                <td th:text="${review.reviewer}"></td>
+                <td th:text="${review.author}"></td>
+                <td th:text="${review.title}"></td>
+                <td th:text="${review.rating}"></td>
+
+                <td>
+                    <a th:href="@{/reviews/review/{id}/(id=${review.id})}">view review</a>
+                </td>
+
+                <td>
+                    <a th:href="@{reviews/byReviewer/{reviewer}/(reviewer=${review.reviewer})}">more by this
+                        reviewer</a>
+                </td>
+            </tr>
+        </table>
+    </th:block>
+</div>
+
+<div>
+    <a th:href="@{/reviews/(pageNumber=${pageNumber + 1})}"
+       th:if="${hasNextPage}">
+        > </a>
+</div>
+
+</body>
+</html>

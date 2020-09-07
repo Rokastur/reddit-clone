@@ -30,7 +30,7 @@ public class User implements UserDetails {
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Review> reviews = new HashSet<>();
+    private Set<Review> reviews;
 
 
     @Override

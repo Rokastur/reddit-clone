@@ -1,78 +1,112 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700|Archivo+Narrow:400,700"
+          rel="stylesheet" type="text/css">
+    <link href="default.css" rel="stylesheet" type="text/css" media="all"/>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/content.css}">
-    <title>Title</title>
-
+    <!--[if IE 6]>
+    <link href="default_ie6.css" rel="stylesheet" type="text/css"/>
+    <![endif]-->
 </head>
-
-<body class="background">
-
-<ul th:with="user = ${#authentication.principal} ">
-    <li class="authenticationBlock">
-        <form method="post"
-              sec:authorize="isAuthenticated()" th:action="@{/logout}">
-            <button th:text="logout" type="submit"/>
-        </form>
-        <a sec:authorize="isAnonymous()" th:href="@{/login}">sign in</a>
-    </li>
+<body>
 
 
-    <li class="authenticationBlock">
-        <!--                    <span sec:authorize="isAnonymous()" th:text="'signed out'"></span>-->
-        <span sec:authorize="isAuthenticated()" th:text="|Hello, ${user.username}|"></span>
-    </li>
-
-</ul>
-
-
-<div>
-    <a th:href="@{/reviews/(pageNumber=${pageNumber - 1})}"
-       th:if="${pageNumber != 0}">
-        < </a>
+<div id="banner-wrapper"></div>
+<div id="header-wrapper">
+    <div id="header" class="container">
+        <div id="logo">
+            <h1><a href="#">Monumental</a></h1>
+        </div>
+        <div id="menu">
+            <ul>
+                <li><a href="#" accesskey="1" title="">Homepage</a></li>
+                <li><a href="#" accesskey="2" title="">Our Clients</a></li>
+                <li><a href="#" accesskey="3" title="">About Us</a></li>
+                <li><a href="#" accesskey="4" title="">Careers</a></li>
+                <li><a href="#" accesskey="5" title="">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 
-<div class="column middle">
-    <th:block>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Reviewer</th>
-                <th>Author</th>
-                <th>Title</th>
-                <th>Rating</th>
 
-                <th>view</th>
-                <th>more</th>
-            </tr>
-            <tr th:each="review : ${reviews}">
-                <td th:text="${review.id}"></td>
-                <td th:text="${review.reviewer}"></td>
-                <td th:text="${review.author}"></td>
-                <td th:text="${review.title}"></td>
-                <td th:text="${review.rating}"></td>
+<div id="page" class="container">
 
-                <td>
-                    <a th:href="@{/reviews/review/{id}/(id=${review.id})}">view review</a>
-                </td>
+    <div id="content">
 
-                <td>
-                    <a th:href="@{reviews/byReviewer/{reviewer}/(reviewer=${review.reviewer})}">more by this
-                        reviewer</a>
-                </td>
-            </tr>
-        </table>
-    </th:block>
+        <div th:each="review: ${reviews}">
+            <div class="post">
+                <h2 class="title"><a href="#">Title</a></h2>
+                <p class="meta"><span class="date">today's date</span><span class="posted">Posted by <a
+                        th:with="user=${review.user}"
+                        th:href="@{/user/user/{id}/(id=${user.id})}"
+                        th:text="${review.reviewer}"></a></span>
+                </p>
+
+                <div style="clear: both;"></div>
+                <div class="entry">
+                    <p th:text="${review.reviewText}">Review</p>
+                    <p class="links"><a th:href="@{reviews/review/{id}/(id=${review.id})}" class="more">Read more</a><a
+                            href="#" title="b0x"
+                            class="comments">Comments</a></p>
+                </div>
+            </div>
+            <div style="clear: both;">&nbsp;</div>
+        </div>
+
+        <div>
+
+        </div>
+    </div>
+
+
+    <!-- end #content -->
+    <div id="sidebar">
+        <ul>
+            <li>
+                <h2>Categories</h2>
+                <ul>
+                    <li><a href="#">Aliquam libero</a></li>
+                    <li><a href="#">Consectetuer adipiscing elit</a></li>
+                    <li><a href="#">Metus aliquam pellentesque</a></li>
+                    <li><a href="#">Suspendisse iaculis mauris</a></li>
+                    <li><a href="#">Urnanet non molestie semper</a></li>
+                    <li><a href="#">Proin gravida orci porttitor</a></li>
+                </ul>
+            </li>
+            <li>
+                <h2>Blogroll</h2>
+                <ul>
+                    <li><a href="#">Aliquam libero</a></li>
+                    <li><a href="#">Consectetuer adipiscing elit</a></li>
+                    <li><a href="#">Metus aliquam pellentesque</a></li>
+                    <li><a href="#">Suspendisse iaculis mauris</a></li>
+                    <li><a href="#">Urnanet non molestie semper</a></li>
+                    <li><a href="#">Proin gravida orci porttitor</a></li>
+                </ul>
+            </li>
+            <li>
+                <h2>Archives</h2>
+                <ul>
+                    <li><a href="#">Aliquam libero</a></li>
+                    <li><a href="#">Consectetuer adipiscing elit</a></li>
+                    <li><a href="#">Metus aliquam pellentesque</a></li>
+                    <li><a href="#">Suspendisse iaculis mauris</a></li>
+                    <li><a href="#">Urnanet non molestie semper</a></li>
+                    <li><a href="#">Proin gravida orci porttitor</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- end #sidebar -->
 </div>
-
-<div>
-    <a th:href="@{/reviews/(pageNumber=${pageNumber + 1})}"
-       th:if="${hasNextPage}">
-        > </a>
+<div id="footer" class="container">
+    <p>&copy; Untitled. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.
+        Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
 </div>
-
 </body>
 </html>
