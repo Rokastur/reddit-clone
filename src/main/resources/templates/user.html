@@ -1,26 +1,76 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="https://www.thymeleaf.org">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet"/>
+
+    <link rel="stylesheet" th:href="@{/css/user.css}">
+    <link rel="stylesheet" th:href="@{/css/userfonts.css}">
+
+    <!--[if IE 6]>
+    <link href="default_ie6.css" rel="stylesheet" type="text/css"/><![endif]-->
+
 </head>
 <body>
-
-<div th:object="${user}">
-
-    <p th:text="*{username}"></p>
-
-
-    <p>This user has <span th:text="${reviewCount}"></span> reviews</p>
-</div>
-
-<div>
-    <p>titles of the reviews are:</p>
-    <div th:each="title : ${titles}">
-        <p th:text="${title.title}"></p>
+<div id="page" class="container">
+    <div id="header">
+        <div id="logo">
+            <img src="images/pic02.jpg" alt="profile picture"/>
+            <h1><a href="#" th:text="${user.username}"></a></h1>
+            <p>has <span th:text="${reviewCount}"></span> reviews and <span> upvotes</span></p>
+        </div>
+        <div id="menu">
+            <ul>
+                <li class="current_page_item"><a th:href="@{/reviews/}" accesskey="1" title="">Homepage</a></li>
+                <li><a href="#" accesskey="2" title="">Our Clients</a></li>
+                <li><a href="#" accesskey="3" title="">About Us</a></li>
+                <li><a href="#" accesskey="4" title="">Careers</a></li>
+                <li><a href="#" accesskey="5" title="">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="main">
+        <div id="banner">
+            <img src="images/pic01.jpg" alt="banner" class="image-full"/>
+        </div>
+        <div id="welcome">
+            <div class="title">
+                <h2>About <span th:text="${user.username}"></span></h2>
+                <span class="byline">Donec leo, vivamus fermentum nibh in augue praesent a lacus at urna congue</span>
+            </div>
+            <p>This is <strong>Privy</strong>, a free, fully standards-compliant CSS template designed by <a
+                    href="http://templated.co" rel="nofollow">TEMPLATED</a>. The photos in this template are from <a
+                    href="http://fotogrph.com/"> Fotogrph</a>. This free template is released under the <a
+                    href="http://templated.co/license">Creative Commons Attribution</a> license, so you're pretty much
+                free to do whatever you want with it (even use it commercially) provided you give us credit for it. Have
+                fun :) </p>
+            <ul class="actions">
+                <li><a href="#" class="button">Etiam posuere</a></li>
+            </ul>
+        </div>
+        <div id="featured">
+            <div class="title">
+                <h2>Reviews</h2>
+                <!--                maybe here you could sort by latest/most popular/most upvoted/etc-->
+                <span class="byline">Latest | Popular | by Upvotes | by Comments</span>
+            </div>
+            <ul class="style1">
+                <li class="first" th:each="review: ${reviews}">
+                    <p class="date"><a href="#">Jan<b>05</b></a></p>
+                    <h3 th:text="${review.title}"></h3>
+                    <h4 class="title" th:text="|${review.title} by ${review.author}|"></h4>
+                    <p th:text="${review.reviewText}"><a href="#">Consectetuer adipiscing elit. Nam pede erat, porta eu,
+                        lobortis eget, tempus et,
+                        tellus. Etiam neque. Vivamus consequat lorem at nisl. Nullam non wisi a sem semper eleifend.
+                        Etiam non felis. Donec ut ante.</a></p>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
-
-
 </body>
 </html>

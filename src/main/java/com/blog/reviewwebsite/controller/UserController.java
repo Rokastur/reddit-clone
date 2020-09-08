@@ -58,6 +58,7 @@ public class UserController {
         List<Review> reviews = userService.getUserReviews(id);
         model.addAttribute("user", user);
         model.addAttribute("reviewCount", reviews.size());
+        model.addAttribute("reviews", reviews);
         model.addAttribute("titles", reviews);
         return "user";
     }
