@@ -25,7 +25,7 @@
         </div>
         <div id="menu">
             <ul>
-                <li><a href="#" accesskey="1" title="">Homepage</a></li>
+                <li><a th:href="@{/reviews}" accesskey="1" title="">Reviews</a></li>
                 <li><a th:href="@{/reviews/form}" accesskey="2" title="">New Review</a></li>
                 <li>
                     <div th:replace="fragments/main.html :: authentication"></div>
@@ -38,7 +38,12 @@
                         profile
                     </div>
                 </li>
-                <li><a href="#" accesskey="5" title="">Contact Us</a></li>
+                <li>
+                    <form method="get" th:action="@{user/user/}">
+                        <input type="text" name="username" th:value="${username}"/>
+                        <input type="submit" value="Search">
+                    </form>
+                </li>
 
             </ul>
         </div>

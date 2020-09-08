@@ -4,6 +4,7 @@ import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import com.blog.reviewwebsite.services.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +61,14 @@ public class UserController {
         model.addAttribute("titles", reviews);
         return "user";
     }
+
+    @GetMapping("/{username}")
+    public String findUser(@RequestParam String username, Model model) {
+        User user = (User) userService.loadUserByUsername(username);
+//TODO: deal with incorrect usernames. Currently redirects to log in screen
+        return getUser(user.getId(), model);
+
+    }
+
+
 }
