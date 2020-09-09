@@ -31,10 +31,13 @@ public class UserController {
 
     @PostMapping("/submit")
     public String submitUser(User user) {
-        if (userService.validNewUser(user)) {
+        if (userService.validNewUser(user) && (userService.passwordsMatch(user))) {
             userService.updateOrSaveUser(user);
+            return "redirect:/login";
+        } else {
+            return "signup";
         }
-        return "redirect:/login";
+
 
         //TODO: this might be a temp fix only. Without this, multiple users with the same username can be created, despite having @unique annotation, but could not login with not unique username.
     }

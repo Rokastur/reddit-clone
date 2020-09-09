@@ -11,6 +11,7 @@
 
     <p>User Name: <input th:field="*{username}" type="text"/></p>
     <p>Password: <input th:field="*{password}" type="password"/></p>
+    <p>Verify password: <input th:field=*{retypePassword} type="password"></p>
 
     <p><input th:value="${user.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
 </form>

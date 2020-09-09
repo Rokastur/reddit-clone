@@ -60,4 +60,11 @@ public class UserService implements UserDetailsService {
             return false;
         } else return true;
     }
+
+    public boolean passwordsMatch(User user) {
+        if (user.getPassword().equals(user.getRetypePassword())) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,16 +1,14 @@
 package com.blog.reviewwebsite.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -22,11 +20,17 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private Long id;
 
+    @NotEmpty
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @NotEmpty
     @Column(name = "password", nullable = false)
     private String password;
+
+    @NotEmpty
+    @Transient
+    private String retypePassword;
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
