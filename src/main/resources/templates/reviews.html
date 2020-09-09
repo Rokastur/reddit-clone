@@ -33,9 +33,12 @@
                 <li>
                     <div sec:authorize="isAuthenticated()"><a
                             th:with="user = ${#authentication.principal}"
-                            th:href="@{/user/user/{id}/(id=${user.id})}" accesskey="4" title="">My profile</a></div>
-                    <div sec:authorize="isAnonymous()" class="tooltip"><span class="tooltiptext">sign in to view your profile</span>My
-                        profile
+                            th:href="@{/user/user/{id}/(id=${user.id})}" accesskey="4" title="">My profile</a>
+                    </div>
+                    <div sec:authorize="isAnonymous()" class="tooltip"><p class="tooltiptext">sign in to view your
+                        profile</p>
+                        <a>
+                            My profile</a>
                     </div>
                 </li>
                 <li>
