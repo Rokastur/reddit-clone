@@ -2,6 +2,7 @@ package com.blog.reviewwebsite.services;
 
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.repositories.CommentRepository;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

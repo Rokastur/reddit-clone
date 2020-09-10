@@ -1,7 +1,9 @@
 package com.blog.reviewwebsite.controller;
 
+import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,14 +11,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/reviews")
 public class ReviewController {
 
     private ReviewService reviewService;
+    private CommentService commentService;
 
-    public ReviewController(ReviewService reviewService) {
+
+    public ReviewController(ReviewService reviewService, CommentService commentService) {
         this.reviewService = reviewService;
+        this.commentService = commentService;
     }
 
     @GetMapping
@@ -42,9 +49,18 @@ public class ReviewController {
     }
 
     @GetMapping("/review/{id}")
-    private String getReview(Model model, @PathVariable Long id) {
+    private String getReview(Model model, @AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam(defaultValue = "0") int pageNumber) {
         Review review = reviewService.getReview(id);
         model.addAttribute("review", review);
+        model.addAttribute("pageNumber", pageNumber);
+
+        Page<Comment> comments = commentService.getAllCommentsByReview(pageNumber, review.getId());
+
+        model.addAttribute("commentCount", comments.getTotalElements());
+
+        model.addAttribute("comments", comments.getContent());
+        model.addAttribute("newComment", new Comment());
+
         return "review";
     }
 

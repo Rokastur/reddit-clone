@@ -17,6 +17,25 @@
 </div>
 
 <div>
+    <p>The review has <span th:text="${commentCount}"></span> comments</p>
+</div>
+
+<div>
+    <form method="post" th:action="@{/comment/submit/{id}/(id=${review.getId()})}" th:object="${newComment}">
+        <input th:field="*{id}" type="hidden"/>
+
+        <p>Leave a comment! <input th:field="*{text}" type="text"/></p>
+
+        <p><input th:value="${newComment.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
+    </form>
+</div>
+
+<div th:each="comment: ${comments}">
+    <p th:text="${comment.user.username}"></p>
+    <p th:text="${comment.text}"></p>
+</div>
+
+<div>
     <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit review</a>
     <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
 </div>

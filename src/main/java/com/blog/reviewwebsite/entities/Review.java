@@ -3,6 +3,7 @@ package com.blog.reviewwebsite.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -43,5 +44,8 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", nullable = false)
     private User user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
+    private List<Comment> comments;
 
 }
