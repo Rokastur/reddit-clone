@@ -9,8 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -88,10 +90,14 @@ public class ReviewController {
     }
 
     @PostMapping("/submit")
-    private String form(@ModelAttribute Review review, Model model, @AuthenticationPrincipal User user) {
-        Review newReview = reviewService.updateOrSaveReview(review, user);
-        model.addAttribute("review", newReview);
-        return "redirect:/reviews";
+    private String form(@Valid @ModelAttribute Review review, BindingResult result, Model model, @AuthenticationPrincipal User user) {
+        if (result.hasErrors()) {
+            return "form";
+        } else {
+            Review newReview = reviewService.updateOrSaveReview(review, user);
+            model.addAttribute("review", newReview);
+            return "redirect:/reviews";
+        }
     }
 
 }

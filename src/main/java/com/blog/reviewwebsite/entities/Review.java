@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -29,18 +30,22 @@ public class Review {
     private String reviewer;
 
     @Column(name = "author")
+    @NotBlank
     private String author;
 
     @Column(name = "title")
+    @NotBlank
     private String title;
 
     @Column(name = "rating")
     private int rating;
 
     @Column(name = "review_title")
+    @NotBlank
     private String reviewTitle;
 
     @Column(name = "review", columnDefinition = "text")
+    @NotBlank
     private String reviewText;
 
     @Column(name = "hidden")
