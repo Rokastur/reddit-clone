@@ -28,12 +28,12 @@ public class ReviewController {
 
     @GetMapping
     private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model) {
-        Page<Review> reviews = reviewService.getAllReviews(pageNumber);
+        Page<Review> reviews = reviewService.getAllNotHiddenReviews(pageNumber);
         model.addAttribute("reviews", reviews.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
 
-        int pageCount = reviewService.getAllReviews(pageNumber).getTotalPages();
+        int pageCount = reviewService.getAllNotHiddenReviews(pageNumber).getTotalPages();
         model.addAttribute("pageCount", pageCount);
 
         return "reviews";
@@ -53,6 +53,8 @@ public class ReviewController {
         Review review = reviewService.getReview(id);
         model.addAttribute("review", review);
         model.addAttribute("pageNumber", pageNumber);
+
+        model.addAttribute("user", user);
 
         Page<Comment> comments = commentService.getAllCommentsByReview(pageNumber, review.getId());
 

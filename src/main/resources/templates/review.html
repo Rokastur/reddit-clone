@@ -91,9 +91,12 @@
                     <p class="links">
                         <a href=#>Upvote</a>
                         <a href=#>Report</a>
-                        <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit review</a>
-                        <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
-
+                    <div sec:authorize="isAuthenticated()">
+                        <div th:if="${user.username} == ${review.reviewer}">
+                            <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit review</a>
+                            <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
+                        </div>
+                    </div>
                     </p>
                 </div>
             </div>
