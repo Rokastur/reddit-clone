@@ -10,14 +10,6 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "comments")
 public class Comment {
 
-    public Comment(User user, Review review) {
-        this.user = user;
-        this.review = review;
-    }
-
-    public Comment() {
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
