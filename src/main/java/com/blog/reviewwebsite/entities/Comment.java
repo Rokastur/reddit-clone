@@ -3,6 +3,7 @@ package com.blog.reviewwebsite.entities;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
@@ -23,6 +24,7 @@ public class Comment {
     private Long id;
 
     @Column(name = "text")
+    @NotBlank
     private String text;
 
     @ManyToOne(fetch = FetchType.LAZY)

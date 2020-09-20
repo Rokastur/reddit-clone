@@ -9,7 +9,10 @@ import com.blog.reviewwebsite.services.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/comment")
@@ -26,8 +29,12 @@ public class CommentController {
     }
 
     @PostMapping("/submit/{id}")
-    public String submitComment(@ModelAttribute("newComment") Comment comment, @PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
-        commentService.saveOrUpdateComment(comment, user, id);
+    public String submitComment(@Valid @ModelAttribute("newComment") Comment comment, BindingResult result, @PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
+        if (!result.hasErrors()) {
+            commentService.saveOrUpdateComment(comment, user, id);
+        }
         return "redirect:/reviews/review/" + id;
+
+
     }
 }
