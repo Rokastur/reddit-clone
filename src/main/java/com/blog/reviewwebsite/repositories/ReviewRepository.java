@@ -13,5 +13,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findAllByReviewer(String reviewer, Pageable pageable);
 
+    Page<Review> findAllByHiddenFalse(Pageable pageable);
+
     List<Review> findAllByReviewer(String reviewer);
 }

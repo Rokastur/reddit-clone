@@ -1,11 +1,14 @@
 package com.blog.reviewwebsite.entities;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "Review")
 public class Review {
@@ -39,6 +42,9 @@ public class Review {
 
     @Column(name = "review", columnDefinition = "text")
     private String reviewText;
+
+    @Column(name = "hidden")
+    private Boolean hidden;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

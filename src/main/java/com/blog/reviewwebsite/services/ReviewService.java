@@ -20,9 +20,9 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    public Page<Review> getAllReviews(int pageNumber) {
+    public Page<Review> getAllNotHiddenReviews(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAll(pageable);
+        return reviewRepository.findAllByHiddenFalse(pageable);
     }
 
     public List<Review> findAllReviewsByReviewer(String reviewer) {
@@ -41,7 +41,10 @@ public class ReviewService {
     }
 
     public void deleteReview(Long id) {
-        reviewRepository.deleteById(id);
+        Review review = reviewRepository.getOne(id);
+        review.setHidden(true);
+        reviewRepository.save(review);
+        //reviewRepository.deleteById(id);
     }
 
     public Review getReview(Long id) {
