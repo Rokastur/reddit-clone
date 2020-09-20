@@ -37,6 +37,7 @@ public class ReviewService {
     public Review updateOrSaveReview(Review review, User user) {
 //        sets currently authenticated user as a "owner" of the new or updated review
         review.setUser(user);
+        review.setHidden(false);
         return reviewRepository.save(review);
     }
 
