@@ -22,6 +22,7 @@
             <img src="images/pic02.jpg" alt="profile picture"/>
             <h1><a href="#" th:text="${user.username}"></a></h1>
             <p>has <span th:text="${reviewCount}"></span> reviews and <span> upvotes</span></p>
+            <p><span>user created on</span> <span th:text="${user.date}"></span></p>
         </div>
         <div id="menu">
             <ul>

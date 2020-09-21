@@ -1,9 +1,11 @@
 package com.blog.reviewwebsite.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -18,6 +20,10 @@ public class Comment {
     @Column(name = "text")
     @NotBlank
     private String text;
+
+    @Column(name = "date")
+    @CreationTimestamp
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

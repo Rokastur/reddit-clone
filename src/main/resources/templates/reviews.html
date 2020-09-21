@@ -61,7 +61,8 @@
             <div class="post">
                 <h2 class="title"><a href="#" th:text="${review.reviewTitle}">Title</a></h2>
                 <h3 class="title" th:text="|${review.title} by ${review.author}|"></h3>
-                <p class="meta"><span class="date">today's date</span><span class="posted">Posted by <a
+                <p class="meta"><span class="date" th:text="${review.date}">today's date</span><span
+                        class="posted">Posted by <a
                         th:with="user=${review.user}"
                         th:href="@{/user/user/{id}/(id=${user.id})}"
                         th:text="${review.reviewer}"></a></span>

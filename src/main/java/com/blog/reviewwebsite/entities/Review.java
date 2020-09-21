@@ -1,11 +1,15 @@
 package com.blog.reviewwebsite.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -51,6 +55,9 @@ public class Review {
     @Column(name = "hidden")
     private Boolean hidden;
 
+    @Column(name = "date")
+    @CreationTimestamp
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", nullable = false)
