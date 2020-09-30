@@ -21,4 +21,8 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
 
     Score findOneByReviewAndUser(Review review, User user);
 
+    Set<Score> findAllByReviewAndUpvotedTrue(Review review);
+
+    Set<Score> findAllByReviewAndDownvotedTrue(Review review);
+
 }

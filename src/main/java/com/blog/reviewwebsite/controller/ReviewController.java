@@ -68,11 +68,7 @@ public class ReviewController {
         model.addAttribute("newComment", new Comment());
         model.addAttribute("newScore", new Score());
 
-        Long score = scoreService.calculateAndGetReviewVoteScore(review);
-        if (score.equals(null)) {
-            score = 0l;
-        }
-        model.addAttribute("score", score);
+        model.addAttribute("score", review.getTotalScore());
 
 
         return "review";

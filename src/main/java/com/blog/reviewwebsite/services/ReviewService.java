@@ -27,7 +27,8 @@ public class ReviewService {
 
     public Page<Review> getAllNotHiddenReviews(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalse(pageable);
+        //return reviewRepository.findAllByHiddenFalse(pageable);
+        return reviewRepository.findAllByHiddenFalseOrderByTotalScoreDesc(pageable);
     }
 
     public List<Review> findAllReviewsByReviewer(String reviewer) {

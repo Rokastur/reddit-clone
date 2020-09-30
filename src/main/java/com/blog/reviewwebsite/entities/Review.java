@@ -67,4 +67,13 @@ public class Review {
     @OneToMany(mappedBy = "review")
     private Set<Score> scoreSet;
 
+    @Column(name = "total_upvotes")
+    private int totalUpvotes = 0;
+
+    @Column(name = "total_downvotes")
+    private int totalDownvotes = 0;
+
+    @Column(name = "total_score")
+    private int totalScore = 0;
+
 }

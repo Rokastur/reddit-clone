@@ -7,6 +7,7 @@ import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.ScoreRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Set;
 
 @Service
@@ -26,6 +27,8 @@ public class ScoreService {
         if (userAlreadyUpvotedReview(review, user)) {
             Score existingVote = scoreRepository.findOneByReviewAndUser(review, user);
             scoreRepository.delete(existingVote);
+            updateAllVotes(review);
+            reviewRepository.save(review);
             return;
         }
         if (userAlreadyDownvotedReview(review, user)) {
@@ -36,6 +39,8 @@ public class ScoreService {
         score.setUser(user);
         score.setUpvoted(true);
         scoreRepository.save(score);
+        updateAllVotes(review);
+        reviewRepository.save(review);
 
     }
 
@@ -45,6 +50,7 @@ public class ScoreService {
         if (userAlreadyDownvotedReview(review, user)) {
             Score existingVote = scoreRepository.findOneByReviewAndUser(review, user);
             scoreRepository.delete(existingVote);
+            updateAllVotes(review);
             return;
         }
         if (userAlreadyUpvotedReview(review, user)) {
@@ -55,6 +61,7 @@ public class ScoreService {
         score.setUser(user);
         score.setDownvoted(true);
         scoreRepository.save(score);
+        updateAllVotes(review);
 
     }
 
@@ -72,9 +79,35 @@ public class ScoreService {
         Long upvoteCount = scores.stream()
                 .filter(score -> score.getUpvoted() != null)
                 .filter(Score::getUpvoted).count();
+
         Long downvoteCount = scores.stream()
                 .filter((score -> score.getDownvoted() != null))
                 .filter(Score::getDownvoted).count();
+
+        int meme = scoreRepository.findAllByReviewAndUpvotedTrue(review).size();
+        int meme2 = scoreRepository.findAllByReviewAndDownvotedTrue(review).size();
+
+        System.out.println(meme - meme2);
+
+
         return upvoteCount - downvoteCount;
+    }
+
+    public void updateAllVotes(Review review) {
+        setReviewTotalUpvotes(review);
+        setReviewTotalDownvotes(review);
+        setReviewTotalScore(review);
+    }
+
+    public void setReviewTotalUpvotes(Review review) {
+        review.setTotalUpvotes(scoreRepository.findAllByReviewAndUpvotedTrue(review).size());
+    }
+
+    public void setReviewTotalDownvotes(Review review) {
+        review.setTotalDownvotes(scoreRepository.findAllByReviewAndDownvotedTrue(review).size());
+    }
+
+    public void setReviewTotalScore(Review review) {
+        review.setTotalScore(review.getTotalUpvotes() - review.getTotalDownvotes());
     }
 }
