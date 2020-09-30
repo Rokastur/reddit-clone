@@ -83,14 +83,25 @@
                         th:with="user=${review.user}"
                         th:href="@{/user/user/{id}/(id=${user.id})}"
                         th:text="${review.reviewer}"></a></span>
+                    <span th:text="|score: ${score}|"></span>
                 </p>
 
                 <div style="clear: both;"></div>
                 <div class="entry">
                     <p th:text="${review.reviewText}">Review</p>
                     <p class="links">
-                        <a href=#>Upvote</a>
-                        <a href=#>Report</a>
+
+                    <div sec:authorize="isAuthenticated()">
+                        <form method="post" th:action="@{/vote/submit/upvote/{id}/(id=${review.id})}">
+                            <span>upvote<input type="submit"></span>
+                        </form>
+
+                        <form method="post" th:action="@{/vote/submit/downvote/{id}/(id=${review.id})}">
+                            <span>downvote<input type="submit"></span>
+                        </form>
+                    </div>
+
+                    <a href=#>Report</a>
                     <div sec:authorize="isAuthenticated()">
                         <div th:if="${user.username} == ${review.reviewer}">
                             <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit review</a>

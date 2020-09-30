@@ -2,9 +2,11 @@ package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
+import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
+import com.blog.reviewwebsite.services.ScoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping("/reviews")
@@ -21,11 +22,12 @@ public class ReviewController {
 
     private ReviewService reviewService;
     private CommentService commentService;
+    private ScoreService scoreService;
 
-
-    public ReviewController(ReviewService reviewService, CommentService commentService) {
+    public ReviewController(ReviewService reviewService, CommentService commentService, ScoreService scoreService) {
         this.reviewService = reviewService;
         this.commentService = commentService;
+        this.scoreService = scoreService;
     }
 
     @GetMapping
@@ -64,6 +66,14 @@ public class ReviewController {
 
         model.addAttribute("comments", comments.getContent());
         model.addAttribute("newComment", new Comment());
+        model.addAttribute("newScore", new Score());
+
+        Long score = scoreService.calculateAndGetReviewVoteScore(review);
+        if (score.equals(null)) {
+            score = 0l;
+        }
+        model.addAttribute("score", score);
+
 
         return "review";
     }

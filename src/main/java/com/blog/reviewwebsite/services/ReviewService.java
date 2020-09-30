@@ -1,23 +1,28 @@
 package com.blog.reviewwebsite.services;
 
 import com.blog.reviewwebsite.entities.Review;
+import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
-import com.blog.reviewwebsite.repositories.CommentRepository;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
+import com.blog.reviewwebsite.repositories.ScoreRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
 
     private ReviewRepository reviewRepository;
+    private ScoreRepository scoreRepository;
 
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, ScoreRepository scoreRepository) {
         this.reviewRepository = reviewRepository;
+        this.scoreRepository = scoreRepository;
     }
 
     public Page<Review> getAllNotHiddenReviews(int pageNumber) {

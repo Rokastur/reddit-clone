@@ -1,16 +1,14 @@
 package com.blog.reviewwebsite.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -65,5 +63,8 @@ public class Review {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "review")
+    private Set<Score> scoreSet;
 
 }
