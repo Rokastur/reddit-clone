@@ -19,7 +19,7 @@ public class Score {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
@@ -28,6 +28,5 @@ public class Score {
 
     @Column(name = "downvoted")
     private Boolean downvoted;
-
 
 }

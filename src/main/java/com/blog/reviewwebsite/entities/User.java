@@ -48,8 +48,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
 
-    @OneToOne(mappedBy = "user")
-    private Score score;
+    @OneToMany(mappedBy = "user")
+    private Set<Score> score;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
