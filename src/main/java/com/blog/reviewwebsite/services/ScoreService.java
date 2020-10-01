@@ -51,6 +51,7 @@ public class ScoreService {
             Score existingVote = scoreRepository.findOneByReviewAndUser(review, user);
             scoreRepository.delete(existingVote);
             updateAllVotes(review);
+            reviewRepository.save(review);
             return;
         }
         if (userAlreadyUpvotedReview(review, user)) {
@@ -62,6 +63,7 @@ public class ScoreService {
         score.setDownvoted(true);
         scoreRepository.save(score);
         updateAllVotes(review);
+        reviewRepository.save(review);
 
     }
 
