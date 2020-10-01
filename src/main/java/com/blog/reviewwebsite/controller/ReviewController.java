@@ -43,6 +43,32 @@ public class ReviewController {
         return "reviews";
     }
 
+    @GetMapping("/byDate")
+    private String getReviewsByDateDesc(@RequestParam(defaultValue = "0") int pageNumber, Model model) {
+        Page<Review> reviews = reviewService.getAllNotHiddenReviewsByDateDesc(pageNumber);
+        model.addAttribute("reviews", reviews.getContent());
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("hasNextPage", reviews.hasNext());
+
+        int pageCount = reviewService.getAllNotHiddenReviewsByDateDesc(pageNumber).getTotalPages();
+        model.addAttribute("pageCount", pageCount);
+
+        return "reviews";
+    }
+
+    @GetMapping("/byScore")
+    private String getReviewsByScoreDesc(@RequestParam(defaultValue = "0") int pageNumber, Model model) {
+        Page<Review> reviews = reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber);
+        model.addAttribute("reviews", reviews.getContent());
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("hasNextPage", reviews.hasNext());
+
+        int pageCount = reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber).getTotalPages();
+        model.addAttribute("pageCount", pageCount);
+
+        return "reviews";
+    }
+
     @GetMapping("/byReviewer/{reviewer}")
     private String getReviewsByReviewer(@RequestParam(defaultValue = "0") int pageNumber, @PathVariable String reviewer, Model model) {
         Page<Review> reviews = reviewService.getAllReviewsByReviewer(pageNumber, reviewer);
