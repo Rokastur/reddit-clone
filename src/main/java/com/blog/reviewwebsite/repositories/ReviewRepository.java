@@ -20,7 +20,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findAllByHiddenFalseOrderByTotalScoreDesc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM Review ORDER BY DATE DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM Review WHERE hidden = 'false' ORDER BY DATE DESC", nativeQuery = true)
     Page<Review> findAllByHiddenFalseOrderByDateDesc(Pageable pageable);
 
 }
