@@ -28,15 +28,27 @@ public class ReviewController {
     }
 
     @GetMapping
-    private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model) {
+    private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "default") String reviewOrderType) {
         Page<Review> reviews = reviewService.getAllNotHiddenReviews(pageNumber);
-        model.addAttribute("reviews", reviews.getContent());
+
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
 
         int pageCount = reviewService.getAllNotHiddenReviews(pageNumber).getTotalPages();
         model.addAttribute("pageCount", pageCount);
 
+        String commentCountAsc = "commentCountAsc";
+        String commentCountDesc = "commentCountDesc";
+
+        model.addAttribute("commentCountAsc", commentCountAsc);
+        model.addAttribute("commentCountDesc", commentCountDesc);
+
+        if (reviewOrderType.equals("commentCountDesc")) {
+            reviews = reviewService.getAllNotHiddenByCommentCountDesc(pageNumber);
+        } else if (reviewOrderType.equals("commentCountAsc")) {
+            reviews = reviewService.getAllNotHiddenByCommentCountAsc(pageNumber);
+        }
+        model.addAttribute("reviews", reviews.getContent());
         return "reviews";
     }
 

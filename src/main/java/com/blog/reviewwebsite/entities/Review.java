@@ -65,4 +65,7 @@ public class Review {
     @Column(name = "total_score")
     private int totalScore = 0;
 
+    @Column(name = "comment_count")
+    private int commentCount = 0;
+
 }

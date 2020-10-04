@@ -26,15 +26,23 @@ public class CommentService {
         return commentRepository.findAllByReviewId(reviewId, pageable);
     }
 
-    public Comment saveOrUpdateComment(Comment comment, User user, Long id) {
+    public void saveOrUpdateComment(Comment comment, User user, Long id) {
         Review review = reviewRepository.getOne(id);
         comment.setReview(review);
         comment.setUser(user);
-        return commentRepository.save(comment);
+        commentRepository.save(comment);
+
+        review.setCommentCount(commentRepository.findAllByReview(review).size());
+        reviewRepository.save(review);
     }
 
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long reviewId, Long commentId) {
         commentRepository.deleteById(commentId);
+
+        Review review = reviewRepository.getOne(reviewId);
+        review.setCommentCount(commentRepository.findAllByReview(review).size());
+        reviewRepository.save(review);
+
     }
 
     public Page<Comment> getAllCommentsByDateDesc(int pageNumber, Long reviewId) {

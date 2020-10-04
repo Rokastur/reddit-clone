@@ -63,6 +63,18 @@
 
     <div id="content">
 
+        <div>
+            <li>
+                <a th:href="@{/reviews/(reviewOrderType=${commentCountDesc})}">
+                    Comments -
+                    most</a>
+            </li>
+            <li>
+                <a th:href="@{/reviews/(reviewOrderType=${commentCountAsc})}">
+                    Comments -
+                    least</a>
+            </li>
+        </div>
         <div th:each="review: ${reviews}">
             <div class="post">
                 <h2 class="title"><a href="#" th:text="${review.title}">Title</a><span

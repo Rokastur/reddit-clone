@@ -25,6 +25,17 @@ public class ReviewService {
         this.scoreRepository = scoreRepository;
     }
 
+    public Page<Review> getAllNotHiddenByCommentCountDesc(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseOrderByCommentCountDesc(pageable);
+    }
+
+    public Page<Review> getAllNotHiddenByCommentCountAsc(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseOrderByCommentCountAsc(pageable);
+
+    }
+
     public Page<Review> getAllNotHiddenReviews(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAllByHiddenFalse(pageable);
