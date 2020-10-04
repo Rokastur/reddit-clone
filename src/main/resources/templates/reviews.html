@@ -72,6 +72,7 @@
                         th:with="user=${review.user}"
                         th:href="@{/user/user/{id}/(id=${user.id})}"
                         th:text="${review.username}"></a></span>
+                <p>total comments: <span th:text="${review.comments.size()}"></span></p>
                 </p>
 
                 <div style="clear: both;"></div>

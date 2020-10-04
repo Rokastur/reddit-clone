@@ -73,6 +73,7 @@
             <div sec:authorize="isAnonymous()" class="tooltip"><p class="tooltiptext">sign in to leave a comment</p>
                 <a>Leave a comment!</a>
             </div>
+            <p>comment count: <span th:text="${review.comments.size()}"></span></p>
         </div>
 
         <div>
