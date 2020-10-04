@@ -51,6 +51,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Score> score;
 
+    @OneToMany(mappedBy = "user")
+    private Set<CommentScore> commentScores;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

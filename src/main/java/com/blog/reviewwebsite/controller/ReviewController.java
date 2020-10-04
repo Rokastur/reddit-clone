@@ -1,9 +1,6 @@
 package com.blog.reviewwebsite.controller;
 
-import com.blog.reviewwebsite.entities.Comment;
-import com.blog.reviewwebsite.entities.Review;
-import com.blog.reviewwebsite.entities.Score;
-import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.entities.*;
 import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.ScoreService;
@@ -92,9 +89,12 @@ public class ReviewController {
 
         model.addAttribute("comments", comments.getContent());
         model.addAttribute("newComment", new Comment());
-        model.addAttribute("newScore", new Score());
 
+        model.addAttribute("newScore", new Score());
         model.addAttribute("score", review.getTotalScore());
+
+        model.addAttribute("newCommentScore", new CommentScore());
+
 
 
         return "review";

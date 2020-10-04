@@ -1,13 +1,14 @@
 package com.blog.reviewwebsite.services;
 
+import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.repositories.CommentRepository;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.ScoreRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Set;
 
 @Service
@@ -67,6 +68,7 @@ public class ScoreService {
 
     }
 
+
     public Boolean userAlreadyUpvotedReview(Review review, User user) {
         return scoreRepository.existsByReviewAndUserAndUpvotedTrue(review, user);
     }
@@ -96,20 +98,8 @@ public class ScoreService {
     }
 
     public void updateAllVotes(Review review) {
-        setReviewTotalUpvotes(review);
-        setReviewTotalDownvotes(review);
-        setReviewTotalScore(review);
-    }
-
-    public void setReviewTotalUpvotes(Review review) {
         review.setTotalUpvotes(scoreRepository.findAllByReviewAndUpvotedTrue(review).size());
-    }
-
-    public void setReviewTotalDownvotes(Review review) {
         review.setTotalDownvotes(scoreRepository.findAllByReviewAndDownvotedTrue(review).size());
-    }
-
-    public void setReviewTotalScore(Review review) {
         review.setTotalScore(review.getTotalUpvotes() - review.getTotalDownvotes());
     }
 }
