@@ -12,11 +12,11 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    Page<Review> findAllByReviewer(String reviewer, Pageable pageable);
+    Page<Review> findAllByUsername(String username, Pageable pageable);
 
     Page<Review> findAllByHiddenFalse(Pageable pageable);
 
-    List<Review> findAllByReviewer(String reviewer);
+    List<Review> findAllByUsername(String username);
 
     Page<Review> findAllByHiddenFalseOrderByTotalScoreDesc(Pageable pageable);
 

@@ -41,13 +41,13 @@ public class ReviewService {
         return reviewRepository.findAllByHiddenFalseOrderByTotalScoreDesc(pageable);
     }
 
-    public List<Review> findAllReviewsByReviewer(String reviewer) {
-        return reviewRepository.findAllByReviewer(reviewer);
+    public List<Review> findAllReviewsByReviewer(String username) {
+        return reviewRepository.findAllByUsername(username);
     }
 
-    public Page<Review> getAllReviewsByReviewer(int pageNumber, String reviewer) {
+    public Page<Review> getAllReviewsByReviewer(int pageNumber, String username) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByReviewer(reviewer, pageable);
+        return reviewRepository.findAllByUsername(username, pageable);
     }
 
     public Review updateOrSaveReview(Review review, User user) {

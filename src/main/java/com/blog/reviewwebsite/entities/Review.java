@@ -20,7 +20,7 @@ public class Review {
     }
 
     public Review(String username) {
-        this.reviewer = username;
+        this.username = username;
     }
 
     @Id
@@ -28,27 +28,16 @@ public class Review {
     @Column(name = "review_id")
     private Long id;
 
-    @Column(name = "reviewer")
-    private String reviewer;
-
-    @Column(name = "author")
-    @NotBlank
-    private String author;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "title")
     @NotBlank
     private String title;
 
-    @Column(name = "rating")
-    private int rating;
-
-    @Column(name = "review_title")
+    @Column(name = "text", columnDefinition = "text")
     @NotBlank
-    private String reviewTitle;
-
-    @Column(name = "review", columnDefinition = "text")
-    @NotBlank
-    private String reviewText;
+    private String text;
 
     @Column(name = "hidden")
     private Boolean hidden;

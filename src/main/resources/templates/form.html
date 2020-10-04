@@ -13,26 +13,14 @@
 
     <input th:field="*{id}" type="hidden"/>
 
-    <p>Reviewer: <input readonly th:field="*{reviewer}" th:value=${user.username}
+    <p>Reviewer: <input readonly th:field="*{username}" th:value=${user.username}
                         th:with="user = ${#authentication.principal}"
                         type="text"/></p>
 
-    <p>Author: <input th:field="*{author}" type="text"/></p>
-    <p>Title: <input th:field="*{title}" type="text"/></p>
 
-    <p>Name your review: <input th:field="*{reviewTitle}" type="text"></p>
-    <p>Rating</p>
-    <select name="rating" th:field="*{rating}">
+    <p>Name your review: <input th:field="*{title}" type="text"></p>
 
-        <option th:value="1">1</option>
-        <option th:value="2">2</option>
-        <option th:value="3">3</option>
-        <option th:value="4">4</option>
-        <option th:value="5">5</option>
-
-    </select>
-
-    <p> Review: <input th:field="*{reviewText}" type="text"/></p>
+    <p> Review: <input th:field="*{text}" type="text"/></p>
 
     <p><input th:value="${review.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
     <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>

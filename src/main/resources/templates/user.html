@@ -63,8 +63,7 @@
                 <li class="first" th:each="review: ${reviews}">
                     <p class="date"><a href="#">Jan<b>05</b></a></p>
                     <h3 th:text="${review.title}"></h3>
-                    <h4 class="title" th:text="|${review.title} by ${review.author}|"></h4>
-                    <p th:text="${review.reviewText}"><a href="#">Consectetuer adipiscing elit. Nam pede erat, porta eu,
+                    <p th:text="${review.text}"><a href="#">Consectetuer adipiscing elit. Nam pede erat, porta eu,
                         lobortis eget, tempus et,
                         tellus. Etiam neque. Vivamus consequat lorem at nisl. Nullam non wisi a sem semper eleifend.
                         Etiam non felis. Donec ut ante.</a></p>

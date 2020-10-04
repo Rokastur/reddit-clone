@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
 
     public List<Review> getUserReviews(Long id) {
         User user = userRepository.getOne(id);
-        return reviewRepository.findAllByReviewer(user.getUsername());
+        return reviewRepository.findAllByUsername(user.getUsername());
     }
 
     public User getUser(Long id) {
