@@ -39,4 +39,14 @@ public class CommentService {
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
     }
+
+    public Page<Comment> getAllCommentsByDateDesc(int pageNumber, Long reviewId) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByReviewIdAndOrderByDateDesc(reviewId, pageable);
+    }
+
+    public Page<Comment> getAllCommentsByDateAsc(int pageNumber, Long reviewId) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByReviewIdAndOrderByDateAsc(reviewId, pageable);
+    }
 }

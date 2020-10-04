@@ -76,7 +76,7 @@ public class ReviewController {
     }
 
     @GetMapping("/review/{id}")
-    private String getReview(Model model, @AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam(defaultValue = "0") int pageNumber) {
+    private String getReview(Model model, @AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "default") String commentOrderType) {
         Review review = reviewService.getReview(id);
         model.addAttribute("review", review);
         model.addAttribute("pageNumber", pageNumber);
@@ -88,13 +88,27 @@ public class ReviewController {
         model.addAttribute("commentCount", comments.getTotalElements());
 
         model.addAttribute("comments", comments.getContent());
+
+        String dateAsc = "dateAsc";
+        String dateDesc = "dateDesc";
+        model.addAttribute("dateAsc", dateAsc);
+        model.addAttribute("dateDesc", dateDesc);
+
+
+        if (commentOrderType.equals("dateAsc")) {
+            comments = commentService.getAllCommentsByDateAsc(pageNumber, review.getId());
+            model.addAttribute("comments", comments.getContent());
+        } else if (commentOrderType.equals("dateDesc")) {
+            comments = commentService.getAllCommentsByDateDesc(pageNumber, review.getId());
+            model.addAttribute("comments", comments.getContent());
+        }
+
         model.addAttribute("newComment", new Comment());
 
         model.addAttribute("newScore", new Score());
         model.addAttribute("score", review.getTotalScore());
 
         model.addAttribute("newCommentScore", new CommentScore());
-
 
 
         return "review";
