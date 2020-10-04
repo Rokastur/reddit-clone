@@ -8,10 +8,7 @@ import com.blog.reviewwebsite.repositories.ReviewRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CommentService {
@@ -48,5 +45,15 @@ public class CommentService {
     public Page<Comment> getAllCommentsByDateAsc(int pageNumber, Long reviewId) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return commentRepository.findAllByReviewIdAndOrderByDateAsc(reviewId, pageable);
+    }
+
+    public Page<Comment> getAllCommentsByScoreDesc(int pageNumber, Long reviewId) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByReviewIdAndOrderByTotalScoreDesc(reviewId, pageable);
+    }
+
+    public Page<Comment> getAllCommentsByScoreAsc(int pageNumber, Long reviewId) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByReviewIdAndOrderByTotalScoreAsc(reviewId, pageable);
     }
 }

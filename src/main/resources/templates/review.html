@@ -125,6 +125,16 @@
                         Date -
                         oldest</a>
                 </li>
+                <li>
+                    <a th:href="@{/reviews/review/{id}/(id=${review.id},commentOrderType=${scoreDesc})}">
+                        Score -
+                        highest</a>
+                </li>
+                <li>
+                    <a th:href="@{/reviews/review/{id}/(id=${review.id},commentOrderType=${scoreAsc})}">
+                        Date -
+                        lowest</a>
+                </li>
             </div>
             <div th:each="comment: ${comments}">
 

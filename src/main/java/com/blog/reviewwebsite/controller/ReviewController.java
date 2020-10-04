@@ -87,21 +87,28 @@ public class ReviewController {
 
         model.addAttribute("commentCount", comments.getTotalElements());
 
-        model.addAttribute("comments", comments.getContent());
 
         String dateAsc = "dateAsc";
         String dateDesc = "dateDesc";
+        String scoreDesc = "scoreDesc";
+        String scoreAsc = "scoreAsc";
+
         model.addAttribute("dateAsc", dateAsc);
         model.addAttribute("dateDesc", dateDesc);
+        model.addAttribute("scoreAsc", scoreAsc);
+        model.addAttribute("scoreDesc", scoreDesc);
 
 
         if (commentOrderType.equals("dateAsc")) {
             comments = commentService.getAllCommentsByDateAsc(pageNumber, review.getId());
-            model.addAttribute("comments", comments.getContent());
         } else if (commentOrderType.equals("dateDesc")) {
             comments = commentService.getAllCommentsByDateDesc(pageNumber, review.getId());
-            model.addAttribute("comments", comments.getContent());
+        } else if (commentOrderType.equals("scoreAsc")) {
+            comments = commentService.getAllCommentsByScoreAsc(pageNumber, review.getId());
+        } else if (commentOrderType.equals("scoreDesc")) {
+            comments = commentService.getAllCommentsByScoreDesc(pageNumber, review.getId());
         }
+        model.addAttribute("comments", comments.getContent());
 
         model.addAttribute("newComment", new Comment());
 
