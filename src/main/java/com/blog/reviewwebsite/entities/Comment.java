@@ -36,7 +36,7 @@ public class Comment {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private Set<CommentScore> commentScoreSet;
 
     @Column(name = "total_upvotes")

@@ -34,7 +34,12 @@ public class CommentController {
             commentService.saveOrUpdateComment(comment, user, id);
         }
         return "redirect:/reviews/review/" + id;
+    }
 
+    @GetMapping("/delete/{id}/{commentId}")
+    public String getDeleteComment(@PathVariable Long id, @PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return "redirect:/reviews/review/" + id;
 
     }
 }

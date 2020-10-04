@@ -144,6 +144,12 @@
                         <a href=#>Report</a>
                     </p>
                 </div>
+                <div sec:authorize="isAuthenticated()">
+                    <div th:if="${user.username} == ${comment.user.username}">
+                        <!--                        <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit comment</a>-->
+                        <a th:href="@{/comment/delete/{id}/{commentId}/(id=${review.id},commentId=${comment.id})}">delete comment</a>
+                    </div>
+                </div>
             </div>
             <div style="clear: both;">&nbsp;</div>
         </div>
