@@ -15,15 +15,15 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
 
     @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY DATE DESC", nativeQuery = true)
-    Page<Comment> findAllByReviewIdAndOrderByDateDesc(@Param("reviewId") Long reviewId, Pageable pageable);
+    Page<Comment> findAllByReviewIdAndOrderByDateDesc(Long reviewId, Pageable pageable);
 
     @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY DATE ASC", nativeQuery = true)
-    Page<Comment> findAllByReviewIdAndOrderByDateAsc(@Param("review_id") Long reviewId, Pageable pageable);
+    Page<Comment> findAllByReviewIdAndOrderByDateAsc(Long reviewId, Pageable pageable);
 
     @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY total_score DESC", nativeQuery = true)
-    Page<Comment> findAllByReviewIdAndOrderByTotalScoreDesc(@Param("review_id") Long reviewId, Pageable pageable);
+    Page<Comment> findAllByReviewIdAndOrderByTotalScoreDesc(Long reviewId, Pageable pageable);
 
     @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY total_score ASC", nativeQuery = true)
-    Page<Comment> findAllByReviewIdAndOrderByTotalScoreAsc(@Param("review_id") Long reviewId, Pageable pageable);
+    Page<Comment> findAllByReviewIdAndOrderByTotalScoreAsc(Long reviewId, Pageable pageable);
 
 }
