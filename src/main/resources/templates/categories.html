@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:each="category: ${categories}">
+
+    <h2 th:text="${category.name}"></h2>
+    <h2 th:text="${category.user.username}"></h2>
+
+</div>
+
+<div>
+    <p>
+        <a th:href="@{/categories/all/(pageNumber=${pageNumber - 1})}"
+           th:if="${pageNumber != 0}">
+            < </a>
+        <span th:text="${pageNumber} + 1">current page</span>
+        <span>/</span>
+        <span th:text="${pageCount}">total pages</span>
+        <a th:href="@{/categories/all/(pageNumber=${pageNumber + 1})}"
+           th:if="${hasNextPage}">
+            > </a>
+    </p>
+</div>
+
+</body>
+</html>

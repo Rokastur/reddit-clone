@@ -12,10 +12,20 @@ import java.util.Set;
 @Table(name = "Category")
 public class Category {
 
+    public Category() {
+    }
+
+    public Category(String username) {
+        this.username = username;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "name")
     private String name;

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method="post"
+
+      th:action="@{/categories/new/submit}"
+      th:object="${category}">
+
+    <input th:field="*{id}" type="hidden"/>
+
+    <p>Owner: <input readonly th:field="*{username}" th:value=${user.username}
+                     th:with="user = ${#authentication.principal}"
+                     type="text"/></p>
+
+
+    <p>Name your category: <input th:field="*{name}" type="text"></p>
+
+    <p><input th:value="${category.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
+
+</form>
+
+</body>
+</html>
