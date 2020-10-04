@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @CreationTimestamp
     private LocalDateTime date;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Category> categories;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Review> reviews;
 
