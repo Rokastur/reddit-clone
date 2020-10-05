@@ -13,6 +13,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/reviews")
@@ -30,49 +32,40 @@ public class ReviewController {
         this.categoryService = categoryService;
     }
 
+    private Map<OrderType, Page<Review>> reviewsByOrderType = new HashMap<>();
+
     @GetMapping
-    private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "default") String reviewOrderType, @RequestParam(defaultValue = "0") Long categoryId) {
+    private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "0") Long categoryId) {
 
         Category category = categoryService.getOneById(categoryId);
         model.addAttribute("categoryId", categoryId);
 
-        Page<Review> reviews = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category);
-
-        model.addAttribute("pageNumber", pageNumber);
-        model.addAttribute("hasNextPage", reviews.hasNext());
-
         int pageCount = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category).getTotalPages();
         model.addAttribute("pageCount", pageCount);
 
-        String commentCountAsc = "commentCountAsc";
-        String commentCountDesc = "commentCountDesc";
-        String reviewDateAsc = "reviewDateAsc";
-        String reviewDateDesc = "reviewDateDesc";
-        String reviewScoreAsc = "reviewScoreAsc";
-        String reviewScoreDesc = "reviewScoreDesc";
+        assignReviewsToReviewsByOrderTypeMap(pageNumber, category);
 
-        model.addAttribute("commentCountAsc", commentCountAsc);
-        model.addAttribute("commentCountDesc", commentCountDesc);
-        model.addAttribute("reviewDateAsc", reviewDateAsc);
-        model.addAttribute("reviewDateDesc", reviewDateDesc);
-        model.addAttribute("reviewScoreAsc", reviewScoreAsc);
-        model.addAttribute("reviewScoreDesc", reviewScoreDesc);
+        Page<Review> reviews = getReviewsByOrderType(reviewOrderType);
 
-        if (reviewOrderType.equals("commentCountDesc")) {
-            reviews = reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category);
-        } else if (reviewOrderType.equals("commentCountAsc")) {
-            reviews = reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category);
-        } else if (reviewOrderType.equals("reviewDateDesc")) {
-            reviews = reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, categoryId);
-        } else if (reviewOrderType.equals("reviewDateAsc")) {
-            reviews = reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, categoryId);
-        } else if (reviewOrderType.equals("reviewScoreDesc")) {
-            reviews = reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category);
-        } else if (reviewOrderType.equals("reviewScoreAsc")) {
-            reviews = reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category);
-        }
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("hasNextPage", reviews.hasNext());
         model.addAttribute("reviews", reviews.getContent());
         return "reviews";
+    }
+
+    public void assignReviewsToReviewsByOrderTypeMap(int pageNumber, Category category) {
+        reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
+        reviewsByOrderType.put(OrderType.COMMENTCOUNTDESC, reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.COMMENTCOUNTASC, reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.REVIEWDATEDESC, reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, category.getId()));
+        reviewsByOrderType.put(OrderType.REVIEWDATEASC, reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, category.getId()));
+        reviewsByOrderType.put(OrderType.REVIEWSCOREDESC, reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.REVIEWSCOREASC, reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category));
+
+    }
+
+    public Page<Review> getReviewsByOrderType(OrderType reviewOrderType) {
+        return reviewsByOrderType.get(reviewOrderType);
     }
 
     @GetMapping("/form")
