@@ -65,12 +65,12 @@
 
         <div>
             <li>
-                <a th:href="@{/reviews/(reviewOrderType=${commentCountDesc})}">
+                <a th:href="@{/reviews/(reviewOrderType=${commentCountDesc},categoryId=${categoryId})}">
                     Comments -
                     most</a>
             </li>
             <li>
-                <a th:href="@{/reviews/(reviewOrderType=${commentCountAsc})}">
+                <a th:href="@{/reviews/(reviewOrderType=${commentCountAsc},categoryId=${categoryId})}">
                     Comments -
                     least</a>
             </li>

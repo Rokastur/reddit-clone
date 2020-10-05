@@ -51,9 +51,9 @@ public class ReviewController {
         model.addAttribute("commentCountDesc", commentCountDesc);
 
         if (reviewOrderType.equals("commentCountDesc")) {
-            reviews = reviewService.getAllNotHiddenByCommentCountDesc(pageNumber);
+            reviews = reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category);
         } else if (reviewOrderType.equals("commentCountAsc")) {
-            reviews = reviewService.getAllNotHiddenByCommentCountAsc(pageNumber);
+            reviews = reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category);
         }
         model.addAttribute("reviews", reviews.getContent());
         return "reviews";

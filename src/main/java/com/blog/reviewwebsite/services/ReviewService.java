@@ -23,14 +23,14 @@ public class ReviewService {
         this.scoreRepository = scoreRepository;
     }
 
-    public Page<Review> getAllNotHiddenByCommentCountDesc(int pageNumber) {
+    public Page<Review> getAllNotHiddenByCommentCountDesc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseOrderByCommentCountDesc(pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(category, pageable);
     }
 
-    public Page<Review> getAllNotHiddenByCommentCountAsc(int pageNumber) {
+    public Page<Review> getAllNotHiddenByCommentCountAsc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseOrderByCommentCountAsc(pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountAsc(category, pageable);
 
     }
 
