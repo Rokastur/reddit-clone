@@ -8,10 +8,14 @@
 
 <div th:each="category: ${categories}">
 
-    <h2 th:text="${category.name}"></h2>
-    <h2 th:text="${category.user.username}"></h2>
+
+    <p> Category: <span><a th:href="@{/reviews/(categoryId=${category.id})}" th:text="${category.name}"></a><span
+            th:text="${category.user.username}"></span></span>
+    </p>
+    <h2>-----------------------------------</h2>
 
 </div>
+
 
 <div>
     <p>

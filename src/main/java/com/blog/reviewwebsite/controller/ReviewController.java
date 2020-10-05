@@ -1,6 +1,7 @@
 package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.*;
+import com.blog.reviewwebsite.services.CategoryService;
 import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.ScoreService;
@@ -20,21 +21,27 @@ public class ReviewController {
     private ReviewService reviewService;
     private CommentService commentService;
     private ScoreService scoreService;
+    private CategoryService categoryService;
 
-    public ReviewController(ReviewService reviewService, CommentService commentService, ScoreService scoreService) {
+    public ReviewController(ReviewService reviewService, CommentService commentService, ScoreService scoreService, CategoryService categoryService) {
         this.reviewService = reviewService;
         this.commentService = commentService;
         this.scoreService = scoreService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
-    private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "default") String reviewOrderType) {
-        Page<Review> reviews = reviewService.getAllNotHiddenReviews(pageNumber);
+    private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "default") String reviewOrderType, @RequestParam(defaultValue = "0") Long categoryId) {
+
+        Category category = categoryService.getOneById(categoryId);
+        model.addAttribute("categoryId", categoryId);
+
+        Page<Review> reviews = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category);
 
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
 
-        int pageCount = reviewService.getAllNotHiddenReviews(pageNumber).getTotalPages();
+        int pageCount = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category).getTotalPages();
         model.addAttribute("pageCount", pageCount);
 
         String commentCountAsc = "commentCountAsc";
@@ -50,6 +57,27 @@ public class ReviewController {
         }
         model.addAttribute("reviews", reviews.getContent());
         return "reviews";
+    }
+
+    @GetMapping("/form")
+    private String createReview(Model model, @AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") Long categoryId) {
+//        TODO: figure out if this is a good way to assign user to a review
+        Review review = new Review(user.getUsername());
+        model.addAttribute("review", review);
+        model.addAttribute("categoryId", categoryId);
+        return "form";
+    }
+
+    @PostMapping("/submit")
+    private String form(@Valid @ModelAttribute Review review, BindingResult result, Model model, @AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") Long categoryId) {
+        if (result.hasErrors()) {
+            return "form";
+        } else {
+            Category category = categoryService.getOneById(categoryId);
+            Review newReview = reviewService.updateOrSaveReview(review, user, category);
+            model.addAttribute("review", newReview);
+            return "redirect:/reviews/?categoryId=" + categoryId;
+        }
     }
 
     @GetMapping("/byDate")
@@ -133,14 +161,6 @@ public class ReviewController {
         return "review";
     }
 
-    @GetMapping("/form")
-    private String createReview(Model model, @AuthenticationPrincipal User user) {
-//        TODO: figure out if this is a good way to assign user to a review
-        Review review = new Review(user.getUsername());
-        model.addAttribute("review", review);
-        return "form";
-    }
-
     @GetMapping("/edit/{id}")
     private String editReview(Model model, @PathVariable Long id) {
         Review review = reviewService.getReview(id);
@@ -152,17 +172,6 @@ public class ReviewController {
     private String deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
         return "redirect:/reviews";
-    }
-
-    @PostMapping("/submit")
-    private String form(@Valid @ModelAttribute Review review, BindingResult result, Model model, @AuthenticationPrincipal User user) {
-        if (result.hasErrors()) {
-            return "form";
-        } else {
-            Review newReview = reviewService.updateOrSaveReview(review, user);
-            model.addAttribute("review", newReview);
-            return "redirect:/reviews";
-        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.blog.reviewwebsite.repositories;
 
+import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByUsername(String username, Pageable pageable);
 
     Page<Review> findAllByHiddenFalse(Pageable pageable);
+
+    Page<Review> findAllByHiddenFalseAndCategory(Category category, Pageable pageable);
 
     List<Review> findAllByUsername(String username);
 

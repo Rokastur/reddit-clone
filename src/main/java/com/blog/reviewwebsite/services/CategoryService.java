@@ -26,4 +26,8 @@ public class CategoryService {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return categoryRepository.findAll(pageable);
     }
+
+    public Category getOneById(Long id) {
+        return categoryRepository.getOne(id);
+    }
 }

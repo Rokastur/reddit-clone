@@ -1,7 +1,7 @@
 package com.blog.reviewwebsite.services;
 
+import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Review;
-import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.ScoreRepository;
@@ -11,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -36,9 +34,9 @@ public class ReviewService {
 
     }
 
-    public Page<Review> getAllNotHiddenReviews(int pageNumber) {
+    public Page<Review> getAllNotHiddenReviewsByCategory(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalse(pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategory(category, pageable);
 
     }
 
@@ -61,10 +59,11 @@ public class ReviewService {
         return reviewRepository.findAllByUsername(username, pageable);
     }
 
-    public Review updateOrSaveReview(Review review, User user) {
+    public Review updateOrSaveReview(Review review, User user, Category category) {
 //        sets currently authenticated user as a "owner" of the new or updated review
         review.setUser(user);
         review.setHidden(false);
+        review.setCategory(category);
         return reviewRepository.save(review);
     }
 

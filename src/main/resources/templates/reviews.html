@@ -26,7 +26,7 @@
         <div id="menu">
             <ul>
                 <li><a th:href="@{/reviews}" accesskey="1" title="">Reviews</a></li>
-                <li><a th:href="@{/reviews/form}" accesskey="2" title="">New Review</a></li>
+                <li><a th:href="@{/reviews/form/(categoryId=${categoryId})}" accesskey="2" title="">New Review</a></li>
                 <li>
                     <div th:replace="fragments/main.html :: authentication"></div>
                 </li>

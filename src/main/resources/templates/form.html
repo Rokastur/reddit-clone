@@ -8,7 +8,7 @@
 
 <form method="post"
 
-      th:action="@{/reviews/submit}"
+      th:action="@{/reviews/submit/(categoryId=${categoryId})}"
       th:object="${review}">
 
     <input th:field="*{id}" type="hidden"/>
