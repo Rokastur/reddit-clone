@@ -17,14 +17,21 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Page<Review> findAllByHiddenFalse(Pageable pageable);
 
-    Page<Review> findAllByHiddenFalseAndCategory(Category category, Pageable pageable);
-
     List<Review> findAllByUsername(String username);
 
-    Page<Review> findAllByHiddenFalseOrderByTotalScoreDesc(Pageable pageable);
+    Page<Review> findAllByHiddenFalseAndCategory(Category category, Pageable pageable);
 
-    @Query(value = "SELECT * FROM Review WHERE hidden = 'false' ORDER BY DATE DESC", nativeQuery = true)
-    Page<Review> findAllByHiddenFalseOrderByDateDesc(Pageable pageable);
+//    v ----------------- order types ----------------- v
+
+    Page<Review> findAllByHiddenFalseAndCategoryOrderByTotalScoreDesc(Category category, Pageable pageable);
+
+    Page<Review> findAllByHiddenFalseAndCategoryOrderByTotalScoreAsc(Category category, Pageable pageable);
+
+    @Query(value = "SELECT * FROM Review WHERE hidden = 'false' AND category_id= :categoryId ORDER BY DATE DESC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndCategoryOrderByDateDesc(Pageable pageable, Long categoryId);
+
+    @Query(value = "SELECT * FROM Review WHERE hidden = 'false' AND category_id= :categoryId ORDER BY DATE ASC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndCategoryOrderByDateAsc(Pageable pageable, Long categoryId);
 
     Page<Review> findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(Category category, Pageable pageable);
 

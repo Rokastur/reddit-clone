@@ -40,14 +40,24 @@ public class ReviewService {
 
     }
 
-    public Page<Review> getAllNotHiddenReviewsByDateDesc(int pageNumber) {
+    public Page<Review> getAllNotHiddenReviewsByCategoryDateDesc(int pageNumber, Long categoryId) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseOrderByDateDesc(pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByDateDesc(pageable, categoryId);
     }
 
-    public Page<Review> getAllNotHiddenReviewsByTotalScoreDesc(int pageNumber) {
+    public Page<Review> getAllNotHiddenReviewsByCategoryDateAsc(int pageNumber, Long categoryId) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseOrderByTotalScoreDesc(pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByDateAsc(pageable, categoryId);
+    }
+
+    public Page<Review> getAllNotHiddenReviewsByTotalScoreDesc(int pageNumber, Category category) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByTotalScoreDesc(category, pageable);
+    }
+
+    public Page<Review> getAllNotHiddenReviewsByTotalScoreAsc(int pageNumber, Category category) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByTotalScoreAsc(category, pageable);
     }
 
     public List<Review> findAllReviewsByReviewer(String username) {

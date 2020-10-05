@@ -47,13 +47,6 @@
                         <input type="submit" value="Search">
                     </form>
                 </li>
-                <li>
-                    <a th:href="@{/reviews/byDate}">Date (desc)</a>
-                </li>
-                <li>
-                    <a th:href="@{/reviews/byScore}">Score (desc)</a>
-                </li>
-
             </ul>
         </div>
     </div>
@@ -64,16 +57,19 @@
     <div id="content">
 
         <div>
-            <li>
-                <a th:href="@{/reviews/(reviewOrderType=${commentCountDesc},categoryId=${categoryId})}">
-                    Comments -
-                    most</a>
-            </li>
-            <li>
-                <a th:href="@{/reviews/(reviewOrderType=${commentCountAsc},categoryId=${categoryId})}">
-                    Comments -
-                    least</a>
-            </li>
+
+            <a th:href="@{/reviews/(reviewOrderType=${commentCountDesc},categoryId=${categoryId})}">
+                Comments - most</a>
+            <a th:href="@{/reviews/(reviewOrderType=${commentCountAsc},categoryId=${categoryId})}">
+                Comments - least</a>
+            <a th:href="@{/reviews/(reviewOrderType=${reviewDateDesc},categoryId=${categoryId})}">
+                Reviews - newest</a>
+            <a th:href="@{/reviews/(reviewOrderType=${reviewDateAsc},categoryId=${categoryId})}">
+                Reviews - oldest</a>
+            <a th:href="@{/reviews/(reviewOrderType=${reviewScoreDesc},categoryId=${categoryId})}">
+                Reviews - best score</a>
+            <a th:href="@{/reviews/(reviewOrderType=${reviewScoreAsc},categoryId=${categoryId})}">
+                Reviews - worst score</a>
         </div>
         <div th:each="review: ${reviews}">
             <div class="post">

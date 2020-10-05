@@ -46,14 +46,30 @@ public class ReviewController {
 
         String commentCountAsc = "commentCountAsc";
         String commentCountDesc = "commentCountDesc";
+        String reviewDateAsc = "reviewDateAsc";
+        String reviewDateDesc = "reviewDateDesc";
+        String reviewScoreAsc = "reviewScoreAsc";
+        String reviewScoreDesc = "reviewScoreDesc";
 
         model.addAttribute("commentCountAsc", commentCountAsc);
         model.addAttribute("commentCountDesc", commentCountDesc);
+        model.addAttribute("reviewDateAsc", reviewDateAsc);
+        model.addAttribute("reviewDateDesc", reviewDateDesc);
+        model.addAttribute("reviewScoreAsc", reviewScoreAsc);
+        model.addAttribute("reviewScoreDesc", reviewScoreDesc);
 
         if (reviewOrderType.equals("commentCountDesc")) {
             reviews = reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category);
         } else if (reviewOrderType.equals("commentCountAsc")) {
             reviews = reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category);
+        } else if (reviewOrderType.equals("reviewDateDesc")) {
+            reviews = reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, categoryId);
+        } else if (reviewOrderType.equals("reviewDateAsc")) {
+            reviews = reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, categoryId);
+        } else if (reviewOrderType.equals("reviewScoreDesc")) {
+            reviews = reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category);
+        } else if (reviewOrderType.equals("reviewScoreAsc")) {
+            reviews = reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category);
         }
         model.addAttribute("reviews", reviews.getContent());
         return "reviews";
@@ -78,32 +94,6 @@ public class ReviewController {
             model.addAttribute("review", newReview);
             return "redirect:/reviews/?categoryId=" + categoryId;
         }
-    }
-
-    @GetMapping("/byDate")
-    private String getReviewsByDateDesc(@RequestParam(defaultValue = "0") int pageNumber, Model model) {
-        Page<Review> reviews = reviewService.getAllNotHiddenReviewsByDateDesc(pageNumber);
-        model.addAttribute("reviews", reviews.getContent());
-        model.addAttribute("pageNumber", pageNumber);
-        model.addAttribute("hasNextPage", reviews.hasNext());
-
-        int pageCount = reviewService.getAllNotHiddenReviewsByDateDesc(pageNumber).getTotalPages();
-        model.addAttribute("pageCount", pageCount);
-
-        return "reviews";
-    }
-
-    @GetMapping("/byScore")
-    private String getReviewsByScoreDesc(@RequestParam(defaultValue = "0") int pageNumber, Model model) {
-        Page<Review> reviews = reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber);
-        model.addAttribute("reviews", reviews.getContent());
-        model.addAttribute("pageNumber", pageNumber);
-        model.addAttribute("hasNextPage", reviews.hasNext());
-
-        int pageCount = reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber).getTotalPages();
-        model.addAttribute("pageCount", pageCount);
-
-        return "reviews";
     }
 
     @GetMapping("/byReviewer/{reviewer}")
