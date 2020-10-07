@@ -10,9 +10,12 @@
 
 
     <p> Category: <span><a th:href="@{/reviews/(categoryId=${category.id})}" th:text="${category.name}"></a><span
-            th:text="${category.user.username}"></span></span>
+            th:text="${category.user.username}"></span><span th:text="${category.id}"></span></span>
     </p>
-    <h2>-----------------------------------</h2>
+    <form method="post" th:action="@{/categories/follow/{id}/(id=${category.id})}">
+        <span>follow</span>
+        <input type="submit">
+    </form>
 
 </div>
 

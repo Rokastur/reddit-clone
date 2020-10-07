@@ -37,4 +37,15 @@ public class Category {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private Set<Review> reviewSet;
 
+    @ManyToMany(mappedBy = "followedCategories")
+    private Set<User> users;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

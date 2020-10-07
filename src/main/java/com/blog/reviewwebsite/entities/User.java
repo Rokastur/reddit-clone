@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -56,6 +57,25 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private Set<CommentScore> commentScores;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "followedCategories",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> followedCategories = new HashSet<Category>();
+
+    public void addCategory(Category category) {
+        followedCategories.add(category);
+        category.getUsers().add(this);
+    }
+
+    public void removeCategory(Category category) {
+        followedCategories.remove(category);
+        category.getUsers().remove(this);
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

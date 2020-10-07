@@ -4,13 +4,11 @@ import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import com.blog.reviewwebsite.services.UserService;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -32,7 +30,7 @@ public class UserController {
     @PostMapping("/submit")
     public String submitUser(User user) {
         if (userService.validNewUser(user) && (userService.passwordsMatch(user))) {
-            userService.updateOrSaveUser(user);
+            userService.createUser(user);
             return "redirect:/login";
         } else {
             return "signup";
