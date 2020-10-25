@@ -64,18 +64,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> followedCategories = new HashSet<Category>();
-
-    public void addCategory(Category category) {
-        followedCategories.add(category);
-        category.getUsers().add(this);
-    }
-
-    public void removeCategory(Category category) {
-        followedCategories.remove(category);
-        category.getUsers().remove(this);
-    }
-
+    private Set<Category> followedCategories = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -38,7 +38,7 @@ public class Category {
     private Set<Review> reviewSet;
 
     @ManyToMany(mappedBy = "followedCategories")
-    private Set<User> users;
+    private Set<User> followers;
 
     @Override
     public String toString() {

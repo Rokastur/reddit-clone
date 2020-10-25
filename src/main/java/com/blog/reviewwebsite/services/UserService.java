@@ -1,5 +1,6 @@
 package com.blog.reviewwebsite.services;
 
+import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
@@ -18,13 +19,15 @@ public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
     private ReviewRepository reviewRepository;
+    private CategoryService categoryService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, ReviewRepository reviewRepository) {
+    public UserService(UserRepository userRepository, ReviewRepository reviewRepository, CategoryService categoryService) {
         this.userRepository = userRepository;
         this.reviewRepository = reviewRepository;
+        this.categoryService = categoryService;
     }
 
     public List<Review> getUserReviews(Long id) {
@@ -38,6 +41,13 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public User addFollowerToCategory(User user, Long id) {
+        Category category = categoryService.getOneById(id);
+        user.getFollowedCategories().clear();
+        user.getFollowedCategories().add(category);
         return userRepository.save(user);
     }
 

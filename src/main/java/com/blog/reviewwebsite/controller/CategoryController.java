@@ -52,13 +52,7 @@ public class CategoryController {
 
     @PostMapping("/follow/{id}")
     public String followCategory(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        Category category = categoryService.getOneById(id);
-
-        user.getFollowedCategories().add(category);
-
-        userService.updateUser(user);
-
-
+        userService.addFollowerToCategory(user, id);
         return "redirect:/categories/all";
     }
 }
