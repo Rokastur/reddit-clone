@@ -57,10 +57,10 @@ public class ReviewController {
         reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
         reviewsByOrderType.put(OrderType.COMMENTCOUNTDESC, reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category));
         reviewsByOrderType.put(OrderType.COMMENTCOUNTASC, reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.REVIEWDATEDESC, reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, category.getId()));
-        reviewsByOrderType.put(OrderType.REVIEWDATEASC, reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, category.getId()));
-        reviewsByOrderType.put(OrderType.REVIEWSCOREDESC, reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.REVIEWSCOREASC, reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.DATEDESC, reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, category.getId()));
+        reviewsByOrderType.put(OrderType.DATEASC, reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, category.getId()));
+        reviewsByOrderType.put(OrderType.SCOREDESC, reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.SCOREASC, reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category));
 
     }
 
