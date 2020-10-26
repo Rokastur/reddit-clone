@@ -55,12 +55,12 @@ public class ReviewController {
 
     public void assignReviewsToReviewsByOrderTypeMap(int pageNumber, Category category) {
         reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
-        reviewsByOrderType.put(OrderType.COMMENTCOUNTDESC, reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.COMMENTCOUNTASC, reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.DATEDESC, reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, category.getId()));
-        reviewsByOrderType.put(OrderType.DATEASC, reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, category.getId()));
-        reviewsByOrderType.put(OrderType.SCOREDESC, reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.SCOREASC, reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.COMMENT_COUNT_DESC, reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.COMMENT_COUNT_ASC, reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.DATE_DESC, reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, category.getId()));
+        reviewsByOrderType.put(OrderType.DATE_ASC, reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, category.getId()));
+        reviewsByOrderType.put(OrderType.SCORE_DESC, reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.SCORE_ASC, reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category));
 
     }
 
