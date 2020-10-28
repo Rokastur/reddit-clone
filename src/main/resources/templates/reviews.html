@@ -58,17 +58,17 @@
 
         <div>
 
-            <a th:href="@{/reviews/(reviewOrderType=COMMENTCOUNTDESC,categoryId=${categoryId})}">
+            <a th:href="@{/reviews/(reviewOrderType=COMMENT_COUNT_DESC,categoryId=${categoryId})}">
                 Comments - most</a>
-            <a th:href="@{/reviews/(reviewOrderType=COMMENTCOUNTASC,categoryId=${categoryId})}">
+            <a th:href="@{/reviews/(reviewOrderType=COMMENT_COUNT_ASC,categoryId=${categoryId})}">
                 Comments - least</a>
-            <a th:href="@{/reviews/(reviewOrderType=REVIEWDATEDESC,categoryId=${categoryId})}">
+            <a th:href="@{/reviews/(reviewOrderType=DATE_DESC,categoryId=${categoryId})}">
                 Reviews - newest</a>
-            <a th:href="@{/reviews/(reviewOrderType=REVIEWDATEASC,categoryId=${categoryId})}">
+            <a th:href="@{/reviews/(reviewOrderType=DATE_ASC,categoryId=${categoryId})}">
                 Reviews - oldest</a>
-            <a th:href="@{/reviews/(reviewOrderType=REVIEWSCOREDESC,categoryId=${categoryId})}">
+            <a th:href="@{/reviews/(reviewOrderType=SCORE_DESC,categoryId=${categoryId})}">
                 Reviews - best score</a>
-            <a th:href="@{/reviews/(reviewOrderType=REVIEWSCOREASC,categoryId=${categoryId})}">
+            <a th:href="@{/reviews/(reviewOrderType=SCORE_ASC,categoryId=${categoryId})}">
                 Reviews - worst score</a>
         </div>
         <div th:each="review: ${reviews}">

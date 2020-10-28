@@ -30,4 +30,24 @@ public class CategoryService {
     public Category getOneById(Long id) {
         return categoryRepository.getOne(id);
     }
+
+    public Page<Category> getAllCategoriesByPostCountDesc(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return categoryRepository.findAllOrderByPostCountDesc(pageable);
+    }
+
+    public Page<Category> getAllCategoriesByPostCountAsc(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return categoryRepository.findAllOrderByPostCountAsc(pageable);
+    }
+
+    public Page<Category> getAllCategoriesByFollowersCountDesc(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return categoryRepository.findAllOrderByFollowersCountDesc(pageable);
+    }
+
+    public Page<Category> getAllCategoriesByFollowersCountAsc(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return categoryRepository.findAllOrderByFollowersCountAsc(pageable);
+    }
 }

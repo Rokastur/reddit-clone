@@ -6,6 +6,17 @@
 </head>
 <body>
 
+<div>
+    <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_DESC)}">
+        Post Count - most</a>
+    <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_ASC)}">
+        Post Count - least</a>
+    <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_DESC)}">
+        Follower Count - most</a>
+    <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_ASC)}">
+        Follower Count - least</a>
+</div>
+
 <div th:each="category: ${categories}">
 
 
