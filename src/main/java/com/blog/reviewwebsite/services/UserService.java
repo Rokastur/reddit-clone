@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -44,11 +45,16 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User addFollowerToCategory(User user, Long id) {
+    public User followCategory(Long userId, Long id) {
         Category category = categoryService.getOneById(id);
-        user.getFollowedCategories().clear();
-        user.getFollowedCategories().add(category);
-        return userRepository.save(user);
+        User user = userRepository.getOne(userId);
+        if (user.getFollowedCategories().contains(category)) {
+            user.removeCategory(category);
+        } else {
+            user.addCategory(category);
+        }
+        userRepository.save(user);
+        return user;
     }
 
     public User createUser(User user) {

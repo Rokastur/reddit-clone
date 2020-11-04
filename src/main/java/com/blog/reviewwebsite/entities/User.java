@@ -11,10 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -58,13 +55,23 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<CommentScore> commentScores;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "followedCategories",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<Category> followedCategories = new HashSet<>();
+
+    public void addCategory(Category category) {
+        followedCategories.add(category);
+        category.getFollowers().add(this);
+    }
+
+    public void removeCategory(Category category) {
+        followedCategories.remove(category);
+        category.getFollowers().remove(this);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
