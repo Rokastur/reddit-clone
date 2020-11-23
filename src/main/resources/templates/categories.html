@@ -15,6 +15,10 @@
         Follower Count - most</a>
     <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_ASC)}">
         Follower Count - least</a>
+    <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_DESC)}">
+        Newest Post</a>
+    <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_ASC)}">
+        Oldest Post</a>
 </div>
 
 <div th:each="category: ${categories}">

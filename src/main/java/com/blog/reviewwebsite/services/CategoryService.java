@@ -50,4 +50,14 @@ public class CategoryService {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return categoryRepository.findAllOrderByFollowersCountAsc(pageable);
     }
+
+    public Page<Category> getAllCategoriesByNewestPost(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return categoryRepository.findAllOrderByNewestPost(pageable);
+    }
+
+    public Page<Category> getAllCategoriesByOldestPost(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return categoryRepository.findAllOrderByOldestPost(pageable);
+    }
 }
