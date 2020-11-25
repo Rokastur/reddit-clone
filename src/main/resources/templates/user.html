@@ -96,6 +96,14 @@
             </ul>
 
             <h2>comments</h2>
+            <a th:href="@{/user/user/{id}/(id=${user.id},commentOrderType=DATE_DESC)}">
+                Comments - newest</a>
+            <a th:href="@{/user/user/{id}/(id=${user.id},commentOrderType=DATE_ASC)}">
+                Comments - oldest</a>
+            <a th:href="@{/user/user/{id}/(id=${user.id},commentOrderType=SCORE_DESC)}">
+                Comments - best score</a>
+            <a th:href="@{/user/user/{id}/(id=${user.id},commentOrderType=SCORE_ASC)}">
+                Comments - worst score</a>
             <ul class="style1">
                 <li class="first" th:each="comment:${comments}">
                     <p th:text="${#temporals.format(comment.date, 'dd-MMMM-yyyy HH:mm')}">

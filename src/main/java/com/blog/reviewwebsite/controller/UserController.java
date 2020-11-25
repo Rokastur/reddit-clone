@@ -65,16 +65,17 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType) {
+    public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) {
 
         User user = userService.getUser(id);
 
         orderMap.mapReviewsByUserToOrderType(pageNumber, user);
         Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
 
-        int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
+        orderMap.mapCommentsByUserToOrderType(pageNumber, user);
+        Page<Comment> comments = orderMap.commentsByOrderTypeAndUser.get(commentOrderType);
 
-        Page<Comment> comments = commentService.getAllCommentsByUser(pageNumber, user);
+        int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
 
         model.addAttribute("comments", comments);
 
@@ -94,7 +95,7 @@ public class UserController {
     public String findUser(@RequestParam String username, Model model) {
         User user = (User) userService.loadUserByUsername(username);
 //TODO: deal with incorrect usernames. Currently redirects to log in screen
-        return getUser(user.getId(), model, 0, OrderType.DEFAULT);
+        return getUser(user.getId(), model, 0, OrderType.DEFAULT, OrderType.DEFAULT);
 
     }
 

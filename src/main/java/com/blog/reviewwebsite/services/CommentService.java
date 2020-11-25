@@ -69,4 +69,26 @@ public class CommentService {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return commentRepository.findAllByReviewIdAndOrderByTotalScoreAsc(reviewId, pageable);
     }
+
+    public Page<Comment> getAllCommentsByUserDateDesc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByUserAndOrderByDateDesc(user.getId(), pageable);
+    }
+
+    public Page<Comment> getAllCommentsByUserDateAsc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByUserAndOrderByDateAsc(user.getId(), pageable);
+    }
+
+    public Page<Comment> getAllCommentsByUserScoreDesc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByUserAndOrderByTotalScoreDesc(user.getId(), pageable);
+    }
+
+    public Page<Comment> getAllCommentsByUserScoreAsc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByUserAndOrderByTotalScoreAsc(user.getId(), pageable);
+    }
+
+
 }

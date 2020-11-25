@@ -25,6 +25,7 @@ public class ContentOrderMap {
     public Map<OrderType, Page<Review>> reviewsByOrderType = new HashMap<>();
     public Map<OrderType, Page<Review>> reviewsByOrderTypeAndUser = new HashMap<>();
     public Map<OrderType, Page<Comment>> commentsByOrderType = new HashMap<>();
+    public Map<OrderType, Page<Comment>> commentsByOrderTypeAndUser = new HashMap<>();
 
     public void mapReviewsByCategoryToOrderType(int pageNumber, Category category) {
         reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
@@ -52,6 +53,14 @@ public class ContentOrderMap {
         commentsByOrderType.put(OrderType.DATE_ASC, commentService.getAllCommentsByDateAsc(pageNumber, review.getId()));
         commentsByOrderType.put(OrderType.SCORE_DESC, commentService.getAllCommentsByScoreDesc(pageNumber, review.getId()));
         commentsByOrderType.put(OrderType.SCORE_ASC, commentService.getAllCommentsByScoreAsc(pageNumber, review.getId()));
+    }
+
+    public void mapCommentsByUserToOrderType(int pageNumber, User user) {
+        commentsByOrderTypeAndUser.put(OrderType.DEFAULT, commentService.getAllCommentsByUser(pageNumber, user));
+        commentsByOrderTypeAndUser.put(OrderType.DATE_DESC, commentService.getAllCommentsByUserDateDesc(pageNumber, user));
+        commentsByOrderTypeAndUser.put(OrderType.DATE_ASC, commentService.getAllCommentsByUserDateAsc(pageNumber, user));
+        commentsByOrderTypeAndUser.put(OrderType.SCORE_DESC, commentService.getAllCommentsByUserScoreDesc(pageNumber, user));
+        commentsByOrderTypeAndUser.put(OrderType.SCORE_ASC, commentService.getAllCommentsByUserScoreAsc(pageNumber, user));
     }
 
 

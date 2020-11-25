@@ -33,4 +33,16 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Page<Comment> findAllByUser(User user, Pageable pageable);
 
+    @Query(value = "SELECT * FROM comments WHERE user_id= :userId ORDER BY DATE DESC", nativeQuery = true)
+    Page<Comment> findAllByUserAndOrderByDateDesc(Long userId, Pageable pageable);
+
+    @Query(value = "SELECT * FROM comments WHERE user_id= :userId ORDER BY DATE ASC", nativeQuery = true)
+    Page<Comment> findAllByUserAndOrderByDateAsc(Long userId, Pageable pageable);
+
+    @Query(value = "SELECT * FROM comments WHERE user_id= :userId ORDER BY total_score DESC", nativeQuery = true)
+    Page<Comment> findAllByUserAndOrderByTotalScoreDesc(Long userId, Pageable pageable);
+
+    @Query(value = "SELECT * FROM comments WHERE user_id= :userId ORDER BY total_score ASC", nativeQuery = true)
+    Page<Comment> findAllByUserAndOrderByTotalScoreAsc(Long userId, Pageable pageable);
+
 }
