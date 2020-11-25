@@ -42,7 +42,7 @@ public class ReviewController {
         int pageCount = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category).getTotalPages();
         model.addAttribute("pageCount", pageCount);
 
-        orderMap.assignReviewsToReviewsByOrderTypeMap(pageNumber, category);
+        orderMap.mapReviewsByCategoryToOrderType(pageNumber, category);
 
         Page<Review> reviews = orderMap.reviewsByOrderType.get(reviewOrderType);
 
@@ -89,7 +89,7 @@ public class ReviewController {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("user", user);
 
-        orderMap.assignCommentsToCommentsByOrderType(pageNumber, review);
+        orderMap.mapCommentsByReviewToOrderType(pageNumber, review);
         Page<Comment> comments = orderMap.commentsByOrderType.get(commentOrderType);
 
         model.addAttribute("commentCount", comments.getTotalElements());

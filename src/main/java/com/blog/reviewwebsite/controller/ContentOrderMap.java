@@ -26,7 +26,7 @@ public class ContentOrderMap {
     public Map<OrderType, Page<Review>> reviewsByOrderTypeAndUser = new HashMap<>();
     public Map<OrderType, Page<Comment>> commentsByOrderType = new HashMap<>();
 
-    public void assignReviewsToReviewsByOrderTypeMap(int pageNumber, Category category) {
+    public void mapReviewsByCategoryToOrderType(int pageNumber, Category category) {
         reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
         reviewsByOrderType.put(OrderType.COMMENT_COUNT_DESC, reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category));
         reviewsByOrderType.put(OrderType.COMMENT_COUNT_ASC, reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category));
@@ -36,7 +36,7 @@ public class ContentOrderMap {
         reviewsByOrderType.put(OrderType.SCORE_ASC, reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category));
     }
 
-    public void assignReviewsToReviewsByOrderTypeAndUser(int pageNumber, User user) {
+    public void mapReviewsByUserToOrderType(int pageNumber, User user) {
         reviewsByOrderTypeAndUser.put(OrderType.DEFAULT, reviewService.getAllReviewsByReviewer(pageNumber, user.getUsername()));
         reviewsByOrderTypeAndUser.put(OrderType.COMMENT_COUNT_DESC, reviewService.getAllNotHiddenByUserAndCommentCountDesc(pageNumber, user));
         reviewsByOrderTypeAndUser.put(OrderType.COMMENT_COUNT_ASC, reviewService.getAllNotHiddenByUserAndCommentCountAsc(pageNumber, user));
@@ -46,7 +46,7 @@ public class ContentOrderMap {
         reviewsByOrderTypeAndUser.put(OrderType.SCORE_ASC, reviewService.getAllNotHiddenByUserAndScoreAsc(pageNumber, user));
     }
 
-    public void assignCommentsToCommentsByOrderType(int pageNumber, Review review) {
+    public void mapCommentsByReviewToOrderType(int pageNumber, Review review) {
         commentsByOrderType.put(OrderType.DEFAULT, commentService.getAllCommentsByReview(pageNumber, review));
         commentsByOrderType.put(OrderType.DATE_DESC, commentService.getAllCommentsByDateDesc(pageNumber, review.getId()));
         commentsByOrderType.put(OrderType.DATE_ASC, commentService.getAllCommentsByDateAsc(pageNumber, review.getId()));

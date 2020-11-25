@@ -69,7 +69,7 @@ public class UserController {
 
         User user = userService.getUser(id);
 
-        orderMap.assignReviewsToReviewsByOrderTypeAndUser(pageNumber, user);
+        orderMap.mapReviewsByUserToOrderType(pageNumber, user);
         Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
 
         int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
