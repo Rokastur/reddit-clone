@@ -2,6 +2,7 @@ package com.blog.reviewwebsite.repositories;
 
 import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
+import com.blog.reviewwebsite.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,5 +31,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findAllByReviewIdAndOrderByTotalScoreAsc(Long reviewId, Pageable pageable);
 
     Set<Comment> findAllByReview(Review review);
+
+    Page<Comment> findAllByUser(User user, Pageable pageable);
 
 }

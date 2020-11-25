@@ -26,6 +26,11 @@ public class CommentService {
         return commentRepository.findAllByReviewId(reviewId, pageable);
     }
 
+    public Page<Comment> getAllCommentsByUser(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByUser(user, pageable);
+    }
+
     public void saveOrUpdateComment(Comment comment, User user, Long id) {
         Review review = reviewRepository.getOne(id);
         comment.setReview(review);

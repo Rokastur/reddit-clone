@@ -1,9 +1,11 @@
 package com.blog.reviewwebsite.controller;
 
+import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.UserRepository;
+import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.UserService;
 import org.springframework.data.domain.Page;
@@ -21,12 +23,14 @@ public class UserController {
     private UserRepository userRepository;
     private ReviewOrderMap orderMap;
     private ReviewService reviewService;
+    private CommentService commentService;
 
-    public UserController(UserService userService, UserRepository userRepository, ReviewOrderMap orderMap, ReviewService reviewService) {
+    public UserController(UserService userService, UserRepository userRepository, ReviewOrderMap orderMap, ReviewService reviewService, CommentService commentService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.orderMap = orderMap;
         this.reviewService = reviewService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/signup")
@@ -70,6 +74,10 @@ public class UserController {
         Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
 
         int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
+
+        Page<Comment> comments = commentService.getAllCommentsByUser(pageNumber, user);
+
+        model.addAttribute("comments", comments);
 
         model.addAttribute("pageCount", pageCount);
         model.addAttribute("pageNumber", pageNumber);

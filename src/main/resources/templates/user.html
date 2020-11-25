@@ -94,6 +94,16 @@
                     <p th:text="${review.text}"><a href="#"></a></p>
                 </li>
             </ul>
+
+            <h2>comments</h2>
+            <ul class="style1">
+                <li class="first" th:each="comment:${comments}">
+                    <p th:text="${#temporals.format(comment.date, 'dd-MMMM-yyyy HH:mm')}">
+                    <p th:text="|commented on : ${comment.review.title}|"></p>
+                    <p th:text="|comment score : ${comment.totalScore}|"></p>
+
+                </li>
+            </ul>
         </div>
     </div>
 </div>
