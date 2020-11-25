@@ -1,9 +1,11 @@
 package com.blog.reviewwebsite.controller;
 
+import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.UserRepository;
+import com.blog.reviewwebsite.services.CategoryService;
 import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.UserService;
@@ -23,13 +25,15 @@ public class UserController {
     private ContentOrderMap orderMap;
     private ReviewService reviewService;
     private CommentService commentService;
+    private CategoryService categoryService;
 
-    public UserController(UserService userService, UserRepository userRepository, ContentOrderMap orderMap, ReviewService reviewService, CommentService commentService) {
+    public UserController(UserService userService, UserRepository userRepository, ContentOrderMap orderMap, ReviewService reviewService, CommentService commentService, CategoryService categoryService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.orderMap = orderMap;
         this.reviewService = reviewService;
         this.commentService = commentService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/signup")
@@ -74,6 +78,11 @@ public class UserController {
 
         orderMap.mapCommentsByUserToOrderType(pageNumber, user);
         Page<Comment> comments = orderMap.commentsByOrderTypeAndUser.get(commentOrderType);
+
+        long followedCategoriesCount = categoryService.getAllCategoriesUserFollows(user, pageNumber).getTotalElements();
+        model.addAttribute("followedCategoriesCount", followedCategoriesCount);
+        Page<Category> categories = categoryService.getAllCategoriesUserFollows(user, pageNumber);
+        model.addAttribute("categories", categories);
 
         int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
 

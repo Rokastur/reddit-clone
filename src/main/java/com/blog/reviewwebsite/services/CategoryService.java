@@ -27,6 +27,11 @@ public class CategoryService {
         return categoryRepository.findAll(pageable);
     }
 
+    public Page<Category> getAllCategoriesUserFollows(User user, int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return categoryRepository.findAllFollowedByUser(user.getId(), pageable);
+    }
+
     public Category getOneById(Long id) {
         return categoryRepository.getOne(id);
     }

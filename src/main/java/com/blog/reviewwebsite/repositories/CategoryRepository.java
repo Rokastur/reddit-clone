@@ -28,4 +28,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = "SELECT * FROM (SELECT DISTINCT ON (category_id) category_id, date FROM review ORDER BY category_id, date ASC) s ORDER BY date ASC", nativeQuery = true)
     Page<Category> findAllOrderByOldestPost(Pageable pageable);
 
+    @Query(value = "SELECT category_id FROM followed_categories WHERE user_id= :userId", nativeQuery = true)
+    Page<Category> findAllFollowedByUser(Long userId, Pageable pageable);
+
 }

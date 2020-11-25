@@ -112,6 +112,15 @@
 
                 </li>
             </ul>
+
+            <h2>followed categories</h2>
+            <p>this user follows <span th:text=${followedCategoriesCount}></span> categories</p>
+            <ul class="style1">
+                <li class="first" th:each="category:${categories}">
+                    <p th:text="${category.name}"></p>
+
+                </li>
+            </ul>
         </div>
     </div>
 </div>
