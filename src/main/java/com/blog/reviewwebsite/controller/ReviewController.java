@@ -90,7 +90,7 @@ public class ReviewController {
 
         model.addAttribute("user", user);
 
-        Page<Comment> comments = commentService.getAllCommentsByReview(pageNumber, review.getId());
+        Page<Comment> comments = commentService.getAllCommentsByReview(pageNumber, review);
 
         model.addAttribute("commentCount", comments.getTotalElements());
 

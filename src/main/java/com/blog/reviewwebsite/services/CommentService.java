@@ -21,9 +21,9 @@ public class CommentService {
         this.reviewRepository = reviewRepository;
     }
 
-    public Page<Comment> getAllCommentsByReview(int pageNumber, Long reviewId) {
+    public Page<Comment> getAllCommentsByReview(int pageNumber, Review review) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return commentRepository.findAllByReviewId(reviewId, pageable);
+        return commentRepository.findAllByReview(review, pageable);
     }
 
     public Page<Comment> getAllCommentsByUser(int pageNumber, User user) {

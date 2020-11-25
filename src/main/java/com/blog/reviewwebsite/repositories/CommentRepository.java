@@ -15,9 +15,6 @@ import java.util.Set;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    Page<Comment> findAllByReviewId(Long reviewId, Pageable pageable);
-
-
     @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY DATE DESC", nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByDateDesc(Long reviewId, Pageable pageable);
 
@@ -29,6 +26,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY total_score ASC", nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByTotalScoreAsc(Long reviewId, Pageable pageable);
+
+    Page<Comment> findAllByReview(Review review, Pageable pageable);
 
     Set<Comment> findAllByReview(Review review);
 
