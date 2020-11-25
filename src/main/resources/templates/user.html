@@ -61,12 +61,9 @@
             </div>
             <ul class="style1">
                 <li class="first" th:each="review: ${reviews}">
-                    <p class="date"><a href="#">Jan<b>05</b></a></p>
+                    <p th:text="${#temporals.format(review.date, 'dd-MMMM-yyyy HH:mm')}">
                     <h3 th:text="${review.title}"></h3>
-                    <p th:text="${review.text}"><a href="#">Consectetuer adipiscing elit. Nam pede erat, porta eu,
-                        lobortis eget, tempus et,
-                        tellus. Etiam neque. Vivamus consequat lorem at nisl. Nullam non wisi a sem semper eleifend.
-                        Etiam non felis. Donec ut ante.</a></p>
+                    <p th:text="${review.text}"><a href="#"></a></p>
                 </li>
             </ul>
         </div>
