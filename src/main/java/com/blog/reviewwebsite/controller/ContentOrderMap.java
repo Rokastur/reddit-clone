@@ -1,8 +1,10 @@
 package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.Category;
+import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,8 +19,12 @@ public class ContentOrderMap {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private CommentService commentService;
+
     public Map<OrderType, Page<Review>> reviewsByOrderType = new HashMap<>();
     public Map<OrderType, Page<Review>> reviewsByOrderTypeAndUser = new HashMap<>();
+    public Map<OrderType, Page<Comment>> commentsByOrderType = new HashMap<>();
 
     public void assignReviewsToReviewsByOrderTypeMap(int pageNumber, Category category) {
         reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
@@ -38,7 +44,14 @@ public class ContentOrderMap {
         reviewsByOrderTypeAndUser.put(OrderType.DATE_ASC, reviewService.getAllNotHiddenByUserAndDateAsc(pageNumber, user));
         reviewsByOrderTypeAndUser.put(OrderType.SCORE_DESC, reviewService.getAllNotHiddenByUserAndScoreDesc(pageNumber, user));
         reviewsByOrderTypeAndUser.put(OrderType.SCORE_ASC, reviewService.getAllNotHiddenByUserAndScoreAsc(pageNumber, user));
+    }
 
+    public void assignCommentsToCommentsByOrderType(int pageNumber, Review review) {
+        commentsByOrderType.put(OrderType.DEFAULT, commentService.getAllCommentsByReview(pageNumber, review));
+        commentsByOrderType.put(OrderType.DATE_DESC, commentService.getAllCommentsByDateDesc(pageNumber, review.getId()));
+        commentsByOrderType.put(OrderType.DATE_ASC, commentService.getAllCommentsByDateAsc(pageNumber, review.getId()));
+        commentsByOrderType.put(OrderType.SCORE_DESC, commentService.getAllCommentsByScoreDesc(pageNumber, review.getId()));
+        commentsByOrderType.put(OrderType.SCORE_ASC, commentService.getAllCommentsByScoreAsc(pageNumber, review.getId()));
     }
 
 

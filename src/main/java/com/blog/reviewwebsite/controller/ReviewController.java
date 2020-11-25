@@ -83,47 +83,21 @@ public class ReviewController {
     }
 
     @GetMapping("/review/{id}")
-    private String getReview(Model model, @AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "default") String commentOrderType) {
+    private String getReview(Model model, @AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) {
         Review review = reviewService.getReview(id);
         model.addAttribute("review", review);
         model.addAttribute("pageNumber", pageNumber);
-
         model.addAttribute("user", user);
 
-        Page<Comment> comments = commentService.getAllCommentsByReview(pageNumber, review);
+        orderMap.assignCommentsToCommentsByOrderType(pageNumber, review);
+        Page<Comment> comments = orderMap.commentsByOrderType.get(commentOrderType);
 
         model.addAttribute("commentCount", comments.getTotalElements());
-
-
-        String dateAsc = "dateAsc";
-        String dateDesc = "dateDesc";
-        String scoreDesc = "scoreDesc";
-        String scoreAsc = "scoreAsc";
-
-        model.addAttribute("dateAsc", dateAsc);
-        model.addAttribute("dateDesc", dateDesc);
-        model.addAttribute("scoreAsc", scoreAsc);
-        model.addAttribute("scoreDesc", scoreDesc);
-
-
-        if (commentOrderType.equals("dateAsc")) {
-            comments = commentService.getAllCommentsByDateAsc(pageNumber, review.getId());
-        } else if (commentOrderType.equals("dateDesc")) {
-            comments = commentService.getAllCommentsByDateDesc(pageNumber, review.getId());
-        } else if (commentOrderType.equals("scoreAsc")) {
-            comments = commentService.getAllCommentsByScoreAsc(pageNumber, review.getId());
-        } else if (commentOrderType.equals("scoreDesc")) {
-            comments = commentService.getAllCommentsByScoreDesc(pageNumber, review.getId());
-        }
         model.addAttribute("comments", comments.getContent());
-
         model.addAttribute("newComment", new Comment());
-
         model.addAttribute("newScore", new Score());
         model.addAttribute("score", review.getTotalScore());
-
         model.addAttribute("newCommentScore", new CommentScore());
-
 
         return "review";
     }

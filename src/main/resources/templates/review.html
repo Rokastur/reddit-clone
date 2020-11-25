@@ -115,28 +115,17 @@
         </div>
 
         <div>
-            <div>
-                <li>
-                    <a th:href="@{/reviews/review/{id}/(id=${review.id},commentOrderType=${dateDesc})}">
-                        Date -
-                        newest</a>
-                </li>
-                <li>
-                    <a th:href="@{/reviews/review/{id}/(id=${review.id},commentOrderType=${dateAsc})}">
-                        Date -
-                        oldest</a>
-                </li>
-                <li>
-                    <a th:href="@{/reviews/review/{id}/(id=${review.id},commentOrderType=${scoreDesc})}">
-                        Score -
-                        highest</a>
-                </li>
-                <li>
-                    <a th:href="@{/reviews/review/{id}/(id=${review.id},commentOrderType=${scoreAsc})}">
-                        Score -
-                        lowest</a>
-                </li>
-            </div>
+
+            <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_DESC)}">
+                Comments - newest</a>
+            <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_ASC)}">
+                Comments - oldest</a>
+            <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_DESC)}">
+                Comments - best score</a>
+            <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_ASC)}">
+                Comments - worst score</a>
+
+
             <div th:each="comment: ${comments}">
 
 
