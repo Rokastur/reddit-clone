@@ -1,9 +1,6 @@
 package com.blog.reviewwebsite.controller;
 
-import com.blog.reviewwebsite.entities.Category;
-import com.blog.reviewwebsite.entities.Comment;
-import com.blog.reviewwebsite.entities.Review;
-import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.entities.*;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import com.blog.reviewwebsite.services.CategoryService;
 import com.blog.reviewwebsite.services.CommentService;
@@ -68,10 +65,18 @@ public class UserController {
         return "users";
     }
 
+    @PostMapping("/incognito/toggle/{id}")
+    public String toggleIncognito(@PathVariable Long id) {
+        userService.toggleIncognito(id);
+        return "redirect:/user/user/" + id;
+    }
+
     @GetMapping("/user/{id}")
     public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) {
 
         User user = userService.getUser(id);
+
+        model.addAttribute("incognito", user.isIncognito());
 
         orderMap.mapReviewsByUserToOrderType(pageNumber, user);
         Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);

@@ -41,6 +41,13 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public User toggleIncognito(Long userId) {
+        User user = userRepository.getOne(userId);
+        user.setIncognito(!user.isIncognito());
+        userRepository.save(user);
+        return user;
+    }
+
     public User updateUser(User user) {
         return userRepository.save(user);
     }

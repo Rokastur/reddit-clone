@@ -32,13 +32,15 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @NotEmpty
     @Transient
     private String retypePassword;
 
     @Column(name = "date")
     @CreationTimestamp
     private LocalDateTime date;
+
+    @Column(name = "incognito")
+    private boolean incognito;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Category> categories;

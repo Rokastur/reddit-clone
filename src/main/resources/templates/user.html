@@ -23,16 +23,26 @@
             <h1><a href="#" th:text="${user.username}"></a></h1>
             <p>has <span th:text="${reviewCount}"></span> reviews and <span> upvotes</span></p>
             <p><span>user created on</span> <span th:text="${user.date}"></span></p>
+            <p><span>is account hidden? </span><span th:text="${incognito}"></span></p>
         </div>
         <div id="menu">
             <ul>
                 <li class="current_page_item"><a th:href="@{/reviews/}" accesskey="1" title="">Homepage</a></li>
-                <li><a href="#" accesskey="2" title="">Our Clients</a></li>
+                <div th:if="${user.username}==${#authentication.name}">
+                    <li>
+
+                        <form method="post" th:action="@{/user/incognito/toggle/{id}/(id=${user.id})}">
+                            <span>toggle incognito <input type="submit"/></span>
+
+                        </form>
+                    </li>
+                </div>
                 <li><a href="#" accesskey="3" title="">About Us</a></li>
                 <li><a href="#" accesskey="4" title="">Careers</a></li>
                 <li><a href="#" accesskey="5" title="">Contact Us</a></li>
             </ul>
         </div>
+
     </div>
     <div id="main">
         <div id="banner">
@@ -53,7 +63,7 @@
                 <li><a href="#" class="button">Etiam posuere</a></li>
             </ul>
         </div>
-        <div id="featured">
+        <div id="featured" th:if="${!incognito} or ${user.username}==${#authentication.name}">
             <div class="title">
                 <h2>Reviews</h2>
                 <!--                maybe here you could sort by latest/most popular/most upvoted/etc-->
