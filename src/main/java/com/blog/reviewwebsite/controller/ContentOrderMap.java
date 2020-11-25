@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class ReviewOrderMap {
+public class ContentOrderMap {
 
     @Autowired
     private ReviewService reviewService;

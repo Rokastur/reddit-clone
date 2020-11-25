@@ -5,7 +5,6 @@ import com.blog.reviewwebsite.services.CategoryService;
 import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.ScoreService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -14,8 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/reviews")
@@ -25,9 +22,9 @@ public class ReviewController {
     private CommentService commentService;
     private ScoreService scoreService;
     private CategoryService categoryService;
-    private ReviewOrderMap orderMap;
+    private ContentOrderMap orderMap;
 
-    public ReviewController(ReviewService reviewService, CommentService commentService, ScoreService scoreService, CategoryService categoryService, ReviewOrderMap orderMap) {
+    public ReviewController(ReviewService reviewService, CommentService commentService, ScoreService scoreService, CategoryService categoryService, ContentOrderMap orderMap) {
         this.reviewService = reviewService;
         this.commentService = commentService;
         this.scoreService = scoreService;

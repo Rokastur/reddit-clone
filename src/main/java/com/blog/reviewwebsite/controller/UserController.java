@@ -3,7 +3,6 @@ package com.blog.reviewwebsite.controller;
 import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
-import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
@@ -21,11 +20,11 @@ public class UserController {
 
     private UserService userService;
     private UserRepository userRepository;
-    private ReviewOrderMap orderMap;
+    private ContentOrderMap orderMap;
     private ReviewService reviewService;
     private CommentService commentService;
 
-    public UserController(UserService userService, UserRepository userRepository, ReviewOrderMap orderMap, ReviewService reviewService, CommentService commentService) {
+    public UserController(UserService userService, UserRepository userRepository, ContentOrderMap orderMap, ReviewService reviewService, CommentService commentService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.orderMap = orderMap;
