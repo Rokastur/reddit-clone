@@ -5,6 +5,7 @@ import com.blog.reviewwebsite.services.CategoryService;
 import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.ScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,15 +25,16 @@ public class ReviewController {
     private CommentService commentService;
     private ScoreService scoreService;
     private CategoryService categoryService;
+    private ReviewOrderMap orderMap;
 
-    public ReviewController(ReviewService reviewService, CommentService commentService, ScoreService scoreService, CategoryService categoryService) {
+    public ReviewController(ReviewService reviewService, CommentService commentService, ScoreService scoreService, CategoryService categoryService, ReviewOrderMap orderMap) {
         this.reviewService = reviewService;
         this.commentService = commentService;
         this.scoreService = scoreService;
         this.categoryService = categoryService;
+        this.orderMap = orderMap;
     }
 
-    private Map<OrderType, Page<Review>> reviewsByOrderType = new HashMap<>();
 
     @GetMapping
     private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "0") Long categoryId) {
@@ -43,29 +45,14 @@ public class ReviewController {
         int pageCount = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category).getTotalPages();
         model.addAttribute("pageCount", pageCount);
 
-        assignReviewsToReviewsByOrderTypeMap(pageNumber, category);
+        orderMap.assignReviewsToReviewsByOrderTypeMap(pageNumber, category);
 
-        Page<Review> reviews = getReviewsByOrderType(reviewOrderType);
+        Page<Review> reviews = orderMap.reviewsByOrderType.get(reviewOrderType);
 
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
         model.addAttribute("reviews", reviews.getContent());
         return "reviews";
-    }
-
-    public void assignReviewsToReviewsByOrderTypeMap(int pageNumber, Category category) {
-        reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
-        reviewsByOrderType.put(OrderType.COMMENT_COUNT_DESC, reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.COMMENT_COUNT_ASC, reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.DATE_DESC, reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, category.getId()));
-        reviewsByOrderType.put(OrderType.DATE_ASC, reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, category.getId()));
-        reviewsByOrderType.put(OrderType.SCORE_DESC, reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.SCORE_ASC, reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category));
-
-    }
-
-    public Page<Review> getReviewsByOrderType(OrderType reviewOrderType) {
-        return reviewsByOrderType.get(reviewOrderType);
     }
 
     @GetMapping("/form")
