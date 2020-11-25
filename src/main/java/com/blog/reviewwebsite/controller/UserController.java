@@ -2,8 +2,11 @@ package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.UserRepository;
+import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +19,14 @@ public class UserController {
 
     private UserService userService;
     private UserRepository userRepository;
+    private ReviewOrderMap orderMap;
+    private ReviewService reviewService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository, ReviewOrderMap orderMap, ReviewService reviewService) {
         this.userService = userService;
+        this.userRepository = userRepository;
+        this.orderMap = orderMap;
+        this.reviewService = reviewService;
     }
 
     @GetMapping("/signup")
@@ -54,21 +62,32 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public String getUser(@PathVariable Long id, Model model) {
+    public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType) {
+
         User user = userService.getUser(id);
-        List<Review> reviews = userService.getUserReviews(id);
+
+        orderMap.assignReviewsToReviewsByOrderTypeAndUser(pageNumber, user);
+        Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
+
+        int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
+
+        model.addAttribute("pageCount", pageCount);
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("hasNextPage", reviews.hasNext());
+
         model.addAttribute("user", user);
-        model.addAttribute("reviewCount", reviews.size());
+        model.addAttribute("reviewCount", reviews.getSize());
         model.addAttribute("reviews", reviews);
         model.addAttribute("titles", reviews);
         return "user";
+
     }
 
     @GetMapping("/{username}")
     public String findUser(@RequestParam String username, Model model) {
         User user = (User) userService.loadUserByUsername(username);
 //TODO: deal with incorrect usernames. Currently redirects to log in screen
-        return getUser(user.getId(), model);
+        return getUser(user.getId(), model, 0, OrderType.DEFAULT);
 
     }
 

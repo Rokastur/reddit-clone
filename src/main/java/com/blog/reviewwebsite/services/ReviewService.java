@@ -60,6 +60,36 @@ public class ReviewService {
         return reviewRepository.findAllByHiddenFalseAndCategoryOrderByTotalScoreAsc(category, pageable);
     }
 
+    public Page<Review> getAllNotHiddenByUserAndCommentCountDesc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByCommentCountDesc(user, pageable);
+    }
+
+    public Page<Review> getAllNotHiddenByUserAndCommentCountAsc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByCommentCountAsc(user, pageable);
+    }
+
+    public Page<Review> getAllNotHiddenByUserAndScoreDesc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByTotalScoreDesc(user, pageable);
+    }
+
+    public Page<Review> getAllNotHiddenByUserAndScoreAsc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByTotalScoreAsc(user, pageable);
+    }
+
+    public Page<Review> getAllNotHiddenByUserAndDateDesc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByDateDesc(user.getUsername(), pageable);
+    }
+
+    public Page<Review> getAllNotHiddenByUserAndDateAsc(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByDateAsc(user.getUsername(), pageable);
+    }
+
     public List<Review> findAllReviewsByReviewer(String username) {
         return reviewRepository.findAllByUsername(username);
     }

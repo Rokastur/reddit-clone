@@ -2,6 +2,7 @@ package com.blog.reviewwebsite.repositories;
 
 import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Review;
+import com.blog.reviewwebsite.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,6 +37,22 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(Category category, Pageable pageable);
 
     Page<Review> findAllByHiddenFalseAndCategoryOrderByCommentCountAsc(Category category, Pageable pageable);
+
+//    v ----------------- order types for single user reviews ----------------- v
+
+    Page<Review> findAllByHiddenFalseAndUserOrderByTotalScoreDesc(User user, Pageable pageable);
+
+    Page<Review> findAllByHiddenFalseAndUserOrderByTotalScoreAsc(User user, Pageable pageable);
+
+    @Query(value = "SELECT * FROM review WHERE hidden = 'false' AND username = :username ORDER BY DATE DESC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndUserOrderByDateDesc(String username, Pageable pageable);
+
+    @Query(value = "SELECT * FROM review WHERE hidden = 'false' AND username = :username ORDER BY DATE ASC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndUserOrderByDateAsc(String username, Pageable pageable);
+
+    Page<Review> findAllByHiddenFalseAndUserOrderByCommentCountDesc(User user, Pageable pageable);
+
+    Page<Review> findAllByHiddenFalseAndUserOrderByCommentCountAsc(User user, Pageable pageable);
 
 
 }

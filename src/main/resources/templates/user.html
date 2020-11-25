@@ -58,6 +58,34 @@
                 <h2>Reviews</h2>
                 <!--                maybe here you could sort by latest/most popular/most upvoted/etc-->
                 <span class="byline">Latest | Popular | by Upvotes | by Comments</span>
+                <div>
+
+                    <a th:href="@{/user/user/{id}/(id=${user.id},reviewOrderType=COMMENT_COUNT_DESC)}">
+                        Comments - most</a>
+                    <a th:href="@{/user/user/{id}/(id=${user.id},reviewOrderType=COMMENT_COUNT_ASC)}">
+                        Comments - least</a>
+                    <a th:href="@{/user/user/{id}/(id=${user.id},reviewOrderType=DATE_DESC)}">
+                        Reviews - newest</a>
+                    <a th:href="@{/user/user/{id}/(id=${user.id},reviewOrderType=DATE_ASC)}">
+                        Reviews - oldest</a>
+                    <a th:href="@{/user/user/{id}/(id=${user.id},reviewOrderType=SCORE_DESC)}">
+                        Reviews - best score</a>
+                    <a th:href="@{/user/user/{id}/(id=${user.id},reviewOrderType=SCORE_ASC)}">
+                        Reviews - worst score</a>
+                </div>
+            </div>
+            <div>
+                <p>
+                    <a th:href="@{/user/user/{id}/(id=${user.id},pageNumber=${pageNumber - 1})}"
+                       th:if="${pageNumber != 0}">
+                        < </a>
+                    <span th:text="${pageNumber} + 1">current page</span>
+                    <span>/</span>
+                    <span th:text="${pageCount}">total pages</span>
+                    <a th:href="@{/user/user/{id}/(id=${user.id},pageNumber=${pageNumber + 1})}"
+                       th:if="${hasNextPage}">
+                        > </a>
+                </p>
             </div>
             <ul class="style1">
                 <li class="first" th:each="review: ${reviews}">
