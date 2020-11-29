@@ -23,19 +23,23 @@
 
             <img alt="Image" th:src="@{'data:image/jpeg;base64,'+${file}}" width="250" height="250"/>
 
-            <form method="post" th:action="@{/uploadFile/(id=${user.id})}" enctype="multipart/form-data">
+            <div th:if="${user.username}==${#authentication.name}">
+                <form method="post" th:action="@{/uploadFile/(id=${user.id})}" enctype="multipart/form-data">
 
-                <table>
-                    <tr>
-                        <td><form path="file" action="">Select a File to Upload</form></td>
-                        <td><input type="file" name="file"/></td>
-                    </tr>
-                    <tr>
-                        <td><input type="submit" value="Submit"/></td>
-                    </tr>
-                </table>
+                    <table>
+                        <tr>
+                            <td>
+                                <form path="file" action="">Select a File to Upload</form>
+                            </td>
+                            <td><input type="file" name="file"/></td>
+                        </tr>
+                        <tr>
+                            <td><input type="submit" value="Submit"/></td>
+                        </tr>
+                    </table>
 
-            </form>
+                </form>
+            </div>
 
             <h1><a href="#" th:text="${user.username}"></a></h1>
             <p>has <span th:text="${reviewCount}"></span> reviews and <span> upvotes</span></p>
