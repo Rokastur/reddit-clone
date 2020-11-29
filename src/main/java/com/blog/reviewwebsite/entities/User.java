@@ -43,6 +43,9 @@ public class User implements UserDetails {
     private boolean incognito;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<File> files;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Category> categories;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

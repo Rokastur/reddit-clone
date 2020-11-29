@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:form="http://www.w3.org/1999/html">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
@@ -19,7 +20,23 @@
 <div id="page" class="container">
     <div id="header">
         <div id="logo">
-            <img src="images/pic02.jpg" alt="profile picture"/>
+
+            <img alt="Image" th:src="@{'data:image/jpeg;base64,'+${file}}" width="250" height="250"/>
+
+            <form method="post" th:action="@{/uploadFile/(id=${user.id})}" enctype="multipart/form-data">
+
+                <table>
+                    <tr>
+                        <td><form path="file" action="">Select a File to Upload</form></td>
+                        <td><input type="file" name="file"/></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Submit"/></td>
+                    </tr>
+                </table>
+
+            </form>
+
             <h1><a href="#" th:text="${user.username}"></a></h1>
             <p>has <span th:text="${reviewCount}"></span> reviews and <span> upvotes</span></p>
             <p><span>user created on</span> <span th:text="${user.date}"></span></p>

@@ -2,15 +2,14 @@ package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.*;
 import com.blog.reviewwebsite.repositories.UserRepository;
-import com.blog.reviewwebsite.services.CategoryService;
-import com.blog.reviewwebsite.services.CommentService;
-import com.blog.reviewwebsite.services.ReviewService;
-import com.blog.reviewwebsite.services.UserService;
+import com.blog.reviewwebsite.services.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -23,14 +22,16 @@ public class UserController {
     private ReviewService reviewService;
     private CommentService commentService;
     private CategoryService categoryService;
+    private FileService fileService;
 
-    public UserController(UserService userService, UserRepository userRepository, ContentOrderMap orderMap, ReviewService reviewService, CommentService commentService, CategoryService categoryService) {
+    public UserController(UserService userService, UserRepository userRepository, ContentOrderMap orderMap, ReviewService reviewService, CommentService commentService, CategoryService categoryService, FileService fileService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.orderMap = orderMap;
         this.reviewService = reviewService;
         this.commentService = commentService;
         this.categoryService = categoryService;
+        this.fileService = fileService;
     }
 
     @GetMapping("/signup")
@@ -72,12 +73,11 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) {
+    public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) throws UnsupportedEncodingException {
 
         User user = userService.getUser(id);
 
         model.addAttribute("incognito", user.isIncognito());
-
         orderMap.mapReviewsByUserToOrderType(pageNumber, user);
         Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
 
@@ -90,6 +90,10 @@ public class UserController {
         model.addAttribute("categories", categories);
 
         int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
+
+        File file = fileService.getFileByUserId(user.getId());
+        String image = fileService.retrieveImageEncodedInBase64(file);
+        model.addAttribute("file", image);
 
         model.addAttribute("comments", comments);
 
@@ -106,7 +110,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public String findUser(@RequestParam String username, Model model) {
+    public String findUser(@RequestParam String username, Model model) throws UnsupportedEncodingException {
         User user = (User) userService.loadUserByUsername(username);
 //TODO: deal with incorrect usernames. Currently redirects to log in screen
         return getUser(user.getId(), model, 0, OrderType.DEFAULT, OrderType.DEFAULT);
