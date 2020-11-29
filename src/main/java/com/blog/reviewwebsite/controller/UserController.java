@@ -91,9 +91,11 @@ public class UserController {
 
         int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
 
-        File file = fileService.getFileByUserId(user.getId());
-        String image = fileService.retrieveImageEncodedInBase64(file);
-        model.addAttribute("file", image);
+        if (userService.userHasFile(user)) {
+            File file = fileService.getFileByUserId(user.getId());
+            String image = fileService.retrieveImageEncodedInBase64(file);
+            model.addAttribute("file", image);
+        }
 
         model.addAttribute("comments", comments);
 

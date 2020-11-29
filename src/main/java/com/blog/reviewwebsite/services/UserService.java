@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +41,12 @@ public class UserService implements UserDetailsService {
         User user = userRepository.getOne(id);
         return user;
     }
+
+    @Transactional
+    public boolean userHasFile(User user) {
+        return !user.getFiles().isEmpty();
+    }
+
 
     public User toggleIncognito(Long userId) {
         User user = userRepository.getOne(userId);
