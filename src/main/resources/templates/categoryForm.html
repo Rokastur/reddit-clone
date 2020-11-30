@@ -19,6 +19,7 @@
 
 
     <p>Name your category: <input th:field="*{name}" type="text"></p>
+    <p>Add a description! <input th:field="*{description}" type="text"></p>
 
     <p><input th:value="${category.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
 

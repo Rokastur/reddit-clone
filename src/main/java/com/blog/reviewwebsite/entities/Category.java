@@ -30,6 +30,9 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description", columnDefinition = "text")
+    private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", nullable = false)
     private User user;
