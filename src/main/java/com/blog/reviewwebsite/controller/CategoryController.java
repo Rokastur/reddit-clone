@@ -10,60 +10,36 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Controller
 @RequestMapping("/categories")
 public class CategoryController {
 
     private CategoryService categoryService;
     private UserService userService;
+    private ContentOrderMap orderMap;
 
-    public CategoryController(CategoryService categoryService, UserService userService) {
+    public CategoryController(CategoryService categoryService, UserService userService, ContentOrderMap orderMap) {
         this.categoryService = categoryService;
         this.userService = userService;
-    }
-
-    private Map<OrderType, Page<Category>> categoriesByOrderType = new HashMap<>();
-
-    public void assignCategoriesToOrderTypeMap(int pageNumber) {
-        categoriesByOrderType.put(OrderType.DEFAULT, categoryService.getAllCategories(pageNumber));
-        categoriesByOrderType.put(OrderType.POST_COUNT_DESC, categoryService.getAllCategoriesByPostCountDesc(pageNumber));
-        categoriesByOrderType.put(OrderType.POST_COUNT_ASC, categoryService.getAllCategoriesByPostCountAsc(pageNumber));
-        categoriesByOrderType.put(OrderType.FOLLOWER_COUNT_DESC, categoryService.getAllCategoriesByFollowersCountDesc(pageNumber));
-        categoriesByOrderType.put(OrderType.FOLLOWER_COUNT_ASC, categoryService.getAllCategoriesByFollowersCountAsc(pageNumber));
-        categoriesByOrderType.put(OrderType.POST_DATE_DESC, categoryService.getAllCategoriesByNewestPost(pageNumber));
-        categoriesByOrderType.put(OrderType.POST_DATE_ASC, categoryService.getAllCategoriesByOldestPost(pageNumber));
-    }
-
-    public Page<Category> getAllCategoriesByOrderType(OrderType categoryOrderType) {
-        return categoriesByOrderType.get(categoryOrderType);
+        this.orderMap = orderMap;
     }
 
     @GetMapping("/all")
     public String getAllCategories(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "DEFAULT") OrderType categoriesOrderType) {
 
-        assignCategoriesToOrderTypeMap(pageNumber);
+        orderMap.mapCategoriesToOrderType(pageNumber);
 
-        Page<Category> categories = getAllCategoriesByOrderType(categoriesOrderType);
-
-        model.addAttribute("categories", categories.getContent());
-
-        model.addAttribute("pageNumber", pageNumber);
-        model.addAttribute("hasNextPage", categories.hasNext());
+        Page<Category> categories = orderMap.categoriesByOrderType.get(categoriesOrderType);
 
         int pageCount = categoryService.getAllCategories(pageNumber).getTotalPages();
+
+        model.addAttribute("categories", categories.getContent());
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("hasNextPage", categories.hasNext());
         model.addAttribute("pageCount", pageCount);
+
         return "categories";
 
-    }
-
-    @GetMapping("/new")
-    public String createNewCategory(@AuthenticationPrincipal User user, Model model) {
-        Category category = new Category(user.getUsername());
-        model.addAttribute("category", category);
-        return "categoryForm";
     }
 
     @PostMapping("/new/submit")
@@ -78,5 +54,12 @@ public class CategoryController {
         Long userId = user.getId();
         userService.followCategory(userId, id);
         return "redirect:/categories/all";
+    }
+
+    @GetMapping("/new")
+    public String createNewCategory(@AuthenticationPrincipal User user, Model model) {
+        Category category = new Category(user.getUsername());
+        model.addAttribute("category", category);
+        return "categoryForm";
     }
 }

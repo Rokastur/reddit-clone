@@ -4,6 +4,7 @@ import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.services.CategoryService;
 import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,14 @@ public class ContentOrderMap {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     public Map<OrderType, Page<Review>> reviewsByOrderType = new HashMap<>();
     public Map<OrderType, Page<Review>> reviewsByOrderTypeAndUser = new HashMap<>();
     public Map<OrderType, Page<Comment>> commentsByOrderType = new HashMap<>();
     public Map<OrderType, Page<Comment>> commentsByOrderTypeAndUser = new HashMap<>();
+    public Map<OrderType, Page<Category>> categoriesByOrderType = new HashMap<>();
 
     public void mapReviewsByCategoryToOrderType(int pageNumber, Category category) {
         reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
@@ -61,6 +66,16 @@ public class ContentOrderMap {
         commentsByOrderTypeAndUser.put(OrderType.DATE_ASC, commentService.getAllCommentsByUserDateAsc(pageNumber, user));
         commentsByOrderTypeAndUser.put(OrderType.SCORE_DESC, commentService.getAllCommentsByUserScoreDesc(pageNumber, user));
         commentsByOrderTypeAndUser.put(OrderType.SCORE_ASC, commentService.getAllCommentsByUserScoreAsc(pageNumber, user));
+    }
+
+    public void mapCategoriesToOrderType(int pageNumber) {
+        categoriesByOrderType.put(OrderType.DEFAULT, categoryService.getAllCategories(pageNumber));
+        categoriesByOrderType.put(OrderType.POST_COUNT_DESC, categoryService.getAllCategoriesByPostCountDesc(pageNumber));
+        categoriesByOrderType.put(OrderType.POST_COUNT_ASC, categoryService.getAllCategoriesByPostCountAsc(pageNumber));
+        categoriesByOrderType.put(OrderType.FOLLOWER_COUNT_DESC, categoryService.getAllCategoriesByFollowersCountDesc(pageNumber));
+        categoriesByOrderType.put(OrderType.FOLLOWER_COUNT_ASC, categoryService.getAllCategoriesByFollowersCountAsc(pageNumber));
+        categoriesByOrderType.put(OrderType.POST_DATE_DESC, categoryService.getAllCategoriesByNewestPost(pageNumber));
+        categoriesByOrderType.put(OrderType.POST_DATE_ASC, categoryService.getAllCategoriesByOldestPost(pageNumber));
     }
 
 
