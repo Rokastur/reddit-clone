@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Base64;
 import java.util.List;
 
 @Controller
@@ -72,6 +71,12 @@ public class UserController {
         return "redirect:/user/user/" + id;
     }
 
+    @PostMapping("{id}/submit/profile-description")
+    public String submitProfileDescription(@ModelAttribute User user) {
+        userService.updateUser(user);
+        return "redirect:/user/user/" + user.getId();
+    }
+
     @GetMapping("/user/{id}")
     public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) throws UnsupportedEncodingException {
 
@@ -97,13 +102,14 @@ public class UserController {
             model.addAttribute("file", image);
         }
 
+        model.addAttribute("user", user);
+
         model.addAttribute("comments", comments);
 
         model.addAttribute("pageCount", pageCount);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
 
-        model.addAttribute("user", user);
         model.addAttribute("reviewCount", reviews.getSize());
         model.addAttribute("reviews", reviews);
         model.addAttribute("titles", reviews);

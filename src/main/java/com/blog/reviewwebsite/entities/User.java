@@ -39,6 +39,9 @@ public class User implements UserDetails {
     @CreationTimestamp
     private LocalDateTime date;
 
+    @Column(name = "profile_description", columnDefinition = "text")
+    private String profileDescription;
+
     @Column(name = "incognito")
     private boolean incognito;
 

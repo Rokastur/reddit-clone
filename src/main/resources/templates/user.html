@@ -80,6 +80,21 @@
                     href="http://templated.co/license">Creative Commons Attribution</a> license, so you're pretty much
                 free to do whatever you want with it (even use it commercially) provided you give us credit for it. Have
                 fun :) </p>
+
+            <p>description: </p>
+            <p th:text=${user.profileDescription}></p>
+            <div th:if="${user.username}==${#authentication.name}">
+                <form method="post" th:action="@{/user/{id}/submit/profile-description/(id=${user.id})}"
+                      th:object="${user}">
+                    <p>description: <textarea th:value="${user.profileDescription}"
+                                              th:field="${user.profileDescription}"
+                                              type="text"></textarea></p>
+                    <input th:field="*{id}" type="hidden"/>
+                    <input th:field="*{password}" type="hidden"/>
+                    <input th:field="*{username}" type="hidden"/>
+                    <input th:value="${user.id != null ? 'Edit' : 'Create' }" type="submit"/>
+                </form>
+            </div>
             <ul class="actions">
                 <li><a href="#" class="button">Etiam posuere</a></li>
             </ul>
