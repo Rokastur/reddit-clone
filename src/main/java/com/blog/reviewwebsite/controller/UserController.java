@@ -15,19 +15,15 @@ import java.io.UnsupportedEncodingException;
 public class UserController {
 
     private UserService userService;
-    private UserRepository userRepository;
     private ContentOrderMap orderMap;
     private ReviewService reviewService;
-    private CommentService commentService;
     private CategoryService categoryService;
     private FileService fileService;
 
-    public UserController(UserService userService, UserRepository userRepository, ContentOrderMap orderMap, ReviewService reviewService, CommentService commentService, CategoryService categoryService, FileService fileService) {
+    public UserController(UserService userService, ContentOrderMap orderMap, ReviewService reviewService, CategoryService categoryService, FileService fileService) {
         this.userService = userService;
-        this.userRepository = userRepository;
         this.orderMap = orderMap;
         this.reviewService = reviewService;
-        this.commentService = commentService;
         this.categoryService = categoryService;
         this.fileService = fileService;
     }
@@ -64,8 +60,8 @@ public class UserController {
         model.addAttribute("reviewCount", reviews.getSize());
         model.addAttribute("reviews", reviews);
         model.addAttribute("titles", reviews);
-        return "user";
 
+        return "user";
     }
 
     @PostMapping("/incognito/toggle/{id}")
