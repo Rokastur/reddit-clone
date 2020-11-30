@@ -2,9 +2,7 @@ package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.*;
 import com.blog.reviewwebsite.services.CategoryService;
-import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
-import com.blog.reviewwebsite.services.ScoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,15 +17,11 @@ import javax.validation.Valid;
 public class ReviewController {
 
     private ReviewService reviewService;
-    private CommentService commentService;
-    private ScoreService scoreService;
     private CategoryService categoryService;
     private ContentOrderMap orderMap;
 
-    public ReviewController(ReviewService reviewService, CommentService commentService, ScoreService scoreService, CategoryService categoryService, ContentOrderMap orderMap) {
+    public ReviewController(ReviewService reviewService, CategoryService categoryService, ContentOrderMap orderMap) {
         this.reviewService = reviewService;
-        this.commentService = commentService;
-        this.scoreService = scoreService;
         this.categoryService = categoryService;
         this.orderMap = orderMap;
     }
@@ -37,28 +31,37 @@ public class ReviewController {
     private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "0") Long categoryId) {
 
         Category category = categoryService.getOneById(categoryId);
-        model.addAttribute("categoryId", categoryId);
-
-        int pageCount = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category).getTotalPages();
-        model.addAttribute("pageCount", pageCount);
-
         orderMap.mapReviewsByCategoryToOrderType(pageNumber, category);
-
         Page<Review> reviews = orderMap.reviewsByOrderType.get(reviewOrderType);
+        int pageCount = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category).getTotalPages();
 
+        model.addAttribute("pageCount", pageCount);
+        model.addAttribute("categoryId", categoryId);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
         model.addAttribute("reviews", reviews.getContent());
+
         return "reviews";
     }
 
-    @GetMapping("/form")
-    private String createReview(Model model, @AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") Long categoryId) {
-//        TODO: figure out if this is a good way to assign user to a review
-        Review review = new Review(user.getUsername());
+    @GetMapping("/review/{id}")
+    private String getReview(Model model, @AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) {
+
+        Review review = reviewService.getReview(id);
+        orderMap.mapCommentsByReviewToOrderType(pageNumber, review);
+        Page<Comment> comments = orderMap.commentsByOrderType.get(commentOrderType);
+
         model.addAttribute("review", review);
-        model.addAttribute("categoryId", categoryId);
-        return "form";
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("user", user);
+        model.addAttribute("commentCount", comments.getTotalElements());
+        model.addAttribute("comments", comments.getContent());
+        model.addAttribute("newComment", new Comment());
+        model.addAttribute("newScore", new Score());
+        model.addAttribute("score", review.getTotalScore());
+        model.addAttribute("newCommentScore", new CommentScore());
+
+        return "review";
     }
 
     @PostMapping("/submit")
@@ -73,6 +76,14 @@ public class ReviewController {
         }
     }
 
+    @GetMapping("/form")
+    private String createReview(Model model, @AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") Long categoryId) {
+        Review review = new Review(user.getUsername());
+        model.addAttribute("review", review);
+        model.addAttribute("categoryId", categoryId);
+        return "form";
+    }
+
     @GetMapping("/byReviewer/{reviewer}")
     private String getReviewsByReviewer(@RequestParam(defaultValue = "0") int pageNumber, @PathVariable String reviewer, Model model) {
         Page<Review> reviews = reviewService.getAllReviewsByReviewer(pageNumber, reviewer);
@@ -80,26 +91,6 @@ public class ReviewController {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNext", reviews.hasNext());
         return "reviews";
-    }
-
-    @GetMapping("/review/{id}")
-    private String getReview(Model model, @AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) {
-        Review review = reviewService.getReview(id);
-        model.addAttribute("review", review);
-        model.addAttribute("pageNumber", pageNumber);
-        model.addAttribute("user", user);
-
-        orderMap.mapCommentsByReviewToOrderType(pageNumber, review);
-        Page<Comment> comments = orderMap.commentsByOrderType.get(commentOrderType);
-
-        model.addAttribute("commentCount", comments.getTotalElements());
-        model.addAttribute("comments", comments.getContent());
-        model.addAttribute("newComment", new Comment());
-        model.addAttribute("newScore", new Score());
-        model.addAttribute("score", review.getTotalScore());
-        model.addAttribute("newCommentScore", new CommentScore());
-
-        return "review";
     }
 
     @GetMapping("/edit/{id}")
