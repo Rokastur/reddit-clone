@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 @Controller
 @RequestMapping("/user")
@@ -33,36 +32,40 @@ public class UserController {
         this.fileService = fileService;
     }
 
-    @GetMapping("/signup")
-    public String createUser(Model model) {
-        model.addAttribute("user", new User());
-        return "signup";
-    }
+    @GetMapping("/user/{id}")
+    public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) throws UnsupportedEncodingException {
 
-    @PostMapping("/submit")
-    public String submitUser(User user) {
-        if (userService.validNewUser(user) && (userService.passwordsMatch(user))) {
-            userService.createUser(user);
-            return "redirect:/login";
-        } else {
-            return "signup";
+        User user = userService.getUser(id);
+
+        orderMap.mapReviewsByUserToOrderType(pageNumber, user);
+        orderMap.mapCommentsByUserToOrderType(pageNumber, user);
+
+        Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
+        Page<Comment> comments = orderMap.commentsByOrderTypeAndUser.get(commentOrderType);
+        Page<Category> categories = categoryService.getAllCategoriesUserFollows(user, pageNumber);
+
+        long followedCategoriesCount = categoryService.getAllCategoriesUserFollows(user, pageNumber).getTotalElements();
+        int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
+
+        if (userService.userHasFile(user)) {
+            File file = fileService.getFileByUserId(user.getId());
+            String image = fileService.retrieveImageEncodedInBase64(file);
+            model.addAttribute("file", image);
         }
 
+        model.addAttribute("categories", categories);
+        model.addAttribute("followedCategoriesCount", followedCategoriesCount);
+        model.addAttribute("incognito", user.isIncognito());
+        model.addAttribute("user", user);
+        model.addAttribute("comments", comments);
+        model.addAttribute("pageCount", pageCount);
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("hasNextPage", reviews.hasNext());
+        model.addAttribute("reviewCount", reviews.getSize());
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("titles", reviews);
+        return "user";
 
-        //TODO: this might be a temp fix only. Without this, multiple users with the same username can be created, despite having @unique annotation, but could not login with not unique username.
-    }
-
-    @GetMapping("/delete")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return "redirect:/reviews";
-    }
-
-    @GetMapping("/users")
-    public String getAllUsers(Model model) {
-        List<User> userList = userService.getUsers();
-        model.addAttribute("users", userList);
-        return "users";
     }
 
     @PostMapping("/incognito/toggle/{id}")
@@ -77,44 +80,26 @@ public class UserController {
         return "redirect:/user/user/" + user.getId();
     }
 
-    @GetMapping("/user/{id}")
-    public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) throws UnsupportedEncodingException {
-
-        User user = userService.getUser(id);
-
-        model.addAttribute("incognito", user.isIncognito());
-        orderMap.mapReviewsByUserToOrderType(pageNumber, user);
-        Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
-
-        orderMap.mapCommentsByUserToOrderType(pageNumber, user);
-        Page<Comment> comments = orderMap.commentsByOrderTypeAndUser.get(commentOrderType);
-
-        long followedCategoriesCount = categoryService.getAllCategoriesUserFollows(user, pageNumber).getTotalElements();
-        model.addAttribute("followedCategoriesCount", followedCategoriesCount);
-        Page<Category> categories = categoryService.getAllCategoriesUserFollows(user, pageNumber);
-        model.addAttribute("categories", categories);
-
-        int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
-
-        if (userService.userHasFile(user)) {
-            File file = fileService.getFileByUserId(user.getId());
-            String image = fileService.retrieveImageEncodedInBase64(file);
-            model.addAttribute("file", image);
+    @PostMapping("/submit")
+    public String submitUser(User user) {
+        if (userService.validNewUser(user) && (userService.passwordsMatch(user))) {
+            userService.createUser(user);
+            return "redirect:/login";
+        } else {
+            return "signup";
         }
+    }
 
-        model.addAttribute("user", user);
+    @GetMapping("/signup")
+    public String createUser(Model model) {
+        model.addAttribute("user", new User());
+        return "signup";
+    }
 
-        model.addAttribute("comments", comments);
-
-        model.addAttribute("pageCount", pageCount);
-        model.addAttribute("pageNumber", pageNumber);
-        model.addAttribute("hasNextPage", reviews.hasNext());
-
-        model.addAttribute("reviewCount", reviews.getSize());
-        model.addAttribute("reviews", reviews);
-        model.addAttribute("titles", reviews);
-        return "user";
-
+    @GetMapping("/delete")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return "redirect:/reviews";
     }
 
 }
