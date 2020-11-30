@@ -1,14 +1,10 @@
 package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.Comment;
-import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.services.CommentService;
-import com.blog.reviewwebsite.services.ReviewService;
-import com.blog.reviewwebsite.services.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,17 +15,13 @@ import javax.validation.Valid;
 public class CommentController {
 
     private CommentService commentService;
-    private UserService userService;
-    private ReviewService reviewService;
 
-    public CommentController(CommentService commentService, UserService userService, ReviewService reviewService) {
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
-        this.userService = userService;
-        this.reviewService = reviewService;
     }
 
     @PostMapping("/submit/{id}")
-    public String submitComment(@Valid @ModelAttribute("newComment") Comment comment, BindingResult result, @PathVariable Long id, @AuthenticationPrincipal User user, Model model) {
+    public String submitComment(@Valid @ModelAttribute("newComment") Comment comment, BindingResult result, @PathVariable Long id, @AuthenticationPrincipal User user) {
         if (!result.hasErrors()) {
             commentService.saveOrUpdateComment(comment, user, id);
         }
