@@ -111,13 +111,4 @@ public class UserController {
 
     }
 
-    @GetMapping("/{username}")
-    public String findUser(@RequestParam String username, Model model) throws UnsupportedEncodingException {
-        User user = (User) userService.loadUserByUsername(username);
-//TODO: deal with incorrect usernames. Currently redirects to log in screen
-        return getUser(user.getId(), model, 0, OrderType.DEFAULT, OrderType.DEFAULT);
-
-    }
-
-
 }
