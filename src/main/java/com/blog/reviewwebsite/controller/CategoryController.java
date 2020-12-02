@@ -58,7 +58,7 @@ public class CategoryController {
 
     @GetMapping("/new")
     public String createNewCategory(@AuthenticationPrincipal User user, Model model) {
-        Category category = new Category(user.getUsername());
+        Category category = new Category();
         model.addAttribute("category", category);
         return "categoryForm";
     }
