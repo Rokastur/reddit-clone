@@ -69,9 +69,8 @@ public class ReviewController {
         if (result.hasErrors()) {
             return "form";
         } else {
-            Category category = categoryService.getOneById(categoryId);
-            Review newReview = reviewService.updateOrSaveReview(review, user, category);
-            model.addAttribute("review", newReview);
+            reviewService.updateReview(review, user, categoryId);
+            model.addAttribute("review", review);
             return "redirect:/reviews/?categoryId=" + categoryId;
         }
     }
@@ -97,6 +96,7 @@ public class ReviewController {
     private String editReview(Model model, @PathVariable Long id) {
         Review review = reviewService.getReview(id);
         model.addAttribute("review", review);
+        model.addAttribute("categoryId", review.getCategory().getId());
         return "form";
     }
 

@@ -17,10 +17,12 @@ public class ReviewService {
 
     private ReviewRepository reviewRepository;
     private ScoreRepository scoreRepository;
+    private CategoryService categoryService;
 
-    public ReviewService(ReviewRepository reviewRepository, ScoreRepository scoreRepository) {
+    public ReviewService(ReviewRepository reviewRepository, ScoreRepository scoreRepository, CategoryService categoryService) {
         this.reviewRepository = reviewRepository;
         this.scoreRepository = scoreRepository;
+        this.categoryService = categoryService;
     }
 
     public Page<Review> getAllNotHiddenByCommentCountDesc(int pageNumber, Category category) {
@@ -99,11 +101,19 @@ public class ReviewService {
         return reviewRepository.findAllByUsername(username, pageable);
     }
 
-    public Review updateOrSaveReview(Review review, User user, Category category) {
-//        sets currently authenticated user as a "owner" of the new or updated review
+    public Review updateReview(Review oldReview, User user, Long categoryId) {
+        Review review;
+        if (oldReview.getId() == null) {
+            review = new Review();
+        } else {
+            review = reviewRepository.getOne(oldReview.getId());
+        }
         review.setUser(user);
         review.setHidden(false);
-        review.setCategory(category);
+        review.setUsername(user.getUsername());
+        review.setCategory(categoryService.getOneById(categoryId));
+        review.setText(oldReview.getText());
+        review.setTitle(oldReview.getTitle());
         return reviewRepository.save(review);
     }
 
