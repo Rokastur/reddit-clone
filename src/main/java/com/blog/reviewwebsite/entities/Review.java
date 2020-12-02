@@ -16,20 +16,10 @@ import java.util.Set;
 @Table(name = "Review")
 public class Review {
 
-    public Review() {
-    }
-
-    public Review(String username) {
-        this.username = username;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
     private Long id;
-
-    @Column(name = "username")
-    private String username;
 
     @Column(name = "title")
     @NotBlank

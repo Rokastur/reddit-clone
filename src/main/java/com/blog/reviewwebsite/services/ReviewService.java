@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class ReviewService {
@@ -18,11 +18,13 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
     private ScoreRepository scoreRepository;
     private CategoryService categoryService;
+    private UserService userService;
 
-    public ReviewService(ReviewRepository reviewRepository, ScoreRepository scoreRepository, CategoryService categoryService) {
+    public ReviewService(ReviewRepository reviewRepository, ScoreRepository scoreRepository, CategoryService categoryService, UserService userService) {
         this.reviewRepository = reviewRepository;
         this.scoreRepository = scoreRepository;
         this.categoryService = categoryService;
+        this.userService = userService;
     }
 
     public Page<Review> getAllNotHiddenByCommentCountDesc(int pageNumber, Category category) {
@@ -92,13 +94,14 @@ public class ReviewService {
         return reviewRepository.findAllByHiddenFalseAndUserOrderByDateAsc(user.getUsername(), pageable);
     }
 
-    public List<Review> findAllReviewsByReviewer(String username) {
-        return reviewRepository.findAllByUsername(username);
+    public Set<Review> findAllReviewsByReviewer(User user) {
+        return reviewRepository.findAllByUser(user);
     }
 
     public Page<Review> getAllReviewsByReviewer(int pageNumber, String username) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByUsername(username, pageable);
+        User user = (User) userService.loadUserByUsername(username);
+        return reviewRepository.findAllByUser(user, pageable);
     }
 
     public Review updateReview(Review oldReview, User user, Long categoryId) {
@@ -110,7 +113,6 @@ public class ReviewService {
         }
         review.setUser(user);
         review.setHidden(false);
-        review.setUsername(user.getUsername());
         review.setCategory(categoryService.getOneById(categoryId));
         review.setText(oldReview.getText());
         review.setTitle(oldReview.getTitle());

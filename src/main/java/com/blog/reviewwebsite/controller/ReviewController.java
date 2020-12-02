@@ -77,7 +77,7 @@ public class ReviewController {
 
     @GetMapping("/form")
     private String createReview(Model model, @AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") Long categoryId) {
-        Review review = new Review(user.getUsername());
+        Review review = new Review();
         model.addAttribute("review", review);
         model.addAttribute("categoryId", categoryId);
         return "form";

@@ -41,7 +41,7 @@ public class UserController {
         Page<Category> categories = categoryService.getAllCategoriesUserFollows(user, pageNumber);
 
         long followedCategoriesCount = categoryService.getAllCategoriesUserFollows(user, pageNumber).getTotalElements();
-        int pageCount = reviewService.findAllReviewsByReviewer(user.getUsername()).size();
+        int pageCount = reviewService.findAllReviewsByReviewer(user).size();
 
         if (userService.userHasFile(user)) {
             File file = fileService.getFileByUserId(user.getId());

@@ -6,6 +6,9 @@ import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,14 +35,19 @@ public class UserService implements UserDetailsService {
         this.categoryService = categoryService;
     }
 
-    public List<Review> getUserReviews(Long id) {
+    public Page<Review> getUserReviews(int pageNumber, Long id) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
         User user = userRepository.getOne(id);
-        return reviewRepository.findAllByUsername(user.getUsername());
+        return reviewRepository.findAllByUser(user, pageable);
     }
 
     public User getUser(Long id) {
         User user = userRepository.getOne(id);
         return user;
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findUserByUsername(username).get();
     }
 
     @Transactional

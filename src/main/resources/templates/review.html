@@ -82,7 +82,7 @@
                 <p class="meta"><span class="date" th:text="${review.date}">today's date</span><span class="posted">Posted by <a
                         th:with="user=${review.user}"
                         th:href="@{/user/user/{id}/(id=${user.id})}"
-                        th:text="${review.username}"></a></span>
+                        th:text="${review.getUser().getUsername()}"></a></span>
                     <span th:text="|score: ${score}|"></span>
                 </p>
 
@@ -103,7 +103,7 @@
 
                     <a href=#>Report</a>
                     <div sec:authorize="isAuthenticated()">
-                        <div th:if="${user.username} == ${review.username}">
+                        <div th:if="${user.username} == ${review.getUser().getUsername()}">
                             <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit review</a>
                             <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
                         </div>
