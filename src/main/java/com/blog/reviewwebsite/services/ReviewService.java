@@ -35,13 +35,11 @@ public class ReviewService {
     public Page<Review> getAllNotHiddenByCommentCountAsc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountAsc(category.getId(), pageable);
-
     }
 
     public Page<Review> getAllNotHiddenReviewsByCategory(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAllByHiddenFalseAndCategory(category, pageable);
-
     }
 
     public Page<Review> getAllNotHiddenReviewsByCategoryDateDesc(int pageNumber, Long categoryId) {
@@ -123,7 +121,6 @@ public class ReviewService {
         Review review = reviewRepository.getOne(id);
         review.setHidden(true);
         reviewRepository.save(review);
-        //reviewRepository.deleteById(id);
     }
 
     public Review getReview(Long id) {
