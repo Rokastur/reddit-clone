@@ -52,7 +52,6 @@ public class ScoreService {
         for (Comment comment : reviewComments) {
             commentScoreMap.put(comment.getId(), getCommentScore(comment));
         }
-
     }
 
     public long getCommentUpvoteCount(Comment comment) {
@@ -83,7 +82,6 @@ public class ScoreService {
             score.setUser(user);
         }
         updateOrSaveVote(score);
-
     }
 
     public void voteOnComment(Long commentId, User user, RatingType ratingType) {
