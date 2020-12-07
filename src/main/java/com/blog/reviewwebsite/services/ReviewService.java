@@ -18,13 +18,11 @@ import java.util.Set;
 public class ReviewService {
 
     private ReviewRepository reviewRepository;
-    private ScoreService scoreService;
     private CategoryService categoryService;
     private UserService userService;
 
-    public ReviewService(ReviewRepository reviewRepository, ScoreService scoreService, CategoryService categoryService, UserService userService) {
+    public ReviewService(ReviewRepository reviewRepository, CategoryService categoryService, UserService userService) {
         this.reviewRepository = reviewRepository;
-        this.scoreService = scoreService;
         this.categoryService = categoryService;
         this.userService = userService;
     }
