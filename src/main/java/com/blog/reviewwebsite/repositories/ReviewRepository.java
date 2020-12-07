@@ -24,9 +24,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
 //    v ----------------- order types ----------------- v
 
-    Page<Review> findAllByHiddenFalseAndCategoryOrderByTotalScoreDesc(Category category, Pageable pageable);
+    //ordering by score currently dont work with reviews who have no score assigned to them. possible work-arround for future - creating review also creates score entity, so ordering works
+    @Query(value = "SELECT r.* FROM review r JOIN review_score s on r.review_id = s.review_id WHERE r.category_id =:categoryId AND hidden = false GROUP BY r.review_id ORDER BY COUNT(s.review_id) DESC", nativeQuery = true) //not sure if works
+    Page<Review> findAllByHiddenFalseAndCategoryOrderByTotalScoreDesc(Long categoryId, Pageable pageable);
 
-    Page<Review> findAllByHiddenFalseAndCategoryOrderByTotalScoreAsc(Category category, Pageable pageable);
+    @Query(value = "SELECT r.* FROM review r JOIN review_score s on r.review_id = s.review_id WHERE r.category_id =:categoryId AND hidden = false GROUP BY r.review_id ORDER BY COUNT(s.review_id) ASC", nativeQuery = true) //not sure if works
+    Page<Review> findAllByHiddenFalseAndCategoryOrderByTotalScoreAsc(Long categoryId, Pageable pageable);
 
     @Query(value = "SELECT * FROM Review WHERE hidden = 'false' AND category_id= :categoryId ORDER BY DATE DESC", nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndCategoryOrderByDateDesc(Pageable pageable, Long categoryId);
@@ -34,25 +37,31 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query(value = "SELECT * FROM Review WHERE hidden = 'false' AND category_id= :categoryId ORDER BY DATE ASC", nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndCategoryOrderByDateAsc(Pageable pageable, Long categoryId);
 
-    Page<Review> findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(Category category, Pageable pageable);
+    @Query(value = "SELECT r.* FROM review r LEFT JOIN comments c ON r.review_id = c.review_id WHERE r.CATEGORY_id =:categoryId AND hidden = false GROUP BY r.review_id ORDER BY COUNT(c.review_id) DESC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(Long categoryId, Pageable pageable);
 
-    Page<Review> findAllByHiddenFalseAndCategoryOrderByCommentCountAsc(Category category, Pageable pageable);
+    @Query(value = "SELECT r.* FROM review r LEFT JOIN comments c ON r.review_id = c.review_id WHERE r.CATEGORY_id =:categoryId AND hidden = false GROUP BY r.review_id ORDER BY COUNT(c.review_id) ASC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndCategoryOrderByCommentCountAsc(Long categoryId, Pageable pageable);
 
 //    v ----------------- order types for single user reviews ----------------- v
 
-    Page<Review> findAllByHiddenFalseAndUserOrderByTotalScoreDesc(User user, Pageable pageable);
+    @Query(value = "SELECT r.* FROM review r JOIN review_score s on r.review_id = s.review_id WHERE id =:userId AND hidden = false GROUP BY r.review_id ORDER BY COUNT(s.review_id) DESC", nativeQuery = true) //not sure if works
+    Page<Review> findAllByHiddenFalseAndUserOrderByTotalScoreDesc(Long userId, Pageable pageable);
 
-    Page<Review> findAllByHiddenFalseAndUserOrderByTotalScoreAsc(User user, Pageable pageable);
+    @Query(value = "SELECT r.* FROM review r JOIN review_score s on r.review_id = s.review_id WHERE id =:userId AND hidden = false GROUP BY r.review_id ORDER BY COUNT(s.review_id) ASC", nativeQuery = true) //not sure if works
+    Page<Review> findAllByHiddenFalseAndUserOrderByTotalScoreAsc(Long userId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM review WHERE hidden = 'false' AND username = :username ORDER BY DATE DESC", nativeQuery = true)
-    Page<Review> findAllByHiddenFalseAndUserOrderByDateDesc(String username, Pageable pageable);
+    @Query(value = "SELECT * FROM review WHERE hidden = 'false' AND id =:userId ORDER BY DATE DESC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndUserOrderByDateDesc(Long userId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM review WHERE hidden = 'false' AND username = :username ORDER BY DATE ASC", nativeQuery = true)
-    Page<Review> findAllByHiddenFalseAndUserOrderByDateAsc(String username, Pageable pageable);
+    @Query(value = "SELECT * FROM review WHERE hidden = 'false' AND id =:userId ORDER BY DATE ASC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndUserOrderByDateAsc(Long userId, Pageable pageable);
 
-    Page<Review> findAllByHiddenFalseAndUserOrderByCommentCountDesc(User user, Pageable pageable);
+    @Query(value = "SELECT r.* FROM review r LEFT JOIN comments c ON r.review_id = c.review_id WHERE id =:userId AND hidden = false GROUP BY r.review_id ORDER BY COUNT(c.review_id) DESC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndUserOrderByCommentCountDesc(Long userId, Pageable pageable);
 
-    Page<Review> findAllByHiddenFalseAndUserOrderByCommentCountAsc(User user, Pageable pageable);
+    @Query(value = "SELECT r.* FROM review r LEFT JOIN comments c ON r.review_id = c.review_id WHERE id =:userId AND hidden = false GROUP BY r.review_id ORDER BY COUNT(c.review_id) ASC", nativeQuery = true)
+    Page<Review> findAllByHiddenFalseAndUserOrderByCommentCountAsc(Long userId, Pageable pageable);
 
 
 }

@@ -29,12 +29,12 @@ public class ReviewService {
 
     public Page<Review> getAllNotHiddenByCommentCountDesc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(category, pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(category.getId(), pageable);
     }
 
     public Page<Review> getAllNotHiddenByCommentCountAsc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountAsc(category, pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountAsc(category.getId(), pageable);
 
     }
 
@@ -56,42 +56,42 @@ public class ReviewService {
 
     public Page<Review> getAllNotHiddenReviewsByTotalScoreDesc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByTotalScoreDesc(category, pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByTotalScoreDesc(category.getId(), pageable);
     }
 
     public Page<Review> getAllNotHiddenReviewsByTotalScoreAsc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByTotalScoreAsc(category, pageable);
+        return reviewRepository.findAllByHiddenFalseAndCategoryOrderByTotalScoreAsc(category.getId(), pageable);
     }
 
     public Page<Review> getAllNotHiddenByUserAndCommentCountDesc(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndUserOrderByCommentCountDesc(user, pageable);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByCommentCountDesc(user.getId(), pageable);
     }
 
     public Page<Review> getAllNotHiddenByUserAndCommentCountAsc(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndUserOrderByCommentCountAsc(user, pageable);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByCommentCountAsc(user.getId(), pageable);
     }
 
     public Page<Review> getAllNotHiddenByUserAndScoreDesc(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndUserOrderByTotalScoreDesc(user, pageable);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByTotalScoreDesc(user.getId(), pageable);
     }
 
     public Page<Review> getAllNotHiddenByUserAndScoreAsc(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndUserOrderByTotalScoreAsc(user, pageable);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByTotalScoreAsc(user.getId(), pageable);
     }
 
     public Page<Review> getAllNotHiddenByUserAndDateDesc(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndUserOrderByDateDesc(user.getUsername(), pageable);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByDateDesc(user.getId(), pageable);
     }
 
     public Page<Review> getAllNotHiddenByUserAndDateAsc(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return reviewRepository.findAllByHiddenFalseAndUserOrderByDateAsc(user.getUsername(), pageable);
+        return reviewRepository.findAllByHiddenFalseAndUserOrderByDateAsc(user.getId(), pageable);
     }
 
     public Set<Review> findAllReviewsByReviewer(User user) {
@@ -127,7 +127,6 @@ public class ReviewService {
     }
 
     public Review getReview(Long id) {
-        Review review = reviewRepository.getOne(id);
-        return review;
+        return reviewRepository.getOne(id);
     }
 }

@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -36,17 +37,12 @@ public class Comment {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private Set<CommentScore> commentScoreSet;
-
-    @Column(name = "total_upvotes")
-    private int totalUpvotes = 0;
-
-    @Column(name = "total_downvotes")
-    private int totalDownvotes = 0;
-
-    @Column(name = "total_score")
-    private int totalScore = 0;
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "commentScore",
+            joinColumns = @JoinColumn(name = "comment_id"),
+            inverseJoinColumns = @JoinColumn(name = "score_id")
+    )
+    private Set<Score> commentScore = new HashSet<>();
 
 }

@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Set;
@@ -21,10 +20,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY DATE ASC", nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByDateAsc(Long reviewId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY total_score DESC", nativeQuery = true)
+    @Query(value = "SELECT c.* FROM comments c JOIN comment_score s on c.comment_id = s.comment_id WHERE review_id =:reviewId GROUP BY c.comment_id ORDER BY COUNT(s.comment_id) DESC", nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByTotalScoreDesc(Long reviewId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM comments WHERE review_id= :reviewId ORDER BY total_score ASC", nativeQuery = true)
+    @Query(value = "SELECT c.* FROM comments c JOIN comment_score s on c.comment_id = s.comment_id WHERE review_id =:reviewId GROUP BY c.comment_id ORDER BY COUNT(s.comment_id) DESC", nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByTotalScoreAsc(Long reviewId, Pageable pageable);
 
     Page<Comment> findAllByReview(Review review, Pageable pageable);
@@ -39,10 +38,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "SELECT * FROM comments WHERE user_id= :userId ORDER BY DATE ASC", nativeQuery = true)
     Page<Comment> findAllByUserAndOrderByDateAsc(Long userId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM comments WHERE user_id= :userId ORDER BY total_score DESC", nativeQuery = true)
+    @Query(value = "SELECT c.* FROM comments c LEFT JOIN comment_score s on c.comment_id = s.comment_id WHERE user_id =:userId GROUP BY c.comment_id ORDER BY COUNT(s.comment_id) DESC", nativeQuery = true)
     Page<Comment> findAllByUserAndOrderByTotalScoreDesc(Long userId, Pageable pageable);
 
-    @Query(value = "SELECT * FROM comments WHERE user_id= :userId ORDER BY total_score ASC", nativeQuery = true)
+    @Query(value = "SELECT c.* FROM comments c LEFT JOIN comment_score s on c.comment_id = s.comment_id WHERE user_id =:userId GROUP BY c.comment_id ORDER BY COUNT(s.comment_id) ASC", nativeQuery = true)
     Page<Comment> findAllByUserAndOrderByTotalScoreAsc(Long userId, Pageable pageable);
 
 }

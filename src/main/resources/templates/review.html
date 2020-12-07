@@ -91,7 +91,7 @@
                     <p th:text="${review.text}">Review</p>
                     <p class="links">
 
-                    <div sec:authorize="isAuthenticated()">
+                    <div sec:authorize="isAuthenticated()" th:object="${review}">
                         <form method="post" th:action="@{/vote/submit/upvote/{id}/(id=${review.id})}">
                             <span>upvote<input type="submit"></span>
                         </form>
@@ -132,7 +132,6 @@
                 <div sec:authorize="isAuthenticated()">
                     <form method="post"
                           th:action="@{/vote/submit/upvote/comment/{id}/{commentId}(id=${review.id},commentId=${comment.id})}">
-
                         <span>upvote<input type="submit"></span>
                     </form>
 
@@ -143,7 +142,7 @@
                 </div>
 
                 <div class="post">
-                    <p>score: <span th:text="${comment.totalScore}"></span></p>
+                    <p>score: <span th:text="${commentScore.get(comment.id)}"></span></p>
                     <p class="meta"><span class="date" th:text="${comment.date}">today's date</span><span
                             class="posted">Posted by <a
                             th:with="user=${comment.user}"

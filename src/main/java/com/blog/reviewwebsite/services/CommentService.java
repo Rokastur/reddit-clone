@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class CommentService {
 
@@ -26,6 +28,10 @@ public class CommentService {
         return commentRepository.findAllByReview(review, pageable);
     }
 
+    public Set<Comment> getAllCommentsByReview(Review review) {
+        return commentRepository.findAllByReview(review);
+    }
+
     public Page<Comment> getAllCommentsByUser(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return commentRepository.findAllByUser(user, pageable);
@@ -37,7 +43,7 @@ public class CommentService {
         comment.setUser(user);
         commentRepository.save(comment);
 
-        review.setCommentCount(commentRepository.findAllByReview(review).size());
+        //review.setCommentCount(commentRepository.findAllByReview(review).size());
         reviewRepository.save(review);
     }
 
@@ -45,7 +51,7 @@ public class CommentService {
         commentRepository.deleteById(commentId);
 
         Review review = reviewRepository.getOne(reviewId);
-        review.setCommentCount(commentRepository.findAllByReview(review).size());
+        // review.setCommentCount(commentRepository.findAllByReview(review).size());
         reviewRepository.save(review);
 
     }
@@ -88,6 +94,10 @@ public class CommentService {
     public Page<Comment> getAllCommentsByUserScoreAsc(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return commentRepository.findAllByUserAndOrderByTotalScoreAsc(user.getId(), pageable);
+    }
+
+    public Comment getOneById(Long id) {
+        return commentRepository.getOne(id);
     }
 
 

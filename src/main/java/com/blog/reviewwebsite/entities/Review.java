@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +37,14 @@ public class Review {
     @CreationTimestamp
     private LocalDateTime date;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "reviewScore",
+            joinColumns = @JoinColumn(name = "review_id"),
+            inverseJoinColumns = @JoinColumn(name = "score_id")
+    )
+    private Set<Score> reviewScore = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id", nullable = false)
     private User user;
@@ -47,19 +56,14 @@ public class Review {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "review")
-    private Set<Score> scoreSet;
-
-    @Column(name = "total_upvotes")
-    private int totalUpvotes = 0;
-
-    @Column(name = "total_downvotes")
-    private int totalDownvotes = 0;
-
-    @Column(name = "total_score")
-    private int totalScore = 0;
-
-    @Column(name = "comment_count")
-    private int commentCount = 0;
-
+    @Override
+    public String toString() {
+        return "Review{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", hidden=" + hidden +
+                ", date=" + date +
+                '}';
+    }
 }

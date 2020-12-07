@@ -67,8 +67,7 @@
         </div>
         <div th:each="review: ${reviews}">
             <div class="post">
-                <h2 class="title"><a href="#" th:text="${review.title}">Title</a><span
-                        th:text="${review.totalScore}"></span></h2>
+                <h2 class="title"><a href="#" th:text="${review.title}">Title</a></span></h2>
                 <p class="meta"><span class="date" th:text="${review.date}">today's date</span><span
                         class="posted">Posted by <a
                         th:with="user=${review.user}"

@@ -1,28 +1,30 @@
 package com.blog.reviewwebsite.repositories;
 
-import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.Score;
-import com.blog.reviewwebsite.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.Set;
 
 @Repository
 public interface ScoreRepository extends JpaRepository<Score, Long> {
 
-    Set<Score> findAllByReview(Review review);
+    @Query(value = "SELECT * FROM score JOIN review_score ON score.id = review_score.score_id WHERE user_id =:userId AND review_id =:reviewId", nativeQuery = true)
+    Score getOneByUserAndReview(Long userId, Long reviewId);
 
-    Boolean existsByReviewAndUser(Review review, User user);
+    @Query(value = "SELECT COUNT(*) FROM score JOIN review_score ON score.id = review_score.score_id WHERE rating_type = 'UPVOTE' AND review_id =:reviewId", nativeQuery = true)
+    long getUpvoteCountByReview(Long reviewId);
 
-    Boolean existsByReviewAndUserAndUpvotedTrue(Review review, User user);
+    @Query(value = "SELECT COUNT(*) FROM score JOIN review_score ON score.id = review_score.score_id WHERE rating_type = 'DOWNVOTE' AND review_id =:reviewId", nativeQuery = true)
+    long getDownvoteCountByReview(Long reviewId);
 
-    Boolean existsByReviewAndUserAndDownvotedTrue(Review review, User user);
+    @Query(value = "SELECT * FROM score JOIN comment_score ON score.id = comment_score.score_id WHERE user_id =:userId and comment_id =:commentId", nativeQuery = true)
+    Score getOneByUserAndComment(Long userId, Long commentId);
 
-    Score findOneByReviewAndUser(Review review, User user);
+    @Query(value = "SELECT COUNT(*) FROM score JOIN comment_score ON score.id = comment_score.score_id WHERE rating_type = 'UPVOTE' AND comment_id =:commentId", nativeQuery = true)
+    long getUpvoteCountByComment(Long commentId);
 
-    Set<Score> findAllByReviewAndUpvotedTrue(Review review);
+    @Query(value = "SELECT COUNT(*) FROM score JOIN comment_score ON score.id = comment_score.score_id WHERE rating_type = 'DOWNVOTE' AND comment_id =:commentId", nativeQuery = true)
+    long getDownvoteCountByComment(Long commentId);
 
-    Set<Score> findAllByReviewAndDownvotedTrue(Review review);
 
 }

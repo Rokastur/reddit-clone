@@ -1,105 +1,114 @@
 package com.blog.reviewwebsite.services;
 
+import com.blog.reviewwebsite.controller.RatingType;
 import com.blog.reviewwebsite.entities.Comment;
 import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
-import com.blog.reviewwebsite.repositories.CommentRepository;
-import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.ScoreRepository;
+import lombok.Getter;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Service
 public class ScoreService {
 
+    private UserService userService;
+    private ReviewService reviewService;
+    private CommentService commentService;
     private ScoreRepository scoreRepository;
-    private ReviewRepository reviewRepository;
 
-    public ScoreService(ScoreRepository scoreRepository, ReviewRepository reviewRepository) {
+    public ScoreService(UserService userService, ReviewService reviewService, CommentService commentService, ScoreRepository scoreRepository) {
+        this.userService = userService;
+        this.reviewService = reviewService;
+        this.commentService = commentService;
         this.scoreRepository = scoreRepository;
-        this.reviewRepository = reviewRepository;
     }
 
-    public void upvoteReview(Long id, User user, Score score) {
-        Review review = reviewRepository.getOne(id);
+    @Getter
+    private Map<Long, Long> commentScoreMap = new HashMap<>();
 
-        if (userAlreadyUpvotedReview(review, user)) {
-            Score existingVote = scoreRepository.findOneByReviewAndUser(review, user);
-            scoreRepository.delete(existingVote);
-            updateAllVotes(review);
-            reviewRepository.save(review);
-            return;
+    public long getReviewScore(Review review) {
+        return getReviewUpvoteCount(review) - getReviewDownvoteCount(review);
+    }
+
+    public long getReviewUpvoteCount(Review review) {
+        return scoreRepository.getUpvoteCountByReview(review.getId());
+    }
+
+    public long getReviewDownvoteCount(Review review) {
+        return scoreRepository.getDownvoteCountByReview(review.getId());
+    }
+
+    public long getCommentScore(Comment comment) {
+        return getCommentUpvoteCount(comment) - getCommentDownvoteCount(comment);
+    }
+
+    public void mapScoreToReviewCommentsId(Review review) {
+        Set<Comment> reviewComments = commentService.getAllCommentsByReview(review);
+        for (Comment comment : reviewComments) {
+            commentScoreMap.put(comment.getId(), getCommentScore(comment));
         }
-        if (userAlreadyDownvotedReview(review, user)) {
-            Score existingVote = scoreRepository.findOneByReviewAndUser(review, user);
-            scoreRepository.delete(existingVote);
+
+    }
+
+    public long getCommentUpvoteCount(Comment comment) {
+        return scoreRepository.getUpvoteCountByComment(comment.getId());
+    }
+
+    public long getCommentDownvoteCount(Comment comment) {
+        return scoreRepository.getDownvoteCountByComment(comment.getId());
+    }
+
+    public void voteOnReview(Long reviewId, User user, RatingType ratingType) {
+        Score score;
+        Review review = reviewService.getReview(reviewId);
+        User dbUser = userService.getUser(user.getId());
+
+        if (scoreRepository.getOneByUserAndReview(user.getId(), reviewId) != null) {
+            score = scoreRepository.getOneByUserAndReview(user.getId(), reviewId);
+            if (score.getRatingType().equals(ratingType)) {
+                score.setRatingType(RatingType.NONE);
+            } else {
+                score.setRatingType(ratingType);
+            }
+        } else {
+            score = new Score();
+            score.setRatingType(ratingType);
+            review.getReviewScore().add(score);
+            dbUser.getScore().add(score);
+            score.setUser(user);
         }
-        score.setReview(review);
-        score.setUser(user);
-        score.setUpvoted(true);
-        scoreRepository.save(score);
-        updateAllVotes(review);
-        reviewRepository.save(review);
+        updateOrSaveVote(score);
 
     }
 
-    public void downvoteReview(Long id, User user, Score score) {
-        Review review = reviewRepository.getOne(id);
+    public void voteOnComment(Long commentId, User user, RatingType ratingType) {
+        Score score;
+        Comment comment = commentService.getOneById(commentId);
+        User dbUser = userService.getUser(user.getId());
 
-        if (userAlreadyDownvotedReview(review, user)) {
-            Score existingVote = scoreRepository.findOneByReviewAndUser(review, user);
-            scoreRepository.delete(existingVote);
-            updateAllVotes(review);
-            reviewRepository.save(review);
-            return;
+        if (scoreRepository.getOneByUserAndComment(user.getId(), commentId) != null) {
+            score = scoreRepository.getOneByUserAndComment(user.getId(), commentId);
+            if (score.getRatingType().equals(ratingType)) {
+                score.setRatingType(RatingType.NONE);
+            } else {
+                score.setRatingType(ratingType);
+            }
+        } else {
+            score = new Score();
+            score.setRatingType(ratingType);
+            comment.getCommentScore().add(score);
+            dbUser.getScore().add(score);
+            score.setUser(user);
         }
-        if (userAlreadyUpvotedReview(review, user)) {
-            Score existingVote = scoreRepository.findOneByReviewAndUser(review, user);
-            scoreRepository.delete(existingVote);
-        }
-        score.setReview(review);
-        score.setUser(user);
-        score.setDownvoted(true);
-        scoreRepository.save(score);
-        updateAllVotes(review);
-        reviewRepository.save(review);
-
+        updateOrSaveVote(score);
     }
 
-
-    public Boolean userAlreadyUpvotedReview(Review review, User user) {
-        return scoreRepository.existsByReviewAndUserAndUpvotedTrue(review, user);
-    }
-
-    public Boolean userAlreadyDownvotedReview(Review review, User user) {
-        return scoreRepository.existsByReviewAndUserAndDownvotedTrue(review, user);
-    }
-
-
-    public Long calculateAndGetReviewVoteScore(Review review) {
-        Set<Score> scores = scoreRepository.findAllByReview(review);
-        Long upvoteCount = scores.stream()
-                .filter(score -> score.getUpvoted() != null)
-                .filter(Score::getUpvoted).count();
-
-        Long downvoteCount = scores.stream()
-                .filter((score -> score.getDownvoted() != null))
-                .filter(Score::getDownvoted).count();
-
-        int meme = scoreRepository.findAllByReviewAndUpvotedTrue(review).size();
-        int meme2 = scoreRepository.findAllByReviewAndDownvotedTrue(review).size();
-
-        System.out.println(meme - meme2);
-
-
-        return upvoteCount - downvoteCount;
-    }
-
-    public void updateAllVotes(Review review) {
-        review.setTotalUpvotes(scoreRepository.findAllByReviewAndUpvotedTrue(review).size());
-        review.setTotalDownvotes(scoreRepository.findAllByReviewAndDownvotedTrue(review).size());
-        review.setTotalScore(review.getTotalUpvotes() - review.getTotalDownvotes());
+    public Score updateOrSaveVote(Score score) {
+        return scoreRepository.save(score);
     }
 }

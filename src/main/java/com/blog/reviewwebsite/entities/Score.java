@@ -1,9 +1,11 @@
 package com.blog.reviewwebsite.entities;
 
+import com.blog.reviewwebsite.controller.RatingType;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -15,18 +17,17 @@ public class Score {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "review_id", nullable = false)
-    private Review review;
+    @Column(name = "rating_type")
+    @Enumerated(EnumType.STRING)
+    private RatingType ratingType;
+
+    @ManyToMany(mappedBy = "reviewScore")
+    private Set<Review> reviewScore;
+
+    @ManyToMany(mappedBy = "commentScore")
+    private Set<Comment> commentScore;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
-
-    @Column(name = "upvoted")
-    private Boolean upvoted;
-
-    @Column(name = "downvoted")
-    private Boolean downvoted;
-
 }

@@ -2,15 +2,27 @@ package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.*;
 import com.blog.reviewwebsite.services.CategoryService;
+import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
+import com.blog.reviewwebsite.services.ScoreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Converter;
 import javax.validation.Valid;
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/reviews")
@@ -19,13 +31,14 @@ public class ReviewController {
     private ReviewService reviewService;
     private CategoryService categoryService;
     private ContentOrderMap orderMap;
+    private ScoreService scoreService;
 
-    public ReviewController(ReviewService reviewService, CategoryService categoryService, ContentOrderMap orderMap) {
+    public ReviewController(ReviewService reviewService, CategoryService categoryService, ContentOrderMap orderMap, ScoreService scoreService) {
         this.reviewService = reviewService;
         this.categoryService = categoryService;
         this.orderMap = orderMap;
+        this.scoreService = scoreService;
     }
-
 
     @GetMapping
     private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "0") Long categoryId) {
@@ -50,6 +63,11 @@ public class ReviewController {
         Review review = reviewService.getReview(id);
         orderMap.mapCommentsByReviewToOrderType(pageNumber, review);
         Page<Comment> comments = orderMap.commentsByOrderType.get(commentOrderType);
+        long reviewScore = scoreService.getReviewScore(review);
+
+        scoreService.mapScoreToReviewCommentsId(review);
+
+        model.addAttribute("commentScore", scoreService.getCommentScoreMap());
 
         model.addAttribute("review", review);
         model.addAttribute("pageNumber", pageNumber);
@@ -57,9 +75,7 @@ public class ReviewController {
         model.addAttribute("commentCount", comments.getTotalElements());
         model.addAttribute("comments", comments.getContent());
         model.addAttribute("newComment", new Comment());
-        model.addAttribute("newScore", new Score());
-        model.addAttribute("score", review.getTotalScore());
-        model.addAttribute("newCommentScore", new CommentScore());
+        model.addAttribute("score", reviewScore);
 
         return "review";
     }

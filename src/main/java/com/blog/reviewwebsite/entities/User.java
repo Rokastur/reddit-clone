@@ -60,9 +60,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Score> score;
 
-    @OneToMany(mappedBy = "user")
-    private Set<CommentScore> commentScores;
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "followedCategories",
