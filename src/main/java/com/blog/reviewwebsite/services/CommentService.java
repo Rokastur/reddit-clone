@@ -42,18 +42,13 @@ public class CommentService {
         comment.setReview(review);
         comment.setUser(user);
         commentRepository.save(comment);
-
-        //review.setCommentCount(commentRepository.findAllByReview(review).size());
         reviewRepository.save(review);
     }
 
     public void deleteComment(Long reviewId, Long commentId) {
         commentRepository.deleteById(commentId);
-
         Review review = reviewRepository.getOne(reviewId);
-        // review.setCommentCount(commentRepository.findAllByReview(review).size());
         reviewRepository.save(review);
-
     }
 
     public Page<Comment> getAllCommentsByDateDesc(int pageNumber, Long reviewId) {
@@ -99,6 +94,5 @@ public class CommentService {
     public Comment getOneById(Long id) {
         return commentRepository.getOne(id);
     }
-
 
 }
