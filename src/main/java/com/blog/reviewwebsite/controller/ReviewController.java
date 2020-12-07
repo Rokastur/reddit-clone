@@ -42,7 +42,6 @@ public class ReviewController {
 
     @GetMapping
     private String getReviews(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "0") Long categoryId) {
-
         Category category = categoryService.getOneById(categoryId);
         orderMap.mapReviewsByCategoryToOrderType(pageNumber, category);
         Page<Review> reviews = orderMap.reviewsByOrderType.get(reviewOrderType);
@@ -53,22 +52,18 @@ public class ReviewController {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
         model.addAttribute("reviews", reviews.getContent());
-
         return "reviews";
     }
 
     @GetMapping("/review/{id}")
     private String getReview(Model model, @AuthenticationPrincipal User user, @PathVariable Long id, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) {
-
         Review review = reviewService.getReview(id);
         orderMap.mapCommentsByReviewToOrderType(pageNumber, review);
-        Page<Comment> comments = orderMap.commentsByOrderType.get(commentOrderType);
-        long reviewScore = scoreService.getReviewScore(review);
-
         scoreService.mapScoreToReviewCommentsId(review);
+        long reviewScore = scoreService.getReviewScore(review);
+        Page<Comment> comments = orderMap.commentsByOrderType.get(commentOrderType);
 
         model.addAttribute("commentScore", scoreService.getCommentScoreMap());
-
         model.addAttribute("review", review);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("user", user);
@@ -76,7 +71,6 @@ public class ReviewController {
         model.addAttribute("comments", comments.getContent());
         model.addAttribute("newComment", new Comment());
         model.addAttribute("score", reviewScore);
-
         return "review";
     }
 
