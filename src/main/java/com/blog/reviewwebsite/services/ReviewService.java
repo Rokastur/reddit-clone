@@ -1,7 +1,9 @@
 package com.blog.reviewwebsite.services;
 
+import com.blog.reviewwebsite.controller.RatingType;
 import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Review;
+import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.ScoreRepository;
@@ -16,13 +18,13 @@ import java.util.Set;
 public class ReviewService {
 
     private ReviewRepository reviewRepository;
-    private ScoreRepository scoreRepository;
+    private ScoreService scoreService;
     private CategoryService categoryService;
     private UserService userService;
 
-    public ReviewService(ReviewRepository reviewRepository, ScoreRepository scoreRepository, CategoryService categoryService, UserService userService) {
+    public ReviewService(ReviewRepository reviewRepository, ScoreService scoreService, CategoryService categoryService, UserService userService) {
         this.reviewRepository = reviewRepository;
-        this.scoreRepository = scoreRepository;
+        this.scoreService = scoreService;
         this.categoryService = categoryService;
         this.userService = userService;
     }
@@ -106,6 +108,10 @@ public class ReviewService {
         Review review;
         if (oldReview.getId() == null) {
             review = new Review();
+            Score score = new Score();
+            score.setUser(user);
+            score.setRatingType(RatingType.UPVOTE);
+            review.getReviewScore().add(score);
         } else {
             review = reviewRepository.getOne(oldReview.getId());
         }
