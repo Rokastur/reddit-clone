@@ -45,14 +45,14 @@ public class Review {
     )
     private Set<Score> reviewScore = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id", nullable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
+    @OneToMany(mappedBy = "review")
     private List<Comment> comments;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 

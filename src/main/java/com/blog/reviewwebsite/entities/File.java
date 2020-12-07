@@ -32,7 +32,7 @@ public class File {
     @Column(name = "uploaded_on")
     private LocalDateTime uploadedOn;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id", nullable = false)
     private User user;
 }

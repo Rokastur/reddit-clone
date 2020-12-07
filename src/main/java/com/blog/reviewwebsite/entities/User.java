@@ -45,10 +45,10 @@ public class User implements UserDetails {
     @Column(name = "incognito")
     private boolean incognito;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private Set<File> files;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private Set<Category> categories;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -23,11 +23,11 @@ public class Category {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id", nullable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    @OneToMany(mappedBy = "category")
     private Set<Review> reviewSet;
 
     @ManyToMany(mappedBy = "followedCategories")
