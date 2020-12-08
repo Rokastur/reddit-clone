@@ -19,9 +19,7 @@ public class FileController {
 
     @PostMapping("/uploadFile")
     public String submitProfilePicture(@RequestParam("file") MultipartFile file, @RequestParam Long id) throws IOException {
-
         fileService.storeFile(file, id);
-
         return "redirect:/user/user/" + id;
     }
 }
