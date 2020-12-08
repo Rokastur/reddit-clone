@@ -1,7 +1,5 @@
 package com.blog.reviewwebsite.entities;
 
-
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
