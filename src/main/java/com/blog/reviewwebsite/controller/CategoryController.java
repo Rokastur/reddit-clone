@@ -26,20 +26,14 @@ public class CategoryController {
 
     @GetMapping("/all")
     public String getAllCategories(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "DEFAULT") OrderType categoriesOrderType) {
-
         orderMap.mapCategoriesToOrderType(pageNumber);
-
         Page<Category> categories = orderMap.categoriesByOrderType.get(categoriesOrderType);
-
         int pageCount = categoryService.getAllCategories(pageNumber).getTotalPages();
-
         model.addAttribute("categories", categories.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", categories.hasNext());
         model.addAttribute("pageCount", pageCount);
-
         return "categories";
-
     }
 
     @PostMapping("/new/submit")
@@ -51,8 +45,7 @@ public class CategoryController {
 
     @PostMapping("/follow/{id}")
     public String followCategory(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        Long userId = user.getId();
-        userService.followCategory(userId, id);
+        userService.followCategory(user.getId(), id);
         return "redirect:/categories/all";
     }
 
