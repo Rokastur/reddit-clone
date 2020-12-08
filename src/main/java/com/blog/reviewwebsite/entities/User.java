@@ -51,11 +51,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Category> categories;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Review> reviews;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Comment> comments;
 
     @OneToMany(mappedBy = "user")
     private Set<Score> score;
