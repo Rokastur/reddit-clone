@@ -1,10 +1,7 @@
 package com.blog.reviewwebsite.services;
 
 import com.blog.reviewwebsite.controller.RatingType;
-import com.blog.reviewwebsite.entities.Comment;
-import com.blog.reviewwebsite.entities.Review;
-import com.blog.reviewwebsite.entities.Score;
-import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.entities.*;
 import com.blog.reviewwebsite.repositories.ScoreRepository;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
@@ -31,6 +28,9 @@ public class ScoreService {
     @Getter
     private Map<Long, Long> commentScoreMap = new HashMap<>();
 
+    @Getter
+    private Map<Long, Long> reviewScoreMap = new HashMap<>();
+
     public long getReviewScore(Review review) {
         return getReviewUpvoteCount(review) - getReviewDownvoteCount(review);
     }
@@ -45,6 +45,13 @@ public class ScoreService {
 
     public long getCommentScore(Comment comment) {
         return getCommentUpvoteCount(comment) - getCommentDownvoteCount(comment);
+    }
+
+    public void mapScoreToCategoryReviewsId(Category category) {
+        Set<Review> reviews = reviewService.getAllNotHiddenReviewsByCategory(category);
+        for (Review review : reviews) {
+            reviewScoreMap.put(review.getId(), getReviewScore(review));
+        }
     }
 
     public void mapScoreToReviewCommentsId(Review review) {
@@ -109,4 +116,5 @@ public class ScoreService {
     public Score updateOrSaveVote(Score score) {
         return scoreRepository.save(score);
     }
+
 }

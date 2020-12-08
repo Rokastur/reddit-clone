@@ -2,27 +2,16 @@ package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.*;
 import com.blog.reviewwebsite.services.CategoryService;
-import com.blog.reviewwebsite.services.CommentService;
 import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.ScoreService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.Converter;
 import javax.validation.Valid;
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
 
 @Controller
 @RequestMapping("/reviews")
@@ -46,7 +35,8 @@ public class ReviewController {
         orderMap.mapReviewsByCategoryToOrderType(pageNumber, category);
         Page<Review> reviews = orderMap.reviewsByOrderType.get(reviewOrderType);
         int pageCount = reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category).getTotalPages();
-
+        scoreService.mapScoreToCategoryReviewsId(category);
+        model.addAttribute("reviewScore", scoreService.getReviewScoreMap());
         model.addAttribute("pageCount", pageCount);
         model.addAttribute("categoryId", categoryId);
         model.addAttribute("pageNumber", pageNumber);

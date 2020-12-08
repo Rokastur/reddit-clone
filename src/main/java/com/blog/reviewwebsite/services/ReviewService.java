@@ -6,7 +6,6 @@ import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
-import com.blog.reviewwebsite.repositories.ScoreRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +39,10 @@ public class ReviewService {
     public Page<Review> getAllNotHiddenReviewsByCategory(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAllByHiddenFalseAndCategory(category, pageable);
+    }
+
+    public Set<Review> getAllNotHiddenReviewsByCategory(Category category) {
+        return reviewRepository.findAllByHiddenFalseAndCategory(category);
     }
 
     public Page<Review> getAllNotHiddenReviewsByCategoryDateDesc(int pageNumber, Long categoryId) {

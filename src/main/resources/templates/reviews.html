@@ -74,6 +74,7 @@
                         th:href="@{/user/user/{id}/(id=${user.id})}"
                         th:text="${review.getUser().getUsername()}"></a></span>
                 <p>total comments: <span th:text="${review.comments.size()}"></span></p>
+                <p>review score: <span th:text="${reviewScore.get(review.id)}"></span></p>
                 </p>
 
                 <div style="clear: both;"></div>
