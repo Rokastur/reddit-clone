@@ -32,6 +32,5 @@ public class CommentController {
     public String getDeleteComment(@PathVariable Long id, @PathVariable Long commentId) {
         commentService.deleteComment(id, commentId);
         return "redirect:/reviews/review/" + id;
-
     }
 }
