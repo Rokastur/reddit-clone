@@ -77,6 +77,4 @@ public class ContentOrderMap {
         categoriesByOrderType.put(OrderType.POST_DATE_DESC, categoryService.getAllCategoriesByNewestPost(pageNumber));
         categoriesByOrderType.put(OrderType.POST_DATE_ASC, categoryService.getAllCategoriesByOldestPost(pageNumber));
     }
-
-
 }
