@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -50,7 +49,7 @@ public class Review {
     private User user;
 
     @OneToMany(mappedBy = "review")
-    private List<Comment> comments;
+    private Set<Comment> comments;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
