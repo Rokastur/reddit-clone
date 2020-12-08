@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.*;
 public class RatingController {
 
     private ScoreService scoreService;
-    private ReviewService reviewService;
 
-    public RatingController(ScoreService scoreService, ReviewService reviewService) {
+    public RatingController(ScoreService scoreService) {
         this.scoreService = scoreService;
-        this.reviewService = reviewService;
     }
 
     @PostMapping("/submit/upvote/{id}")
