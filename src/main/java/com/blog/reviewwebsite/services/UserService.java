@@ -63,8 +63,10 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public User updateUserDescription(User user) {
+        User dbUser = userRepository.getOne(user.getId());
+        dbUser.setProfileDescription(user.getProfileDescription());
+        return userRepository.save(dbUser);
     }
 
     public User followCategory(Long userId, Long id) {

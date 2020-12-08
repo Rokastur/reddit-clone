@@ -1,7 +1,6 @@
 package com.blog.reviewwebsite.controller;
 
 import com.blog.reviewwebsite.entities.*;
-import com.blog.reviewwebsite.repositories.UserRepository;
 import com.blog.reviewwebsite.services.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -72,7 +71,7 @@ public class UserController {
 
     @PostMapping("{id}/submit/profile-description")
     public String submitProfileDescription(@ModelAttribute User user) {
-        userService.updateUser(user);
+        userService.updateUserDescription(user);
         return "redirect:/user/user/" + user.getId();
     }
 
