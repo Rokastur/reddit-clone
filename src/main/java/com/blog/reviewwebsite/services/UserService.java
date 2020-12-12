@@ -37,19 +37,31 @@ public class UserService implements UserDetailsService {
         this.roleService = roleService;
     }
 
+    public User getUser(Long id) {
+        return userRepository.getOne(id);
+    }
+
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = roleService.getOneByName(Roles.USER);
+        user.getRoles().add(role);
+        return userRepository.save(user);
+    }
+
+    public User updateUserDescription(User user) {
+        User dbUser = userRepository.getOne(user.getId());
+        dbUser.setProfileDescription(user.getProfileDescription());
+        return userRepository.save(dbUser);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
     public Page<Review> getUserReviews(int pageNumber, Long id) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         User user = userRepository.getOne(id);
         return reviewRepository.findAllByUser(user, pageable);
-    }
-
-    public User getUser(Long id) {
-        User user = userRepository.getOne(id);
-        return user;
-    }
-
-    public User getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username).get();
     }
 
     @Transactional
@@ -57,18 +69,10 @@ public class UserService implements UserDetailsService {
         return !user.getFiles().isEmpty();
     }
 
-
     public User toggleIncognito(Long userId) {
         User user = userRepository.getOne(userId);
         user.setIncognito(!user.isIncognito());
-        userRepository.save(user);
-        return user;
-    }
-
-    public User updateUserDescription(User user) {
-        User dbUser = userRepository.getOne(user.getId());
-        dbUser.setProfileDescription(user.getProfileDescription());
-        return userRepository.save(dbUser);
+        return userRepository.save(user);
     }
 
     public User followCategory(Long userId, Long id) {
@@ -79,19 +83,7 @@ public class UserService implements UserDetailsService {
         } else {
             user.addCategory(category);
         }
-        userRepository.save(user);
-        return user;
-    }
-
-    public User createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleService.getOneByName(Roles.USER);
-        user.getRoles().add(role);
         return userRepository.save(user);
-    }
-
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
     }
 
     @Override
@@ -100,15 +92,10 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean validNewUser(User user) {
-        if (userRepository.findUserByUsername(user.getUsername()).isPresent()) {
-            return false;
-        } else return true;
+        return !userRepository.findUserByUsername(user.getUsername()).isPresent();
     }
 
     public boolean passwordsMatch(User user) {
-        if (user.getPassword().equals(user.getRetypePassword())) {
-            return true;
-        }
-        return false;
+        return user.getPassword().equals(user.getRetypePassword());
     }
 }
