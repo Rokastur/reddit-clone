@@ -47,6 +47,14 @@ public class ScoreService {
         return getCommentUpvoteCount(comment) - getCommentDownvoteCount(comment);
     }
 
+    public long getCommentUpvoteCount(Comment comment) {
+        return scoreRepository.getUpvoteCountByComment(comment.getId());
+    }
+
+    public long getCommentDownvoteCount(Comment comment) {
+        return scoreRepository.getDownvoteCountByComment(comment.getId());
+    }
+
     public void mapScoreToCategoryReviewsId(Category category) {
         Set<Review> reviews = reviewService.getAllNotHiddenReviewsByCategory(category);
         for (Review review : reviews) {
@@ -59,14 +67,6 @@ public class ScoreService {
         for (Comment comment : reviewComments) {
             commentScoreMap.put(comment.getId(), getCommentScore(comment));
         }
-    }
-
-    public long getCommentUpvoteCount(Comment comment) {
-        return scoreRepository.getUpvoteCountByComment(comment.getId());
-    }
-
-    public long getCommentDownvoteCount(Comment comment) {
-        return scoreRepository.getDownvoteCountByComment(comment.getId());
     }
 
     public void voteOnReview(Long reviewId, User user, RatingType ratingType) {
