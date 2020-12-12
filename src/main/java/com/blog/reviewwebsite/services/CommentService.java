@@ -23,18 +23,8 @@ public class CommentService {
         this.reviewRepository = reviewRepository;
     }
 
-    public Page<Comment> getAllCommentsByReview(int pageNumber, Review review) {
-        Pageable pageable = PageRequest.of(pageNumber, 4);
-        return commentRepository.findAllByReview(review, pageable);
-    }
-
-    public Set<Comment> getAllCommentsByReview(Review review) {
-        return commentRepository.findAllByReview(review);
-    }
-
-    public Page<Comment> getAllCommentsByUser(int pageNumber, User user) {
-        Pageable pageable = PageRequest.of(pageNumber, 4);
-        return commentRepository.findAllByUser(user, pageable);
+    public Comment getOneById(Long id) {
+        return commentRepository.getOne(id);
     }
 
     public void saveOrUpdateComment(Comment comment, User user, Long id) {
@@ -49,6 +39,20 @@ public class CommentService {
         commentRepository.deleteById(commentId);
         Review review = reviewRepository.getOne(reviewId);
         reviewRepository.save(review);
+    }
+
+    public Set<Comment> getAllCommentsByReview(Review review) {
+        return commentRepository.findAllByReview(review);
+    }
+
+    public Page<Comment> getAllCommentsByReview(int pageNumber, Review review) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByReview(review, pageable);
+    }
+
+    public Page<Comment> getAllCommentsByUser(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return commentRepository.findAllByUser(user, pageable);
     }
 
     public Page<Comment> getAllCommentsByDateDesc(int pageNumber, Long reviewId) {
@@ -89,10 +93,6 @@ public class CommentService {
     public Page<Comment> getAllCommentsByUserScoreAsc(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return commentRepository.findAllByUserAndOrderByTotalScoreAsc(user.getId(), pageable);
-    }
-
-    public Comment getOneById(Long id) {
-        return commentRepository.getOne(id);
     }
 
 }
