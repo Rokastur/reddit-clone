@@ -17,6 +17,10 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    public Category getOneById(Long id) {
+        return categoryRepository.getOne(id);
+    }
+
     public Category updateOrSaveCategory(Category category, User user) {
         category.setUser(user);
         return categoryRepository.save(category);
@@ -30,10 +34,6 @@ public class CategoryService {
     public Page<Category> getAllCategoriesUserFollows(User user, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return categoryRepository.findAllFollowedByUser(user.getId(), pageable);
-    }
-
-    public Category getOneById(Long id) {
-        return categoryRepository.getOne(id);
     }
 
     public Page<Category> getAllCategoriesByPostCountDesc(int pageNumber) {
