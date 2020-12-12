@@ -26,6 +26,39 @@ public class ReviewService {
         this.userService = userService;
     }
 
+    public Review getReview(Long id) {
+        return reviewRepository.getOne(id);
+    }
+
+    public Review updateReview(Review oldReview, User user, Long categoryId) {
+        Review review;
+        if (oldReview.getId() == null) {
+            review = new Review();
+            Score score = new Score();
+            score.setUser(user);
+            score.setRatingType(RatingType.UPVOTE);
+            review.getReviewScore().add(score);
+        } else {
+            review = reviewRepository.getOne(oldReview.getId());
+        }
+        review.setUser(user);
+        review.setHidden(false);
+        review.setCategory(categoryService.getOneById(categoryId));
+        review.setText(oldReview.getText());
+        review.setTitle(oldReview.getTitle());
+        return reviewRepository.save(review);
+    }
+
+    public void deleteReview(Long id) {
+        Review review = reviewRepository.getOne(id);
+        review.setHidden(true);
+        reviewRepository.save(review);
+    }
+
+    public Set<Review> findAllReviewsByReviewer(User user) {
+        return reviewRepository.findAllByUser(user);
+    }
+
     public Page<Review> getAllNotHiddenByCommentCountDesc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(category.getId(), pageable);
@@ -95,42 +128,10 @@ public class ReviewService {
         return reviewRepository.findAllByHiddenFalseAndUserOrderByDateAsc(user.getId(), pageable);
     }
 
-    public Set<Review> findAllReviewsByReviewer(User user) {
-        return reviewRepository.findAllByUser(user);
-    }
-
     public Page<Review> getAllReviewsByReviewer(int pageNumber, String username) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         User user = (User) userService.loadUserByUsername(username);
         return reviewRepository.findAllByUser(user, pageable);
     }
 
-    public Review updateReview(Review oldReview, User user, Long categoryId) {
-        Review review;
-        if (oldReview.getId() == null) {
-            review = new Review();
-            Score score = new Score();
-            score.setUser(user);
-            score.setRatingType(RatingType.UPVOTE);
-            review.getReviewScore().add(score);
-        } else {
-            review = reviewRepository.getOne(oldReview.getId());
-        }
-        review.setUser(user);
-        review.setHidden(false);
-        review.setCategory(categoryService.getOneById(categoryId));
-        review.setText(oldReview.getText());
-        review.setTitle(oldReview.getTitle());
-        return reviewRepository.save(review);
-    }
-
-    public void deleteReview(Long id) {
-        Review review = reviewRepository.getOne(id);
-        review.setHidden(true);
-        reviewRepository.save(review);
-    }
-
-    public Review getReview(Long id) {
-        return reviewRepository.getOne(id);
-    }
 }
