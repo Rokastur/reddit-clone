@@ -77,8 +77,7 @@ public class UserController {
 
     @PostMapping("/submit")
     public String submitUser(User user) {
-        if (userService.validNewUser(user) && (userService.passwordsMatch(user))) {
-            userService.createUser(user);
+        if (userService.createUser(user)) {
             return "redirect:/login";
         } else {
             return "signup";

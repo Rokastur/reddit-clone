@@ -41,11 +41,14 @@ public class UserService implements UserDetailsService {
         return userRepository.getOne(id);
     }
 
-    public User createUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role role = roleService.getOneByName(Roles.USER);
-        user.getRoles().add(role);
-        return userRepository.save(user);
+    public boolean createUser(User user) {
+        if (validNewUser(user) && passwordsMatch(user)) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            Role role = roleService.getOneByName(Roles.USER);
+            user.getRoles().add(role);
+            userRepository.save(user);
+            return true;
+        } else return false;
     }
 
     public User updateUserDescription(User user) {
