@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -45,7 +44,7 @@ public class FileService {
         return fileRepository.getUserFile(userId);
     }
 
-    public String retrieveImageEncodedInBase64(File file) throws UnsupportedEncodingException {
+    public String retrieveImageEncodedInBase64(File file) {
         byte[] base64Bytes = Base64.getEncoder().encode(file.getData());
         return new String(base64Bytes, StandardCharsets.UTF_8);
     }
