@@ -27,25 +27,19 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public String getUser(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "DEFAULT") OrderType reviewOrderType, @RequestParam(defaultValue = "DEFAULT") OrderType commentOrderType) {
-
         User user = userService.getUser(id);
-
         orderMap.mapReviewsByUserToOrderType(pageNumber, user);
         orderMap.mapCommentsByUserToOrderType(pageNumber, user);
-
         Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
         Page<Comment> comments = orderMap.commentsByOrderTypeAndUser.get(commentOrderType);
         Page<Category> categories = categoryService.getAllCategoriesUserFollows(user, pageNumber);
-
         long followedCategoriesCount = categoryService.getAllCategoriesUserFollows(user, pageNumber).getTotalElements();
         int pageCount = reviewService.findAllReviewsByReviewer(user).size();
-
         if (userService.userHasFile(user)) {
             File file = fileService.getFileByUserId(user.getId());
             String image = fileService.retrieveImageEncodedInBase64(file);
             model.addAttribute("file", image);
         }
-
         model.addAttribute("categories", categories);
         model.addAttribute("followedCategoriesCount", followedCategoriesCount);
         model.addAttribute("incognito", user.isIncognito());
@@ -57,7 +51,6 @@ public class UserController {
         model.addAttribute("reviewCount", reviews.getSize());
         model.addAttribute("reviews", reviews);
         model.addAttribute("titles", reviews);
-
         return "user";
     }
 
