@@ -3,52 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
 </head>
 <body>
 
-<div>
-    <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_DESC)}">
-        Post Count - most</a>
-    <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_ASC)}">
-        Post Count - least</a>
-    <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_DESC)}">
-        Follower Count - most</a>
-    <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_ASC)}">
-        Follower Count - least</a>
-    <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_DESC)}">
-        Newest Post</a>
-    <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_ASC)}">
-        Oldest Post</a>
-</div>
 
-<div th:each="category: ${categories}">
+<div class="grid-container">
+    <ul class="grid-item">
+        <li>
+            <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_DESC)}">
+                Post Count - most</a>
+        </li>
+        <li>
+            <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_ASC)}">
+                Post Count - least</a>
+        </li>
+        <li>
+            <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_DESC)}">
+                Follower Count - most</a>
+        </li>
+        <li>
+            <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_ASC)}">
+                Follower Count - least</a>
+        </li>
+        <li>
+            <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_DESC)}">
+                Newest Post</a>
+        </li>
+        <li>
+            <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_ASC)}">
+                Oldest Post</a>
+        </li>
+    </ul>
+    <div class="grid-item" th:each="category: ${categories}">
+        <p> Category: <span><a th:href="@{/reviews/(categoryId=${category.id})}" th:text="${category.name}"></a><span
+                th:text="| by ${category.getUser().getUsername()}|"></span></span>
 
+            <span> Description:<span th:text="${category.description}"></span></span>
+        </p>
+        <form method="post" th:action="@{/categories/follow/{id}/(id=${category.id})}">
+            <span>follow</span>
+            <input type="submit">
+        </form>
 
-    <p> Category: <span><a th:href="@{/reviews/(categoryId=${category.id})}" th:text="${category.name}"></a><span
-            th:text="${category.getUser().getUsername()}"></span><span th:text="${category.id}"></span></span>
-    </p>
-    <p> Description: <p th:text="${category.description}"></p></p>
-    <p>----------</p>
-    <form method="post" th:action="@{/categories/follow/{id}/(id=${category.id})}">
-        <span>follow</span>
-        <input type="submit">
-    </form>
-
-</div>
-
-
-<div>
-    <p>
-        <a th:href="@{/categories/all/(pageNumber=${pageNumber - 1})}"
-           th:if="${pageNumber != 0}">
-            < </a>
-        <span th:text="${pageNumber} + 1">current page</span>
-        <span>/</span>
-        <span th:text="${pageCount}">total pages</span>
-        <a th:href="@{/categories/all/(pageNumber=${pageNumber + 1})}"
-           th:if="${hasNextPage}">
-            > </a>
-    </p>
+    </div>
+    <div class="grid-item">
+        <p>
+            <a th:href="@{/categories/all/(pageNumber=${pageNumber - 1})}"
+               th:if="${pageNumber != 0}">
+                < </a>
+            <span th:text="${pageNumber} + 1">current page</span>
+            <span>/</span>
+            <span th:text="${pageCount}">total pages</span>
+            <a th:href="@{/categories/all/(pageNumber=${pageNumber + 1})}"
+               th:if="${hasNextPage}">
+                > </a>
+        </p>
+    </div>
 </div>
 
 </body>
