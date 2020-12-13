@@ -37,9 +37,8 @@ public class CategoryController {
     }
 
     @PostMapping("/new/submit")
-    public String submitNewCategory(@ModelAttribute Category category, @AuthenticationPrincipal User user, Model model) {
-        Category newCat = categoryService.updateOrSaveCategory(category, user);
-        model.addAttribute("category", newCat);
+    public String submitNewCategory(@ModelAttribute Category category, @AuthenticationPrincipal User user) {
+        categoryService.updateOrSaveCategory(category, user);
         return "redirect:/categories/all";
     }
 
@@ -50,9 +49,8 @@ public class CategoryController {
     }
 
     @GetMapping("/new")
-    public String createNewCategory(@AuthenticationPrincipal User user, Model model) {
-        Category category = new Category();
-        model.addAttribute("category", category);
+    public String createNewCategory(Model model) {
+        model.addAttribute("category", new Category());
         return "categoryForm";
     }
 }
