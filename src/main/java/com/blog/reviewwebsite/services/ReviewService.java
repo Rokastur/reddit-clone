@@ -59,6 +59,10 @@ public class ReviewService {
         return reviewRepository.findAllByUser(user);
     }
 
+    public Set<Review> getAllNotHiddenReviewsByCategory(Category category) {
+        return reviewRepository.findAllByHiddenFalseAndCategory(category);
+    }
+
     public Page<Review> getAllNotHiddenByCommentCountDesc(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAllByHiddenFalseAndCategoryOrderByCommentCountDesc(category.getId(), pageable);
@@ -72,10 +76,6 @@ public class ReviewService {
     public Page<Review> getAllNotHiddenReviewsByCategory(int pageNumber, Category category) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAllByHiddenFalseAndCategory(category, pageable);
-    }
-
-    public Set<Review> getAllNotHiddenReviewsByCategory(Category category) {
-        return reviewRepository.findAllByHiddenFalseAndCategory(category);
     }
 
     public Page<Review> getAllNotHiddenReviewsByCategoryDateDesc(int pageNumber, Long categoryId) {
