@@ -1,8 +1,6 @@
 package com.blog.reviewwebsite.controller;
 
-import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
-import com.blog.reviewwebsite.services.ReviewService;
 import com.blog.reviewwebsite.services.ScoreService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
