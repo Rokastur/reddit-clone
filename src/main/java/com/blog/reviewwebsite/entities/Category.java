@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,6 +32,6 @@ public class Category {
     private Set<Review> reviewSet;
 
     @ManyToMany(mappedBy = "followedCategories")
-    private Set<User> followers;
+    private Set<User> followers = new HashSet<>();
 
 }

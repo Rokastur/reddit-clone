@@ -3,6 +3,7 @@ package com.blog.reviewwebsite.services;
 import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.CategoryRepository;
+import com.blog.reviewwebsite.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,18 +13,22 @@ import org.springframework.stereotype.Service;
 public class CategoryService {
 
     private CategoryRepository categoryRepository;
+    private UserRepository userRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, UserRepository userRepository) {
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     public Category getOneById(Long id) {
         return categoryRepository.getOne(id);
     }
 
-    public Category updateOrSaveCategory(Category category, User user) {
+    public void updateOrSaveCategory(Category category, User user) {
+        user.addFollowedCategory(category);
         category.setUser(user);
-        return categoryRepository.save(category);
+        categoryRepository.save(category);
+        userRepository.save(user);
     }
 
     public Page<Category> getAllCategories(int pageNumber) {

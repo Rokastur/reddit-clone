@@ -30,6 +30,10 @@ public class UserService implements UserDetailsService {
         this.roleService = roleService;
     }
 
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
     public User getUser(Long id) {
         return userRepository.getOne(id);
     }
@@ -69,9 +73,9 @@ public class UserService implements UserDetailsService {
         Category category = categoryService.getOneById(id);
         User user = userRepository.getOne(userId);
         if (user.getFollowedCategories().contains(category)) {
-            user.removeCategory(category);
+            user.removeFollowedCategory(category);
         } else {
-            user.addCategory(category);
+            user.addFollowedCategory(category);
         }
         return userRepository.save(user);
     }

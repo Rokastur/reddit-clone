@@ -68,12 +68,12 @@ public class User implements UserDetails {
     )
     private Set<Category> followedCategories = new HashSet<>();
 
-    public void addCategory(Category category) {
+    public void addFollowedCategory(Category category) {
         followedCategories.add(category);
         category.getFollowers().add(this);
     }
 
-    public void removeCategory(Category category) {
+    public void removeFollowedCategory(Category category) {
         followedCategories.remove(category);
         category.getFollowers().remove(this);
     }
