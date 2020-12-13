@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 
@@ -50,9 +51,7 @@ public class ReviewController {
         Review review = reviewService.getReview(id);
         orderMap.mapCommentsByReviewToOrderType(pageNumber, review);
         scoreService.mapScoreToReviewCommentsId(review);
-        long reviewScore = scoreService.getReviewScore(review);
         Page<Comment> comments = orderMap.commentsByOrderType.get(commentOrderType);
-
         model.addAttribute("commentScore", scoreService.getCommentScoreMap());
         model.addAttribute("review", review);
         model.addAttribute("pageNumber", pageNumber);
@@ -60,7 +59,7 @@ public class ReviewController {
         model.addAttribute("commentCount", comments.getTotalElements());
         model.addAttribute("comments", comments.getContent());
         model.addAttribute("newComment", new Comment());
-        model.addAttribute("score", reviewScore);
+        model.addAttribute("score", scoreService.getReviewScore(review));
         return "review";
     }
 
