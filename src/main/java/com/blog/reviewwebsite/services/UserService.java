@@ -2,15 +2,10 @@ package com.blog.reviewwebsite.services;
 
 import com.blog.reviewwebsite.controller.Roles;
 import com.blog.reviewwebsite.entities.Category;
-import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.Role;
 import com.blog.reviewwebsite.entities.User;
-import com.blog.reviewwebsite.repositories.ReviewRepository;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,16 +18,14 @@ import javax.transaction.Transactional;
 public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
-    private ReviewRepository reviewRepository;
     private CategoryService categoryService;
     private RoleService roleService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, ReviewRepository reviewRepository, CategoryService categoryService, RoleService roleService) {
+    public UserService(UserRepository userRepository, CategoryService categoryService, RoleService roleService) {
         this.userRepository = userRepository;
-        this.reviewRepository = reviewRepository;
         this.categoryService = categoryService;
         this.roleService = roleService;
     }
@@ -59,12 +52,6 @@ public class UserService implements UserDetailsService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
-    }
-
-    public Page<Review> getUserReviews(int pageNumber, Long id) {
-        Pageable pageable = PageRequest.of(pageNumber, 4);
-        User user = userRepository.getOne(id);
-        return reviewRepository.findAllByUser(user, pageable);
     }
 
     @Transactional
