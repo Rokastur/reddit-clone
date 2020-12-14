@@ -1,8 +1,31 @@
 .grid-container {
-  display: grid;
+    display: grid;
+    grid-template-columns: auto auto 60% auto auto;
+    grid-template-rows: auto auto auto auto auto;
+    justify-content: center;
+     align-items: stretch;
+
 }
 
-.grid-item {
-  display: inline-grid;
-  text-align: center;
+.middle-columns{
+grid-column: 3/5;
 }
+
+.main {
+grid-row-start: 3;
+}
+
+  .grid-item {
+    text-align: center;
+     border: 1px solid rgba(0, 0, 0, 0.8);
+
+  }
+
+
+  .margin{
+  margin: 50px;
+  }
+
+  .header{
+  grid-column: 1/6
+  }

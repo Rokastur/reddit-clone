@@ -1,0 +1,11 @@
+.flex-container{
+display:flex;
+}
+
+.row{
+flex-direction:row;
+}
+
+.justify-center{
+justify-content:center;
+}

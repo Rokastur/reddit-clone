@@ -4,50 +4,67 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/css/flex.css}">
+    <link rel="stylesheet" th:href="@{/css/links.css}">
 </head>
 <body>
 
 
 <div class="grid-container">
-    <ul class="grid-item">
-        <li>
-            <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_DESC)}">
-                Post Count - most</a>
-        </li>
-        <li>
-            <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_ASC)}">
-                Post Count - least</a>
-        </li>
-        <li>
-            <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_DESC)}">
-                Follower Count - most</a>
-        </li>
-        <li>
-            <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_ASC)}">
-                Follower Count - least</a>
-        </li>
-        <li>
-            <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_DESC)}">
-                Newest Post</a>
-        </li>
-        <li>
-            <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_ASC)}">
-                Oldest Post</a>
-        </li>
-    </ul>
-    <div class="grid-item" th:each="category: ${categories}">
-        <p> Category: <span><a th:href="@{/reviews/(categoryId=${category.id})}" th:text="${category.name}"></a><span
-                th:text="| by ${category.getUser().getUsername()}|"></span></span>
 
-            <span> Description:<span th:text="${category.description}"></span></span>
-        </p>
-        <form method="post" th:action="@{/categories/follow/{id}/(id=${category.id})}">
-            <span>follow</span>
-            <input type="submit">
-        </form>
-
+    <div class="grid-item header">
+        <h1>HEADER</h1>
+        <div th:replace="fragments/main.html :: authentication"></div>
+        <div>
+            <a th:href="@{/categories/new}">create new category</a>
+        </div>
     </div>
-    <div class="grid-item">
+
+
+    <div class="grid-item middle-columns">
+        <ul class="flex-container row justify-center">
+            <li>
+                <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_DESC)}">
+                    Post Count - most</a>
+            </li>
+            <li>
+                <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_ASC)}">
+                    Post Count - least</a>
+            </li>
+            <li>
+                <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_DESC)}">
+                    Follower Count - most</a>
+            </li>
+            <li>
+                <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_ASC)}">
+                    Follower Count - least</a>
+            </li>
+            <li>
+                <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_DESC)}">
+                    Newest Post</a>
+            </li>
+            <li>
+                <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_ASC)}">
+                    Oldest Post</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="grid-item main middle-columns">
+        <div class="margin" th:each="category: ${categories}">
+            <div><p><a th:href="@{/reviews/(categoryId=${category.id})}"
+                       th:text="${category.name}"></a></p>
+                <p th:text="| by ${category.getUser().getUsername()}|"></p>
+
+                <p><span th:text="${category.description}"></span></p>
+            </div>
+            <form method="post" th:action="@{/categories/follow/{id}/(id=${category.id})}">
+                <input value="follow" type="submit">
+            </form>
+        </div>
+    </div>
+
+    <div class="grid-item middle-columns">
         <p>
             <a th:href="@{/categories/all/(pageNumber=${pageNumber - 1})}"
                th:if="${pageNumber != 0}">
@@ -60,6 +77,8 @@
                 > </a>
         </p>
     </div>
+
+
 </div>
 
 </body>
