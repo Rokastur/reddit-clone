@@ -56,7 +56,6 @@ public class ReviewController {
         model.addAttribute("review", review);
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("user", user);
-        model.addAttribute("commentCount", comments.getTotalElements());
         model.addAttribute("comments", comments.getContent());
         model.addAttribute("newComment", new Comment());
         model.addAttribute("score", scoreService.getReviewScore(review));

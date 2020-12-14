@@ -1,222 +1,126 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
-    <meta name="keywords" content=""/>
-    <meta name="description" content=""/>
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700|Archivo+Narrow:400,700"
-          rel="stylesheet" type="text/css">
-    <link href="styles.css" rel="stylesheet" type="text/css" media="all"/>
-
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/tooltip.css}">
-    <!--[if IE 6]>
-    <link href="default_ie6.css" rel="stylesheet" type="text/css"/>
-    <![endif]-->
+    <meta charset="UTF-8">
+    <title>Review</title>
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/css/flex.css}">
+    <link rel="stylesheet" th:href="@{/css/links.css}">
 </head>
 
 <body>
+<section class="grid-container">
 
-
-<div id="banner-wrapper"></div>
-<div id="header-wrapper">
-    <div id="header" class="container">
-        <div id="logo">
-            <h1><a href="#">Monumental</a></h1>
-        </div>
-        <div id="menu">
-            <ul>
-                <li><a th:href="@{/reviews}" accesskey="1" title="">Reviews</a></li>
-                <li><a th:href="@{/reviews/form}" accesskey="2" title="">New Review</a></li>
-                <li>
-                    <div th:replace="fragments/main.html :: authentication"></div>
-                </li>
-                <li>
-                    <div sec:authorize="isAuthenticated()"><a
-                            th:with="user = ${#authentication.principal}"
-                            th:href="@{/user/user/{id}/(id=${user.id})}" accesskey="4" title="">My profile</a>
-                    </div>
-                    <div sec:authorize="isAnonymous()" class="tooltip"><p class="tooltiptext">sign in to view your
-                        profile</p>
-                        <a>
-                            My profile</a>
-                    </div>
-                </li>
-                <li>
-                    <form method="get" th:action="@{user/user/}">
-                        <input type="text" name="username" th:value="${username}"/>
-                        <input type="submit" value="Search">
-                    </form>
-                </li>
-
-            </ul>
-            <div>
-                <p>The review has <span th:text="${commentCount}"></span> comments</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="page" class="container">
-
-    <div id="content">
-
-        <div>
-            <div sec:authorize="isAuthenticated()">
-                <form method="post" th:action="@{/comment/submit/{id}/(id=${review.getId()})}"
-                      th:object="${newComment}">
-                    <input th:field="*{id}" type="hidden"/>
-                    <p>Leave a comment! <input th:field="*{text}" type="text"/></p>
-                    <p><input th:value="${newComment.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
-                </form>
-            </div>
-            <div sec:authorize="isAnonymous()" class="tooltip"><p class="tooltiptext">sign in to leave a comment</p>
-                <a>Leave a comment!</a>
-            </div>
-            <p>comment count: <span th:text="${review.comments.size()}"></span></p>
-        </div>
-
-        <div>
-            <div class="post">
-                <h2 class="title"><a href="#" th:text="${review.title}">Title</a></h2>
-                <p class="meta"><span class="date" th:text="${review.date}">today's date</span><span class="posted">Posted by <a
-                        th:with="user=${review.user}"
-                        th:href="@{/user/user/{id}/(id=${user.id})}"
-                        th:text="${review.getUser().getUsername()}"></a></span>
-                    <span th:text="|score: ${score}|"></span>
-                </p>
-
-                <div style="clear: both;"></div>
-                <div class="entry">
-                    <p th:text="${review.text}">Review</p>
-                    <p class="links">
-
-                    <div sec:authorize="isAuthenticated()" th:object="${review}">
-                        <form method="post" th:action="@{/vote/submit/upvote/{id}/(id=${review.id})}">
-                            <span>upvote<input type="submit"></span>
-                        </form>
-
-                        <form method="post" th:action="@{/vote/submit/downvote/{id}/(id=${review.id})}">
-                            <span>downvote<input type="submit"></span>
-                        </form>
-                    </div>
-
-                    <a href=#>Report</a>
-                    <div sec:authorize="isAuthenticated()">
-                        <div th:if="${user.username} == ${review.getUser().getUsername()}">
-                            <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit review</a>
-                            <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
-                        </div>
-                    </div>
-                    </p>
-                </div>
-            </div>
-            <div style="clear: both;">&nbsp;</div>
-        </div>
-
-        <div>
-
-            <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_DESC)}">
-                Comments - newest</a>
-            <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_ASC)}">
-                Comments - oldest</a>
-            <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_DESC)}">
-                Comments - best score</a>
-            <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_ASC)}">
-                Comments - worst score</a>
-
-
-            <div th:each="comment: ${comments}">
-
-
-                <div sec:authorize="isAuthenticated()">
-                    <form method="post"
-                          th:action="@{/vote/submit/upvote/comment/{id}/{commentId}(id=${review.id},commentId=${comment.id})}">
-                        <span>upvote<input type="submit"></span>
-                    </form>
-
-                    <form method="post"
-                          th:action="@{/vote/submit/downvote/comment/{id}/{commentId}(id=${review.id},commentId=${comment.id})}">
-                        <span>downvote<input type="submit"></span>
-                    </form>
-                </div>
-
-                <div class="post">
-                    <p>score: <span th:text="${commentScore.get(comment.id)}"></span></p>
-                    <p class="meta"><span class="date" th:text="${comment.date}">today's date</span><span
-                            class="posted">Posted by <a
-                            th:with="user=${comment.user}"
-                            th:href="@{/user/user/{id}/(id=${user.id})}"
-                            th:text="${user.username}"></a></span>
-                    </p>
-
-                    <div style="clear: both;"></div>
-                    <div class="entry">
-                        <p th:text="${comment.text}">Review</p>
-                        <p class="links">
-                            <a href=#>Upvote</a>
-                            <a href=#>Report</a>
-                        </p>
-                    </div>
-                    <div sec:authorize="isAuthenticated()">
-                        <div th:if="${user.username} == ${comment.user.username}">
-                            <!--                        <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit comment</a>-->
-                            <a th:href="@{/comment/delete/{id}/{commentId}/(id=${review.id},commentId=${comment.id})}">delete
-                                comment</a>
-                        </div>
-                    </div>
-                </div>
-                <div style="clear: both;">&nbsp;</div>
-            </div>
-        </div>
-
-    </div>
-
-
-    <!-- end #content -->
-    <div id="sidebar" class="container">
-        <ul>
+    <section class="grid-item header">
+        <ul class="flex-container row justify-center">
+            <li><a th:href="@{/categories/all}">Categories</a></li>
+            <li><a th:href="@{/reviews/form/(categoryId=${categoryId})}">New Review</a></li>
             <li>
-                <h2>Categories</h2>
-                <ul>
-                    <li><a href="#">Aliquam libero</a></li>
-                    <li><a href="#">Consectetuer adipiscing elit</a></li>
-                    <li><a href="#">Metus aliquam pellentesque</a></li>
-                    <li><a href="#">Suspendisse iaculis mauris</a></li>
-                    <li><a href="#">Urnanet non molestie semper</a></li>
-                    <li><a href="#">Proin gravida orci porttitor</a></li>
-                </ul>
+                <div th:replace="fragments/main.html :: authentication"></div>
             </li>
             <li>
-                <h2>Blogroll</h2>
-                <ul>
-                    <li><a href="#">Aliquam libero</a></li>
-                    <li><a href="#">Consectetuer adipiscing elit</a></li>
-                    <li><a href="#">Metus aliquam pellentesque</a></li>
-                    <li><a href="#">Suspendisse iaculis mauris</a></li>
-                    <li><a href="#">Urnanet non molestie semper</a></li>
-                    <li><a href="#">Proin gravida orci porttitor</a></li>
-                </ul>
-            </li>
-            <li>
-                <h2>Archives</h2>
-                <ul>
-                    <li><a href="#">Aliquam libero</a></li>
-                    <li><a href="#">Consectetuer adipiscing elit</a></li>
-                    <li><a href="#">Metus aliquam pellentesque</a></li>
-                    <li><a href="#">Suspendisse iaculis mauris</a></li>
-                    <li><a href="#">Urnanet non molestie semper</a></li>
-                    <li><a href="#">Proin gravida orci porttitor</a></li>
-                </ul>
+                <div sec:authorize="isAuthenticated()"><a
+                        th:with="user = ${#authentication.principal}"
+                        th:href="@{/user/user/{id}/(id=${user.id})}">My profile</a></div>
             </li>
         </ul>
-    </div>
-    <!-- end #sidebar -->
+    </section>
+
+    <section class="grid-item middle-columns">
+        <div sec:authorize="isAuthenticated()">
+            <form method="post" th:action="@{/comment/submit/{id}/(id=${review.getId()})}"
+                  th:object="${newComment}">
+                <input th:field="*{id}" type="hidden"/>
+                <p>Leave a comment! <input th:field="*{text}" type="text"/></p>
+                <p><input th:value="${newComment.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
+            </form>
+        </div>
+        <div sec:authorize="isAnonymous()"><p>sign in to leave a comment</p>
+            <a>Leave a comment!</a>
+        </div>
+        <p>comment count: <span th:text="${review.comments.size()}"></span></p>
+    </section>
+
+    <section class="grid-item main middle-columns">
+        <h2><span th:text="${review.title}">Title</span></h2>
+        <p><span th:text="${review.date}">today's date</span><span>Posted by <a
+                th:with="user=${review.user}"
+                th:href="@{/user/user/{id}/(id=${user.id})}"
+                th:text="${review.getUser().getUsername()}"></a></span>
+            <span th:text="|score: ${score}|"></span>
+        </p>
+
+        <div>
+            <p th:text="${review.text}">Review</p>
+            <p>
+
+            <div sec:authorize="isAuthenticated()" th:object="${review}">
+                <form method="post" th:action="@{/vote/submit/upvote/{id}/(id=${review.id})}">
+                    <span>upvote<input type="submit"></span>
+                </form>
+
+                <form method="post" th:action="@{/vote/submit/downvote/{id}/(id=${review.id})}">
+                    <span>downvote<input type="submit"></span>
+                </form>
+            </div>
+
+            <div sec:authorize="isAuthenticated()">
+                <div th:if="${user.username} == ${review.getUser().getUsername()}">
+                    <a th:href="@{/reviews/edit/{id}/(id=${review.id})}">edit review</a>
+                    <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
+                </div>
+            </div>
+            </p>
+        </div>
+    </section>
+
+    <section class="grid-item middle-columns">
+        <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_DESC)}">
+            Comments - newest</a>
+        <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_ASC)}">
+            Comments - oldest</a>
+        <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_DESC)}">
+            Comments - best score</a>
+        <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_ASC)}">
+            Comments - worst score</a>
+    </section>
+
+    <section class="grid-item middle-columns">
+        <div class="margin" th:each="comment: ${comments}">
+            <div sec:authorize="isAuthenticated()">
+                <form method="post"
+                      th:action="@{/vote/submit/upvote/comment/{id}/{commentId}(id=${review.id},commentId=${comment.id})}">
+                    <span>upvote<input type="submit"></span>
+                </form>
+                <form method="post"
+                      th:action="@{/vote/submit/downvote/comment/{id}/{commentId}(id=${review.id},commentId=${comment.id})}">
+                    <span>downvote<input type="submit"></span>
+                </form>
+            </div>
+
+            <div>
+                <p>score: <span th:text="${commentScore.get(comment.id)}"></span></p>
+                <p><span th:text="${comment.date}">today's date</span><span
+                        class="posted">Posted by <a
+                        th:with="user=${comment.user}"
+                        th:href="@{/user/user/{id}/(id=${user.id})}"
+                        th:text="${user.username}"></a></span>
+                </p>
+
+                <div>
+                    <p th:text="${comment.text}">comment</p>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <div th:if="${user.username} == ${comment.user.username}">
+                        <a th:href="@{/comment/delete/{id}/{commentId}/(id=${review.id},commentId=${comment.id})}">delete
+                            comment</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
-    <div id="footer" class="container">
-        <p>&copy; Untitled. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.
-            Photos by <a href="http://fotogrph.com/">Fotogrph</a>.</p>
-    </div>
+</section>
 </body>
 </html>
