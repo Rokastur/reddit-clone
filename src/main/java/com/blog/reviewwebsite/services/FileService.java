@@ -23,7 +23,12 @@ public class FileService {
         this.userService = userService;
     }
 
+    @Transactional
     public File storeFile(MultipartFile mpFile, Long userId) throws IOException {
+        if (getFileByUserId(userId) != null) {
+            File file = getFileByUserId(userId);
+            fileRepository.delete(file);
+        }
         String filename = StringUtils.cleanPath(mpFile.getOriginalFilename());
         File file = new File();
         file.setName(filename);
