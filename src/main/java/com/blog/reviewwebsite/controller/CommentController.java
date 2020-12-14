@@ -28,7 +28,6 @@ public class CommentController {
         if (!result.hasErrors()) {
             commentService.saveOrUpdateComment(comment, user, id);
             scoreService.voteOnComment(comment.getId(), user, RatingType.UPVOTE);
-
         }
         return "redirect:/reviews/review/" + id;
     }
