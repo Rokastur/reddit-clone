@@ -17,5 +17,4 @@ public enum OrderType {
     POST_DATE_ASC,
     POST_DATE_DESC
 
-
 }
