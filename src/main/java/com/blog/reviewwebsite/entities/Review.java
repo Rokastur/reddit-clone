@@ -55,14 +55,4 @@ public class Review {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Override
-    public String toString() {
-        return "Review{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", hidden=" + hidden +
-                ", date=" + date +
-                '}';
-    }
 }
