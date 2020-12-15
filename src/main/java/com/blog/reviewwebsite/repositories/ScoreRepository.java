@@ -26,5 +26,11 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
     @Query(value = "SELECT COUNT(*) FROM score JOIN comment_score ON score.id = comment_score.score_id WHERE rating_type = 'DOWNVOTE' AND comment_id =:commentId", nativeQuery = true)
     long getDownvoteCountByComment(Long commentId);
 
+    @Query(value = "SELECT COUNT(*) FROM score JOIN review_score ON score.id = review_score.score_id WHERE rating_type = 'UPVOTE' AND review_id IN (SELECT review_id FROM review WHERE id =:userId)", nativeQuery = true)
+    long getHowManyTimesThisUsersPostsHaveBeenUpvoted(Long userId);
+
+    @Query(value = "SELECT COUNT(*) FROM score JOIN comment_score ON score.id = comment_score.score_id WHERE rating_type = 'UPVOTE' AND comment_id IN (SELECT comment_id FROM comments WHERE user_id =:userId)", nativeQuery = true)
+    long getHowManyTimesThisUsersCommentsHaveBeenUpvoted(Long userId);
+
 
 }

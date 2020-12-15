@@ -16,13 +16,15 @@ public class UserController {
     private ReviewService reviewService;
     private CategoryService categoryService;
     private FileService fileService;
+    private ScoreService scoreService;
 
-    public UserController(UserService userService, ContentOrderMap orderMap, ReviewService reviewService, CategoryService categoryService, FileService fileService) {
+    public UserController(UserService userService, ContentOrderMap orderMap, ReviewService reviewService, CategoryService categoryService, FileService fileService, ScoreService scoreService) {
         this.userService = userService;
         this.orderMap = orderMap;
         this.reviewService = reviewService;
         this.categoryService = categoryService;
         this.fileService = fileService;
+        this.scoreService = scoreService;
     }
 
     @GetMapping("/user/{id}")
@@ -40,6 +42,8 @@ public class UserController {
             String image = fileService.retrieveImageEncodedInBase64(file);
             model.addAttribute("file", image);
         }
+        model.addAttribute("postUpvotes", scoreService.howManyTimesThisUsersPostsHaveBeenUpvoted(user));
+        model.addAttribute("commentUpvotes", scoreService.howManyTimesThisUsersCommentsHaveBeenUpvoted(user));
         model.addAttribute("categories", categories);
         model.addAttribute("followedCategoriesCount", followedCategoriesCount);
         model.addAttribute("incognito", user.isIncognito());

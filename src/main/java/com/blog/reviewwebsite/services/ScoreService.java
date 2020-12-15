@@ -69,6 +69,14 @@ public class ScoreService {
         }
     }
 
+    public long howManyTimesThisUsersPostsHaveBeenUpvoted(User user) {
+        return scoreRepository.getHowManyTimesThisUsersPostsHaveBeenUpvoted(user.getId());
+    }
+
+    public long howManyTimesThisUsersCommentsHaveBeenUpvoted(User user) {
+        return scoreRepository.getHowManyTimesThisUsersCommentsHaveBeenUpvoted(user.getId());
+    }
+
     public void voteOnReview(Long reviewId, User user, RatingType ratingType) {
         Score score;
         Review review = reviewService.getReview(reviewId);
