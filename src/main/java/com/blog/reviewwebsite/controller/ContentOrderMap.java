@@ -36,8 +36,8 @@ public class ContentOrderMap {
         reviewsByOrderType.put(OrderType.DEFAULT, reviewService.getAllNotHiddenReviewsByCategory(pageNumber, category));
         reviewsByOrderType.put(OrderType.COMMENT_COUNT_DESC, reviewService.getAllNotHiddenByCommentCountDesc(pageNumber, category));
         reviewsByOrderType.put(OrderType.COMMENT_COUNT_ASC, reviewService.getAllNotHiddenByCommentCountAsc(pageNumber, category));
-        reviewsByOrderType.put(OrderType.DATE_DESC, reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, category.getId()));
-        reviewsByOrderType.put(OrderType.DATE_ASC, reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, category.getId()));
+        reviewsByOrderType.put(OrderType.DATE_DESC, reviewService.getAllNotHiddenReviewsByCategoryDateDesc(pageNumber, category));
+        reviewsByOrderType.put(OrderType.DATE_ASC, reviewService.getAllNotHiddenReviewsByCategoryDateAsc(pageNumber, category));
         reviewsByOrderType.put(OrderType.SCORE_DESC, reviewService.getAllNotHiddenReviewsByTotalScoreDesc(pageNumber, category));
         reviewsByOrderType.put(OrderType.SCORE_ASC, reviewService.getAllNotHiddenReviewsByTotalScoreAsc(pageNumber, category));
     }
@@ -54,10 +54,10 @@ public class ContentOrderMap {
 
     public void mapCommentsByReviewToOrderType(int pageNumber, Review review) {
         commentsByOrderType.put(OrderType.DEFAULT, commentService.getAllCommentsByReview(pageNumber, review));
-        commentsByOrderType.put(OrderType.DATE_DESC, commentService.getAllCommentsByDateDesc(pageNumber, review.getId()));
-        commentsByOrderType.put(OrderType.DATE_ASC, commentService.getAllCommentsByDateAsc(pageNumber, review.getId()));
-        commentsByOrderType.put(OrderType.SCORE_DESC, commentService.getAllCommentsByScoreDesc(pageNumber, review.getId()));
-        commentsByOrderType.put(OrderType.SCORE_ASC, commentService.getAllCommentsByScoreAsc(pageNumber, review.getId()));
+        commentsByOrderType.put(OrderType.DATE_DESC, commentService.getAllCommentsByDateDesc(pageNumber, review));
+        commentsByOrderType.put(OrderType.DATE_ASC, commentService.getAllCommentsByDateAsc(pageNumber, review));
+        commentsByOrderType.put(OrderType.SCORE_DESC, commentService.getAllCommentsByScoreDesc(pageNumber, review));
+        commentsByOrderType.put(OrderType.SCORE_ASC, commentService.getAllCommentsByScoreAsc(pageNumber, review));
     }
 
     public void mapCommentsByUserToOrderType(int pageNumber, User user) {

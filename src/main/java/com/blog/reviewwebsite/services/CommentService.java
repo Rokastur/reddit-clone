@@ -55,24 +55,24 @@ public class CommentService {
         return commentRepository.findAllByUser(user, pageable);
     }
 
-    public Page<Comment> getAllCommentsByDateDesc(int pageNumber, Long reviewId) {
+    public Page<Comment> getAllCommentsByDateDesc(int pageNumber, Review review) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return commentRepository.findAllByReviewIdAndOrderByDateDesc(reviewId, pageable);
+        return commentRepository.findAllByReviewIdAndOrderByDateDesc(review.getId(), pageable);
     }
 
-    public Page<Comment> getAllCommentsByDateAsc(int pageNumber, Long reviewId) {
+    public Page<Comment> getAllCommentsByDateAsc(int pageNumber, Review review) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return commentRepository.findAllByReviewIdAndOrderByDateAsc(reviewId, pageable);
+        return commentRepository.findAllByReviewIdAndOrderByDateAsc(review.getId(), pageable);
     }
 
-    public Page<Comment> getAllCommentsByScoreDesc(int pageNumber, Long reviewId) {
+    public Page<Comment> getAllCommentsByScoreDesc(int pageNumber, Review review) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return commentRepository.findAllByReviewIdAndOrderByTotalScoreDesc(reviewId, pageable);
+        return commentRepository.findAllByReviewIdAndOrderByTotalScoreDesc(review.getId(), pageable);
     }
 
-    public Page<Comment> getAllCommentsByScoreAsc(int pageNumber, Long reviewId) {
+    public Page<Comment> getAllCommentsByScoreAsc(int pageNumber, Review review) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
-        return commentRepository.findAllByReviewIdAndOrderByTotalScoreAsc(reviewId, pageable);
+        return commentRepository.findAllByReviewIdAndOrderByTotalScoreAsc(review.getId(), pageable);
     }
 
     public Page<Comment> getAllCommentsByUserDateDesc(int pageNumber, User user) {
