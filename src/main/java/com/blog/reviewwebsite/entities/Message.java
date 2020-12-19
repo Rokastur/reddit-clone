@@ -6,26 +6,25 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-public class Chat {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "chat_id")
+    @Column(name = "message_id")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "chat_id", nullable = false)
+    private Chat chat;
 
     @Column(name = "date")
     @CreationTimestamp
     private LocalDateTime date;
 
-    @OneToMany(mappedBy = "chat")
-    private Set<Message> messages;
+    private String message;
 
-    @ManyToMany(mappedBy = "chatSet")
-    private Set<User> chatters = new HashSet<>();
 }
