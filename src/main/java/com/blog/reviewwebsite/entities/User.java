@@ -60,6 +60,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Score> score;
 
+    @ManyToMany
+    @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "chat_id"))
+    private Set<Chat> chatSet = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "followedCategories",
