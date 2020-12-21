@@ -21,10 +21,14 @@ public class Message {
     @JoinColumn(name = "chat_id", nullable = false)
     private Chat chat;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(name = "date")
     @CreationTimestamp
     private LocalDateTime date;
 
-    private String message;
+    private String msg;
 
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Messaging</title>
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/css/flex.css}">
+    <link rel="stylesheet" th:href="@{/css/links.css}">
+</head>
+<body>
+<section class="grid-container">
+    <section class="grid-item header">
+        <h1>Header</h1>
+    </section>
+    <section class="grid-item main left-columns"></section>
+    <section class="grid-item main middle-columns">
+
+        <div th:each="message:${messages}">
+            <p th:text="${message.date}"></p>
+            <p th:text="${message.user.username}"></p>
+            <p th:text="${message.msg}"></p>
+        </div>
+
+        <div>
+            <form method="post" th:action="@{/chat/{id}/message/submit/(id=${id})}" th:object="${newMessage}">
+                <input th:field="*{id}" type="hidden"/>
+                <input th:field="*{msg}" type="text"/>
+                <input type="submit" value="send message"/>
+            </form>
+        </div>
+    </section>
+</section>
+
+</body>
+</html>

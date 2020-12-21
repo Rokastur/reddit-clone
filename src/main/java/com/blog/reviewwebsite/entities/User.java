@@ -60,10 +60,24 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Score> score;
 
-    @ManyToMany
-    @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
+    @OneToMany(mappedBy = "user")
+    private Set<Message> messages;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_chat",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "chat_id"))
     private Set<Chat> chatSet = new HashSet<>();
+
+    public void addChatSet(Chat chat) {
+        chatSet.add(chat);
+        chat.getChatters().add(this);
+    }
+
+    public void removeChatSet(Chat chat) {
+        chatSet.remove(chat);
+        chat.getChatters().remove(this);
+    }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(

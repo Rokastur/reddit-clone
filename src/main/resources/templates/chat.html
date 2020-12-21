@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/css/flex.css}">
+    <link rel="stylesheet" th:href="@{/css/links.css}">
+</head>
+
+<body>
+<section class="grid-container">
+
+    <section class="grid-item header">
+        <h1>Header</h1>
+    </section>
+
+    <section class="grid-item main left-columns">
+        <form method="post" th:action="@{/chat/submit/}" th:object="${UserIdWrapper}">
+            <div th:each="user:${users}">
+                <input type="checkbox" th:value="${user.id}" th:field="*{userIdList}">
+                <label th:text="${user.username}"></label>
+            </div>
+            <p><input value="start chat room" type="submit"/></p>
+        </form>
+    </section>
+
+    <section class="grid-item main middle-columns">
+        <h2>your chat rooms</h2>
+        <div th:each="chat:${chatrooms}">
+            <span>created on: </span><span th:text="${chat.date}"></span>
+            <p>chatters:</p>
+            <div th:each="user: ${chat.chatters}">
+                <span th:text="${user.username}"></span><span> </span>
+            </div>
+            <a th:href="@{/chat/{id}/(id=${chat.id})}">open chat</a>
+        </div>
+    </section>
+
+</section>
+</body>
+</html>

@@ -26,6 +26,6 @@ public class Chat {
     @OneToMany(mappedBy = "chat")
     private Set<Message> messages;
 
-    @ManyToMany(mappedBy = "chatSet")
+    @ManyToMany(mappedBy = "chatSet", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<User> chatters = new HashSet<>();
 }

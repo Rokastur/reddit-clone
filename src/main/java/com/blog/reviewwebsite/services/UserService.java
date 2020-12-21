@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -36,6 +37,10 @@ public class UserService implements UserDetailsService {
 
     public User getUser(Long id) {
         return userRepository.getOne(id);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public boolean createUser(User user) {
