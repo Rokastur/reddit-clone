@@ -31,7 +31,6 @@ public class ChatController {
         model.addAttribute("UserIdWrapper", UserIdWrapper);
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("chatrooms", chatService.getAllUserChats(user));
-
         return "chat";
     }
 
@@ -49,9 +48,4 @@ public class ChatController {
         return "messaging";
     }
 
-    @PostMapping("/{id}/message/submit")
-    public String submitMessage(@ModelAttribute Message message, @PathVariable Long id, @AuthenticationPrincipal User user) {
-        messageService.sendNewMessage(chatService.getChat(id), user, message);
-        return "redirect:/chat/" + id;
-    }
 }

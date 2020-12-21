@@ -22,7 +22,7 @@
         </div>
 
         <div>
-            <form method="post" th:action="@{/chat/{id}/message/submit/(id=${id})}" th:object="${newMessage}">
+            <form method="post" th:action="@{/message/{id}/submit/(id=${id})}" th:object="${newMessage}">
                 <input th:field="*{id}" type="hidden"/>
                 <input th:field="*{msg}" type="text"/>
                 <input type="submit" value="send message"/>
