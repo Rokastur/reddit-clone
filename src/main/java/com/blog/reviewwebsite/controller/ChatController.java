@@ -42,6 +42,7 @@ public class ChatController {
 
     @GetMapping("/{id}")
     public String getChat(Model model, @PathVariable Long id) {
+//        TODO: currently users not part of the specific chat can see messages sent in that chat if they access it via link - fix it
         model.addAttribute("messages", messageService.displayAllChatsMessages(chatService.getChat(id)));
         model.addAttribute("newMessage", new Message());
         model.addAttribute("id", id);
