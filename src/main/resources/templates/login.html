@@ -1,27 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/css/flex.css}">
+    <link rel="stylesheet" th:href="@{/css/links.css}">
 </head>
+
 <body>
+<section class="grid-container">
+    <section class="grid-item header">
+        <h1>Header</h1>
+    </section>
+    <section class="grid-item main middle-columns">
 
-    <form method="post" th:action="@{/login-submit}">
+        <form method="post" th:action="@{/login-submit}">
+            <div>
+                <p>username</p>
+                <input name="user" type="text">
+                <p>password</p>
+                <input name="pass" type="password">
+            </div>
+
+            <div>
+                <button type="submit">login</button>
+            </div>
+        </form>
+
         <div>
-            <p>username</p>
-            <input name="user" type="text">
-            <p>password</p>
-            <input name="pass" type="password">
+            <a th:href="@{/user/signup}">create account</a>
         </div>
-
-        <div>
-            <button type="submit">login</button>
-        </div>
-    </form>
-
-<div>
-    <a th:href="@{/user/signup}">create account</a>
-</div>
-
+    </section>
+</section>
 </body>
 </html>
