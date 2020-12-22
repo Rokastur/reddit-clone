@@ -42,6 +42,7 @@
     </section>
 
     <section class="grid-item main middle-columns">
+        <h1>Review</h1>
         <h2><span th:text="${review.title}">Title</span></h2>
         <p><span th:text="${review.date}">today's date</span><span>Posted by <a
                 th:with="user=${review.user}"
@@ -75,6 +76,7 @@
     </section>
 
     <section class="grid-item middle-columns">
+        <h1>Comments</h1>
         <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_DESC)}">
             Comments - newest</a>
         <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_ASC)}">
