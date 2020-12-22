@@ -1,26 +1,37 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Form</title>
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/css/flex.css}">
+    <link rel="stylesheet" th:href="@{/css/links.css}">
 </head>
+
 <body>
+<section class="grid-container">
+    <section class="grid-item header">
+        <h1>Header</h1>
+    </section>
 
-<form method="post"
+    <section class="grid-item main middle-columns">
+        <form method="post"
 
-      th:action="@{/reviews/submit/(categoryId=${categoryId})}"
-      th:object="${review}">
 
-    <input th:field="*{id}" type="hidden"/>
+              th:action="@{/reviews/submit/(categoryId=${categoryId})}"
+              th:object="${review}">
 
-    <p>Name your review: <input th:field="*{title}" type="text"></p>
+            <input th:field="*{id}" type="hidden"/>
 
-    <p> Review: <input th:field="*{text}" type="text"/></p>
+            <p>Name your review: <input th:field="*{title}" type="text"></p>
 
-    <p><input th:value="${review.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
-    <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
+            <p> Review: <input th:field="*{text}" type="text"/></p>
 
-</form>
+            <p><input th:value="${review.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
+            <a th:href="@{/reviews/delete/{id}/(id=${review.id})}">delete review</a>
+        </form>
+    </section>
 
+</section>
 </body>
 </html>

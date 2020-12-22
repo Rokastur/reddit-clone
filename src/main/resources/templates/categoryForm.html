@@ -1,24 +1,34 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>CategoryForm</title>
+    <link rel="stylesheet" th:href="@{/css/grid.css}">
+    <link rel="stylesheet" th:href="@{/css/flex.css}">
+    <link rel="stylesheet" th:href="@{/css/links.css}">
 </head>
+
 <body>
+<section class="grid-container">
+    <section class="grid-item header">
+        <h1>Header</h1>
+    </section>
+    <section class="grid-item main middle-columns">
+        <form method="post"
 
-<form method="post"
+              th:action="@{/categories/new/submit}"
+              th:object="${category}">
 
-      th:action="@{/categories/new/submit}"
-      th:object="${category}">
+            <input th:field="*{id}" type="hidden"/>
 
-    <input th:field="*{id}" type="hidden"/>
+            <p>Name your category: <input th:field="*{name}" type="text"></p>
+            <p>Add a description! <input th:field="*{description}" type="text"></p>
 
-    <p>Name your category: <input th:field="*{name}" type="text"></p>
-    <p>Add a description! <input th:field="*{description}" type="text"></p>
+            <p><input th:value="${category.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
 
-    <p><input th:value="${category.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
-
-</form>
+        </form>
+    </section>
+</section>
 
 </body>
 </html>
