@@ -122,6 +122,7 @@
         </section>
 
         <section>
+            <h1>Reviews</h1>
             <ul>
                 <li th:each="review: ${reviews}">
                     <p th:text="${#temporals.format(review.date, 'dd-MMMM-yyyy HH:mm')}">
@@ -132,7 +133,7 @@
         </section>
 
         <section>
-            <h2>comments</h2>
+            <h1>Comments</h1>
             <div class="flex-container row justify-center">
                 <a th:href="@{/user/user/{id}/(id=${user.id},commentOrderType=DATE_DESC)}">
                     Comments - newest</a>
@@ -156,7 +157,7 @@
         </section>
 
         <section>
-            <h2>followed categories</h2>
+            <h1>Followed Categories</h1>
             <p>this user follows <span th:text=${followedCategoriesCount}></span> categories</p>
             <ul>
                 <li th:each="category:${categories}">
