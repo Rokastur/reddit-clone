@@ -1,15 +1,18 @@
 package com.blog.reviewwebsite.controller;
 
+import com.blog.reviewwebsite.entities.Chat;
 import com.blog.reviewwebsite.entities.Message;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.services.ChatService;
 import com.blog.reviewwebsite.services.MessageService;
 import com.blog.reviewwebsite.services.UserService;
 import com.blog.reviewwebsite.wrapper.ChatUsers;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
 @RequestMapping("/chat")
@@ -41,9 +44,13 @@ public class ChatController {
     }
 
     @GetMapping("/{id}")
-    public String getChat(Model model, @PathVariable Long id) {
-//        TODO: currently users not part of the specific chat can see messages sent in that chat if they access it via link - fix it
-        model.addAttribute("messages", messageService.displayAllChatsMessages(chatService.getChat(id)));
+    public String getChat(Model model, @PathVariable Long id, @AuthenticationPrincipal User user) {
+        Chat chat = chatService.getChat(id);
+        User dbUser = userService.getUser(user.getId());
+        if (!chat.getChatters().contains(dbUser)) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
+        model.addAttribute("messages", messageService.displayAllChatsMessages(chat));
         model.addAttribute("newMessage", new Message());
         model.addAttribute("id", id);
         return "messaging";
