@@ -71,8 +71,8 @@ public class UserController {
     }
 
     @PostMapping("/submit")
-    public String submitUser(User user) {
-        if (userService.createUser(user)) {
+    public String submitUser(UserDTO userDTO) {
+        if (userService.createUser(userDTO)) {
             return "redirect:/login";
         } else {
             return "signup";
@@ -81,7 +81,7 @@ public class UserController {
 
     @GetMapping("/signup")
     public String createUser(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserDTO());
         return "signup";
     }
 

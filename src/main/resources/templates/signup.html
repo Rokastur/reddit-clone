@@ -15,13 +15,12 @@
     </section>
     <section class="grid-item main middle-columns">
         <form method="post" th:action="@{/user/submit}" th:object="${user}">
-            <input th:field="*{id}" type="hidden"/>
 
             <p>User Name: <input th:field="*{username}" type="text"/></p>
             <p>Password: <input th:field="*{password}" type="password"/></p>
-            <p>Verify password: <input th:field=*{retypePassword} type="password"></p>
+            <p>Verify password: <input th:field=*{confirmPassword} type="password"></p>
 
-            <p><input th:value="${user.id != null ? 'Edit' : 'Create'}" type="submit"/></p>
+            <p><input value="create" type="submit"/></p>
         </form>
     </section>
 </section>

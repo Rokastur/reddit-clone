@@ -32,9 +32,6 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Transient
-    private String retypePassword;
-
     @Column(name = "date")
     @CreationTimestamp
     private LocalDateTime date;

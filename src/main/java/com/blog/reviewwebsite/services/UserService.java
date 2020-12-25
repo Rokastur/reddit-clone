@@ -4,6 +4,7 @@ import com.blog.reviewwebsite.controller.Roles;
 import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Role;
 import com.blog.reviewwebsite.entities.User;
+import com.blog.reviewwebsite.entities.UserDTO;
 import com.blog.reviewwebsite.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,12 +44,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public boolean createUser(User user) {
+    public boolean createUser(UserDTO user) {
         if (validNewUser(user) && passwordsMatch(user)) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User dbUser = new User();
+            dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            dbUser.setUsername(user.getUsername());
             Role role = roleService.getOneByName(Roles.USER);
-            user.getRoles().add(role);
-            userRepository.save(user);
+            dbUser.getRoles().add(role);
+            userRepository.save(dbUser);
             return true;
         } else return false;
     }
@@ -90,11 +93,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
     }
 
-    public boolean validNewUser(User user) {
+    public boolean validNewUser(UserDTO user) {
         return !userRepository.findUserByUsername(user.getUsername()).isPresent();
     }
 
-    public boolean passwordsMatch(User user) {
-        return user.getPassword().equals(user.getRetypePassword());
+    public boolean passwordsMatch(UserDTO user) {
+        return user.getPassword().equals(user.getConfirmPassword());
     }
 }
