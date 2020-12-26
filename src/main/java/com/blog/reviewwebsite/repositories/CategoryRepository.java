@@ -32,12 +32,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             nativeQuery = true)
     Page<Category> findAllOrderByFollowersCountAsc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM (SELECT DISTINCT ON (category_id) category_id, date FROM review ORDER BY category_id, date DESC) s ORDER BY date DESC",
+    @Query(value = "SELECT c.category_id, date FROM category c LEFT JOIN review r ON c.category_id = r.review_id ORDER BY DATE DESC NULLS LAST",
             countQuery = categoryCountQuery,
             nativeQuery = true)
     Page<Category> findAllOrderByNewestPost(Pageable pageable);
 
-    @Query(value = "SELECT * FROM (SELECT DISTINCT ON (category_id) category_id, date FROM review ORDER BY category_id, date ASC) s ORDER BY date ASC",
+    @Query(value = "SELECT c.category_id, date FROM category c LEFT JOIN review r ON c.category_id = r.review_id ORDER BY DATE ASC NULLS LAST",
             countQuery = categoryCountQuery,
             nativeQuery = true)
     Page<Category> findAllOrderByOldestPost(Pageable pageable);
