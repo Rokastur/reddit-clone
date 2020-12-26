@@ -47,9 +47,7 @@ public class ChatController {
     public String getChat(Model model, @PathVariable Long id, @AuthenticationPrincipal User user) {
         Chat chat = chatService.getChat(id);
         User dbUser = userService.getUser(user.getId());
-        if (!chat.getChatters().contains(dbUser)) {
-            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
-        }
+        chatService.throwExceptionIfUserNotPartOfTheChat(dbUser, chat);
         model.addAttribute("messages", messageService.displayAllChatsMessages(chat));
         model.addAttribute("newMessage", new Message());
         model.addAttribute("id", id);

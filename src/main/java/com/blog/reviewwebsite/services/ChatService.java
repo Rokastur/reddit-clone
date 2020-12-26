@@ -4,7 +4,9 @@ import com.blog.reviewwebsite.entities.Chat;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ChatRepository;
 import com.blog.reviewwebsite.wrapper.ChatUsers;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Set;
 
@@ -37,5 +39,11 @@ public class ChatService {
 
     public Set<Chat> getAllUserChats(User user) {
         return chatRepository.getAllThisUserChats(user.getId());
+    }
+
+    public void throwExceptionIfUserNotPartOfTheChat(User dbUser, Chat chat) {
+        if (!chat.getChatters().contains(dbUser)) {
+            throw new HttpClientErrorException(HttpStatus.FORBIDDEN);
+        }
     }
 }
