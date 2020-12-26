@@ -12,12 +12,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     String categoryCountQuery = "SELECT COUNT(*) FROM CATEGORY";
 
-    @Query(value = "SELECT * FROM category WHERE category_id in(SELECT category_id FROM review GROUP BY category_id ORDER BY COUNT(*) DESC)",
+    @Query(value = "SELECT c.category_id FROM category c LEFT JOIN review r ON c.category_id = r.category_id GROUP BY c.category_id ORDER BY COUNT(*) DESC",
             countQuery = categoryCountQuery,
             nativeQuery = true)
     Page<Category> findAllOrderByPostCountDesc(Pageable pageable);
 
-    @Query(value = "SELECT * FROM category WHERE category_id in(SELECT category_id FROM review GROUP BY category_id ORDER BY COUNT(*) ASC)",
+    @Query(value = "SELECT c.category_id FROM category c LEFT JOIN review r ON c.category_id = r.category_id GROUP BY c.category_id ORDER BY COUNT(*) ASC",
             countQuery = categoryCountQuery,
             nativeQuery = true)
     Page<Category> findAllOrderByPostCountAsc(Pageable pageable);
