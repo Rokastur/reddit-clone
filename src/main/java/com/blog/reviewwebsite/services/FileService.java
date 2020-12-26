@@ -58,4 +58,13 @@ public class FileService {
     public void deleteFile(File file) {
         fileRepository.delete(file);
     }
+
+    public String getUsersProfilePicture(User user) {
+        if (userService.userHasFile(user)) {
+            File file = fileRepository.getUserFile(user.getId());
+            String image = retrieveImageEncodedInBase64(file);
+            return image;
+        }
+        return null;
+    }
 }

@@ -37,11 +37,8 @@ public class UserController {
         Page<Category> categories = categoryService.getAllCategoriesUserFollows(user, pageNumber);
         long followedCategoriesCount = categoryService.getAllCategoriesUserFollows(user, pageNumber).getTotalElements();
         int pageCount = reviewService.findAllReviewsByReviewer(pageNumber, user).getTotalPages();
-        if (userService.userHasFile(user)) {
-            File file = fileService.getFileByUserId(user.getId());
-            String image = fileService.retrieveImageEncodedInBase64(file);
-            model.addAttribute("file", image);
-        }
+
+        model.addAttribute("file", fileService.getUsersProfilePicture(user));
         model.addAttribute("orderType", reviewOrderType);
         model.addAttribute("postUpvotes", scoreService.howManyTimesThisUsersPostsHaveBeenUpvoted(user));
         model.addAttribute("commentUpvotes", scoreService.howManyTimesThisUsersCommentsHaveBeenUpvoted(user));
