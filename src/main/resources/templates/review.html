@@ -81,7 +81,6 @@
             Comments - newest</a>
         <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_ASC)}">
             Comments - oldest</a>
-        <!--        TODO: ordering by score seems not to work, problem probably in CommentRepository. fix it.-->
         <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_DESC)}">
             Comments - best score</a>
         <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_ASC)}">
