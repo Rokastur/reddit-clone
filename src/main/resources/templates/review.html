@@ -81,11 +81,27 @@
             Comments - newest</a>
         <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=DATE_ASC)}">
             Comments - oldest</a>
+        <!--        TODO: ordering by score seems not to work, problem probably in CommentRepository. fix it.-->
         <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_DESC)}">
             Comments - best score</a>
         <a th:href="@{/reviews/review/{id}/(id=${review.id}, commentOrderType=SCORE_ASC)}">
             Comments - worst score</a>
+
+        <section>
+            <p>
+                <a th:href="@{/reviews/review/{id}/(id=${review.id},pageNumber=${pageNumber - 1}, commentOrderType=${orderType})}"
+                   th:if="${pageNumber != 0}">
+                    < </a>
+                <span th:text="${pageNumber} + 1">current page</span>
+                <span>/</span>
+                <span th:text="${pageCount}">total pages</span>
+                <a th:href="@{/reviews/review/{id}/(id=${review.id},pageNumber=${pageNumber + 1}, commentOrderType=${orderType})}"
+                   th:if="${hasNextPage}">
+                    > </a>
+            </p>
+        </section>
     </section>
+
 
     <section class="grid-item middle-columns">
         <div class="margin" th:each="comment: ${comments}">

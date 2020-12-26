@@ -63,13 +63,13 @@
 
     <section class="grid-item middle-columns">
         <p>
-            <a th:href="@{/reviews/(pageNumber=${pageNumber - 1})}"
+            <a th:href="@{/reviews/(pageNumber=${pageNumber - 1}, reviewOrderType=${orderType}, categoryId=${categoryId})}"
                th:if="${pageNumber != 0}">
                 < </a>
             <span th:text="${pageNumber} + 1">current page</span>
             <span>/</span>
             <span th:text="${pageCount}">total pages</span>
-            <a th:href="@{/reviews/(pageNumber=${pageNumber + 1})}"
+            <a th:href="@{/reviews/(pageNumber=${pageNumber + 1}, reviewOrderType=${orderType}, categoryId=${categoryId})}"
                th:if="${hasNextPage}">
                 > </a>
         </p>

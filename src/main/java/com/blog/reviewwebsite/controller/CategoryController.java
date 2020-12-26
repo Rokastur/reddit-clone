@@ -29,6 +29,7 @@ public class CategoryController {
         orderMap.mapCategoriesToOrderType(pageNumber);
         Page<Category> categories = orderMap.categoriesByOrderType.get(categoriesOrderType);
         int pageCount = categoryService.getAllCategories(pageNumber).getTotalPages();
+        model.addAttribute("orderType", categoriesOrderType);
         model.addAttribute("categories", categories.getContent());
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", categories.hasNext());

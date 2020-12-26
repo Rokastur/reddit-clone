@@ -55,8 +55,9 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public Set<Review> findAllReviewsByReviewer(User user) {
-        return reviewRepository.findAllByUser(user);
+    public Page<Review> findAllReviewsByReviewer(int pageNumber, User user) {
+        Pageable pageable = PageRequest.of(pageNumber, 4);
+        return reviewRepository.findAllByUser(user, pageable);
     }
 
     public Set<Review> getAllNotHiddenReviewsByCategory(Category category) {

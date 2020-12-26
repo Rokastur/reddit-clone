@@ -23,30 +23,18 @@
 
     <section class="grid-item middle-columns">
         <ul class="flex-container row justify-center">
-            <li>
-                <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_DESC)}">
-                    Post Count - most</a>
-            </li>
-            <li>
-                <a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_ASC)}">
-                    Post Count - least</a>
-            </li>
-            <li>
-                <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_DESC)}">
-                    Follower Count - most</a>
-            </li>
-            <li>
-                <a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_ASC)}">
-                    Follower Count - least</a>
-            </li>
-            <li>
-                <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_DESC)}">
-                    Newest Post</a>
-            </li>
-            <li>
-                <a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_ASC)}">
-                    Oldest Post</a>
-            </li>
+            <li><a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_DESC)}">
+                Post Count - most</a></li>
+            <li><a th:href="@{/categories/all/(categoriesOrderType=POST_COUNT_ASC)}">
+                Post Count - least</a></li>
+            <li><a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_DESC)}">
+                Follower Count - most</a></li>
+            <li><a th:href="@{/categories/all/(categoriesOrderType=FOLLOWER_COUNT_ASC)}">
+                Follower Count - least</a></li>
+            <li><a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_DESC)}">
+                Newest Post</a></li>
+            <li><a th:href="@{/categories/all/(categoriesOrderType=POST_DATE_ASC)}">
+                Oldest Post</a></li>
         </ul>
     </section>
 
@@ -66,13 +54,13 @@
 
     <section class="grid-item middle-columns">
         <p>
-            <a th:href="@{/categories/all/(pageNumber=${pageNumber - 1})}"
+            <a th:href="@{/categories/all/(pageNumber=${pageNumber - 1}, categoriesOderType=${orderType})}"
                th:if="${pageNumber != 0}">
                 < </a>
             <span th:text="${pageNumber} + 1">current page</span>
             <span>/</span>
             <span th:text="${pageCount}">total pages</span>
-            <a th:href="@{/categories/all/(pageNumber=${pageNumber + 1})}"
+            <a th:href="@{/categories/all/(pageNumber=${pageNumber + 1}, categoriesOderType=${orderType})}"
                th:if="${hasNextPage}">
                 > </a>
         </p>
