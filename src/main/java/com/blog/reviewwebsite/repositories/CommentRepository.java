@@ -33,12 +33,12 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByDateAsc(Long reviewId, Pageable pageable);
 
-    @Query(value = "SELECT c.* FROM comments c JOIN comment_score s on c.comment_id = s.comment_id WHERE review_id =:reviewId GROUP BY c.comment_id ORDER BY COUNT(s.comment_id) DESC",
+    @Query(value = "SELECT c.* FROM comments c JOIN comment_score s on c.comment_id = s.comment_id WHERE review_id =:reviewId GROUP BY c.comment_id ORDER BY COUNT(*) DESC",
             countQuery = commentCountQueryByReview,
             nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByTotalScoreDesc(Long reviewId, Pageable pageable);
 
-    @Query(value = "SELECT c.* FROM comments c JOIN comment_score s on c.comment_id = s.comment_id WHERE review_id =:reviewId GROUP BY c.comment_id ORDER BY COUNT(s.comment_id) ASC",
+    @Query(value = "SELECT c.* FROM comments c JOIN comment_score s on c.comment_id = s.comment_id WHERE review_id =:reviewId GROUP BY c.comment_id ORDER BY COUNT(*) ASC",
             countQuery = commentCountQueryByReview,
             nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByTotalScoreAsc(Long reviewId, Pageable pageable);
