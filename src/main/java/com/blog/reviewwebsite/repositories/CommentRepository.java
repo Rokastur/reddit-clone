@@ -29,12 +29,12 @@ public interface CommentRepository extends ContentRepository<Comment> {
             nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByDateAsc(Long reviewId, Pageable pageable);
 
-    @Query(value = "SELECT c.* FROM comments c JOIN comment_score s on c.id = s.comment_id WHERE review_id =:reviewId GROUP BY c.id ORDER BY COUNT(*) DESC",
+    @Query(value = "SELECT c.* FROM comments c CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM comment_score cs INNER JOIN score s ON s.id = cs.score_id WHERE cs.comment_id = c.id) s WHERE review_id =:reviewId ORDER BY s.cnt_up - s.cnt_down DESC",
             countQuery = commentCountQueryByReview,
             nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByTotalScoreDesc(Long reviewId, Pageable pageable);
 
-    @Query(value = "SELECT c.* FROM comments c JOIN comment_score s on c.id = s.comment_id WHERE review_id =:reviewId GROUP BY c.id ORDER BY COUNT(*) ASC",
+    @Query(value = "SELECT c.* FROM comments c CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM comment_score cs INNER JOIN score s ON s.id = cs.score_id WHERE cs.comment_id = c.id) s WHERE review_id =:reviewId ORDER BY s.cnt_up - s.cnt_down ASC",
             countQuery = commentCountQueryByReview,
             nativeQuery = true)
     Page<Comment> findAllByReviewIdAndOrderByTotalScoreAsc(Long reviewId, Pageable pageable);
@@ -49,13 +49,12 @@ public interface CommentRepository extends ContentRepository<Comment> {
             nativeQuery = true)
     Page<Comment> findAllByUserAndOrderByDateAsc(Long userId, Pageable pageable);
 
-    //TODO ordering by score desc/asc might not be working
-    @Query(value = "SELECT c.* FROM comments c LEFT JOIN comment_score s on c.id = s.comment_id WHERE user_id =:userId GROUP BY c.id ORDER BY COUNT(s.comment_id) DESC",
+    @Query(value = "SELECT c.* FROM comments c CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM comment_score cs INNER JOIN score s ON s.id = cs.score_id WHERE cs.comment_id = c.id) s WHERE user_id =:userId ORDER BY s.cnt_up - s.cnt_down DESC",
             countQuery = commentCountQueryByUser,
             nativeQuery = true)
     Page<Comment> findAllByUserAndOrderByTotalScoreDesc(Long userId, Pageable pageable);
 
-    @Query(value = "SELECT c.* FROM comments c LEFT JOIN comment_score s on c.id = s.comment_id WHERE user_id =:userId GROUP BY c.id ORDER BY COUNT(s.comment_id) ASC",
+    @Query(value = "SELECT c.* FROM comments c CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM comment_score cs INNER JOIN score s ON s.id = cs.score_id WHERE cs.comment_id = c.id) s WHERE user_id =:userId ORDER BY s.cnt_up - s.cnt_down ASC",
             countQuery = commentCountQueryByUser,
             nativeQuery = true)
     Page<Comment> findAllByUserAndOrderByTotalScoreAsc(Long userId, Pageable pageable);
