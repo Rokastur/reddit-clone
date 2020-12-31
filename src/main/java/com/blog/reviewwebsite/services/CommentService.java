@@ -32,7 +32,6 @@ public class CommentService {
         comment.setReview(review);
         comment.setUser(user);
         commentRepository.save(comment);
-        reviewRepository.save(review);
     }
 
     public void deleteComment(Long reviewId, Long commentId) {
