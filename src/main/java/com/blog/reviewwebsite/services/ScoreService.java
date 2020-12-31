@@ -92,9 +92,8 @@ public class ScoreService {
         } else {
             score = new Score();
             score.setRatingType(ratingType);
-            review.getReviewScore().add(score);
-            dbUser.getScore().add(score);
-            score.setUser(user);
+            review.addScore(score);
+            score.setUser(dbUser);
         }
         updateOrSaveVote(score);
     }
@@ -114,9 +113,8 @@ public class ScoreService {
         } else {
             score = new Score();
             score.setRatingType(ratingType);
-            comment.getCommentScore().add(score);
-            dbUser.getScore().add(score);
-            score.setUser(user);
+            comment.addScore(score);
+            score.setUser(dbUser);
         }
         updateOrSaveVote(score);
     }
