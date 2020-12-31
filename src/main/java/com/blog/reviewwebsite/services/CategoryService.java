@@ -25,10 +25,10 @@ public class CategoryService {
     }
 
     public void updateOrSaveCategory(Category category, User user) {
-        user.addFollowedCategory(category);
-        category.setUser(user);
+        User dbUser = userRepository.getOne(user.getId());
+        dbUser.addFollowedCategory(category);
+        category.setUser(dbUser);
         categoryRepository.save(category);
-        userRepository.save(user);
     }
 
     public Page<Category> getAllCategories(int pageNumber) {
