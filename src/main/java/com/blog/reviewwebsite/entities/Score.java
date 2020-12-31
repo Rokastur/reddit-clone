@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,10 +23,10 @@ public class Score {
     private RatingType ratingType;
 
     @ManyToMany(mappedBy = "reviewScore")
-    private Set<Review> reviewScore;
+    private Set<Review> reviewScore = new HashSet<>();
 
     @ManyToMany(mappedBy = "commentScore")
-    private Set<Comment> commentScore;
+    private Set<Comment> commentScore = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
