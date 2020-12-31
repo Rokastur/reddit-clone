@@ -29,6 +29,6 @@ public class Score {
     private Set<Comment> commentScore = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 }

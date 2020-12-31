@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FileRepository extends JpaRepository<File, Long> {
 
-    @Query(value = "select * from file where id=:userId", nativeQuery = true)
+    @Query(value = "select * from file where user_id=:userId", nativeQuery = true)
     File getUserFile(Long userId);
 }
 

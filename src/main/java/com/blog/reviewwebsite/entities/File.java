@@ -15,7 +15,6 @@ public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "file_id")
     private Long id;
 
     @Column(name = "name")
@@ -33,6 +32,6 @@ public class File {
     private LocalDateTime uploadedOn;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
