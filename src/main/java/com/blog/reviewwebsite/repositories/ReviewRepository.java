@@ -73,12 +73,12 @@ public interface ReviewRepository extends ContentRepository<Review> {
             nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndUserOrderByDateAsc(Long userId, Pageable pageable);
 
-    @Query(value = "SELECT r.* FROM review r LEFT JOIN comments c ON r.id = c.review_id WHERE user_id =:userId AND hidden = false GROUP BY r.id ORDER BY COUNT(c.review_id) DESC",
+    @Query(value = "SELECT r.* FROM review r LEFT JOIN comments c ON r.id = c.review_id WHERE r.user_id =:userId AND hidden = false GROUP BY r.id ORDER BY COUNT(c.review_id) DESC",
             countQuery = reviewCountQueryByUser,
             nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndUserOrderByCommentCountDesc(Long userId, Pageable pageable);
 
-    @Query(value = "SELECT r.* FROM review r LEFT JOIN comments c ON r.id = c.review_id WHERE user_id =:userId AND hidden = false GROUP BY r.id ORDER BY COUNT(c.review_id) ASC",
+    @Query(value = "SELECT r.* FROM review r LEFT JOIN comments c ON r.id = c.review_id WHERE r.user_id =:userId AND hidden = false GROUP BY r.id ORDER BY COUNT(c.review_id) ASC",
             countQuery = reviewCountQueryByUser,
             nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndUserOrderByCommentCountAsc(Long userId, Pageable pageable);
