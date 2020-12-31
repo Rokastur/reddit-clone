@@ -22,16 +22,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             nativeQuery = true)
     Page<Category> findAllOrderByPostCountAsc(Pageable pageable);
 
-    //TODO: fix later. seems like program expects id, but gets category_id and crashes
-    //@Query(value = "SELECT category_id FROM followed_categories GROUP BY category_id ORDER BY COUNT(*) DESC"
-    @Query(value = "SELECT * from category",
+    @Query(value = "SELECT category_id AS id FROM followed_categories GROUP BY category_id ORDER BY COUNT(*) DESC",
             countQuery = categoryCountQuery,
             nativeQuery = true)
     Page<Category> findAllOrderByFollowersCountDesc(Pageable pageable);
 
-    //TODO: same here as above. Added placeholder queries until fixed.
-    //@Query(value = "SELECT category_id FROM followed_categories GROUP BY category_id ORDER BY COUNT(*) ASC"
-    @Query(value = "SELECT * from category",
+    @Query(value = "SELECT category_id AS id FROM followed_categories GROUP BY category_id ORDER BY COUNT(*) ASC",
             countQuery = categoryCountQuery,
             nativeQuery = true)
     Page<Category> findAllOrderByFollowersCountAsc(Pageable pageable);
@@ -46,7 +42,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             nativeQuery = true)
     Page<Category> findAllOrderByOldestPost(Pageable pageable);
 
-    @Query(value = "SELECT category_id FROM followed_categories WHERE user_id= :userId",
+    @Query(value = "SELECT category_id AS id FROM followed_categories WHERE user_id= :userId",
             countQuery = "SELECT COUNT(*) FROM followed_categories WHERE user_id =:userId",
             nativeQuery = true)
     Page<Category> findAllFollowedByUser(Long userId, Pageable pageable);
