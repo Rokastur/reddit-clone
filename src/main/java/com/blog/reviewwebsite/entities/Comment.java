@@ -14,12 +14,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "comments")
-public class Comment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long id;
+public class Comment extends Content {
 
     @Column(name = "text")
     @NotBlank

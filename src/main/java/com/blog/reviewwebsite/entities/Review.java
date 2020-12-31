@@ -14,12 +14,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "Review")
-public class Review {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_id")
-    private Long id;
+public class Review extends Content{
 
     @Column(name = "title")
     @NotBlank
@@ -55,7 +50,7 @@ public class Review {
     }
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "review")
