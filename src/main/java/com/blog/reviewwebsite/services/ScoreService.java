@@ -77,38 +77,58 @@ public class ScoreService {
         return scoreRepository.getHowManyTimesThisUsersCommentsHaveBeenUpvoted(user.getId());
     }
 
-    public void voteOnReview(Long reviewId, User user, RatingType ratingType) {
+    public Score updateReviewScoreIfExistsElseCreateNew(User user, Review review, RatingType ratingType) {
         Score score;
-        Review review = reviewService.getReview(reviewId);
-        User dbUser = userService.getUser(user.getId());
-
-        if (scoreRepository.getOneByUserAndReview(user.getId(), reviewId) != null) {
-            score = scoreRepository.getOneByUserAndReview(user.getId(), reviewId);
+        if (scoreRepository.getOneByUserAndReview(user.getId(), review.getId()) != null) {
+            score = scoreRepository.getOneByUserAndReview(user.getId(), review.getId());
             updateRatingType(score, ratingType);
         } else {
-            score = new Score();
-            score.setRatingType(ratingType);
-            review.addScore(score);
-            score.setUser(dbUser);
+            score = createNewReviewScore(ratingType, review, user);
         }
+        return score;
+    }
+
+    //TODO: voting methods for review and comment look very similar. Look for a way to use one method only. Maybe inheritance.
+
+    public void voteOnReview(Long reviewId, User user, RatingType ratingType) {
+        Review review = reviewService.getReview(reviewId);
+        User dbUser = userService.getUser(user.getId());
+        Score score = updateReviewScoreIfExistsElseCreateNew(dbUser, review, ratingType);
         updateOrSaveVote(score);
     }
 
     public void voteOnComment(Long commentId, User user, RatingType ratingType) {
-        Score score;
         Comment comment = commentService.getOneById(commentId);
         User dbUser = userService.getUser(user.getId());
+        Score score = updateCommentScoreIfExistsElseCreateNew(dbUser, comment, ratingType);
+        updateOrSaveVote(score);
+    }
 
-        if (scoreRepository.getOneByUserAndComment(user.getId(), commentId) != null) {
-            score = scoreRepository.getOneByUserAndComment(user.getId(), commentId);
+    public Score updateCommentScoreIfExistsElseCreateNew(User user, Comment comment, RatingType ratingType) {
+        Score score;
+        if (scoreRepository.getOneByUserAndComment(user.getId(), comment.getId()) != null) {
+            score = scoreRepository.getOneByUserAndComment(user.getId(), comment.getId());
             updateRatingType(score, ratingType);
         } else {
-            score = new Score();
-            score.setRatingType(ratingType);
-            comment.addScore(score);
-            score.setUser(dbUser);
+            score = createNewCommentScore(ratingType, comment, user);
         }
-        updateOrSaveVote(score);
+        return score;
+    }
+
+    public Score createNewReviewScore(RatingType ratingType, Review review, User user) {
+        Score score = new Score();
+        updateRatingType(score, ratingType);
+        review.addScore(score);
+        score.setUser(user);
+        return score;
+    }
+
+    public Score createNewCommentScore(RatingType ratingType, Comment comment, User user) {
+        Score score = new Score();
+        updateRatingType(score, ratingType);
+        comment.addScore(score);
+        score.setUser(user);
+        return score;
     }
 
     public void updateRatingType(Score score, RatingType ratingType) {
