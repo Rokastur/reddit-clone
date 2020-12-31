@@ -45,4 +45,14 @@ public class Comment {
     )
     private Set<Score> commentScore = new HashSet<>();
 
+    public void addScore(Score score) {
+        commentScore.add(score);
+        score.getCommentScore().add(this);
+    }
+
+    public void removeScore(Score score) {
+        commentScore.remove(score);
+        score.getCommentScore().remove(this);
+    }
+
 }

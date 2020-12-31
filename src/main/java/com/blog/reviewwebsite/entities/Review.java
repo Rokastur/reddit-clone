@@ -44,6 +44,16 @@ public class Review {
     )
     private Set<Score> reviewScore = new HashSet<>();
 
+    public void addScore(Score score) {
+        reviewScore.add(score);
+        score.getReviewScore().add(this);
+    }
+
+    public void removeScore(Score score) {
+        reviewScore.remove(score);
+        score.getReviewScore().remove(this);
+    }
+
     @ManyToOne
     @JoinColumn(name = "id", nullable = false)
     private User user;
