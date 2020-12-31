@@ -84,11 +84,7 @@ public class ScoreService {
 
         if (scoreRepository.getOneByUserAndReview(user.getId(), reviewId) != null) {
             score = scoreRepository.getOneByUserAndReview(user.getId(), reviewId);
-            if (score.getRatingType().equals(ratingType)) {
-                score.setRatingType(RatingType.NONE);
-            } else {
-                score.setRatingType(ratingType);
-            }
+            updateRatingType(score, ratingType);
         } else {
             score = new Score();
             score.setRatingType(ratingType);
@@ -105,11 +101,7 @@ public class ScoreService {
 
         if (scoreRepository.getOneByUserAndComment(user.getId(), commentId) != null) {
             score = scoreRepository.getOneByUserAndComment(user.getId(), commentId);
-            if (score.getRatingType().equals(ratingType)) {
-                score.setRatingType(RatingType.NONE);
-            } else {
-                score.setRatingType(ratingType);
-            }
+            updateRatingType(score, ratingType);
         } else {
             score = new Score();
             score.setRatingType(ratingType);
@@ -117,6 +109,14 @@ public class ScoreService {
             score.setUser(dbUser);
         }
         updateOrSaveVote(score);
+    }
+
+    public void updateRatingType(Score score, RatingType ratingType) {
+        if (score.getRatingType().equals(ratingType)) {
+            score.setRatingType(RatingType.NONE);
+        } else {
+            score.setRatingType(ratingType);
+        }
     }
 
     public Score updateOrSaveVote(Score score) {
