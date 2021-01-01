@@ -77,19 +77,8 @@ public class ScoreService {
         return scoreRepository.getHowManyTimesThisUsersCommentsHaveBeenUpvoted(user.getId());
     }
 
-    public Score updateReviewScoreIfExistsElseCreateNew(User user, Review review, RatingType ratingType) {
-        Score score;
-        if (scoreRepository.getOneByUserAndReview(user.getId(), review.getId()) != null) {
-            score = scoreRepository.getOneByUserAndReview(user.getId(), review.getId());
-            updateRatingType(score, ratingType);
-        } else {
-            score = createNewReviewScore(ratingType, review, user);
-        }
-        return score;
-    }
 
     //TODO: voting methods for review and comment look very similar. Look for a way to use one method only. Maybe inheritance.
-
     public void voteOnReview(Long reviewId, User user, RatingType ratingType) {
         Review review = reviewService.getReview(reviewId);
         User dbUser = userService.getUser(user.getId());
@@ -102,6 +91,17 @@ public class ScoreService {
         User dbUser = userService.getUser(user.getId());
         Score score = updateCommentScoreIfExistsElseCreateNew(dbUser, comment, ratingType);
         updateOrSaveVote(score);
+    }
+
+    public Score updateReviewScoreIfExistsElseCreateNew(User user, Review review, RatingType ratingType) {
+        Score score;
+        if (scoreRepository.getOneByUserAndReview(user.getId(), review.getId()) != null) {
+            score = scoreRepository.getOneByUserAndReview(user.getId(), review.getId());
+            updateRatingType(score, ratingType);
+        } else {
+            score = createNewReviewScore(ratingType, review, user);
+        }
+        return score;
     }
 
     public Score updateCommentScoreIfExistsElseCreateNew(User user, Comment comment, RatingType ratingType) {
