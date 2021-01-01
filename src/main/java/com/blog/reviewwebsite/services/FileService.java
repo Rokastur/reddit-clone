@@ -27,7 +27,7 @@ public class FileService {
     public File storeFile(MultipartFile mpFile, Long userId) throws IOException {
         if (getFileByUserId(userId) != null) {
             File file = getFileByUserId(userId);
-            fileRepository.delete(file);
+            deleteFile(file);
         }
         String filename = StringUtils.cleanPath(mpFile.getOriginalFilename());
         File file = new File();
@@ -40,10 +40,6 @@ public class FileService {
         return fileRepository.save(file);
     }
 
-    public File getFile(Long id) {
-        return fileRepository.getOne(id);
-    }
-
     @Transactional
     public File getFileByUserId(Long userId) {
         return fileRepository.getUserFile(userId);
@@ -54,7 +50,6 @@ public class FileService {
         return new String(base64Bytes, StandardCharsets.UTF_8);
     }
 
-
     public void deleteFile(File file) {
         fileRepository.delete(file);
     }
@@ -62,8 +57,7 @@ public class FileService {
     public String getUsersProfilePicture(User user) {
         if (userService.userHasFile(user)) {
             File file = fileRepository.getUserFile(user.getId());
-            String image = retrieveImageEncodedInBase64(file);
-            return image;
+            return retrieveImageEncodedInBase64(file);
         }
         return null;
     }
