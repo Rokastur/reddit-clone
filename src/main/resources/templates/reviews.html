@@ -41,22 +41,19 @@
                 Reviews - worst score</a>
         </div>
     </section>
-    <section class="grid-item main middle-columns">
-        <div class="margin" th:each="review: ${reviews}">
-            <div>
-                <h2><span th:text="${review.title}">Title</span></h2>
-                <p><span th:text="${review.date}">today's date</span><span>
-                    Posted by <a
-                        th:with="user=${review.user}"
-                        th:href="@{/user/user/{id}/(id=${user.id})}"
-                        th:text="${review.getUser().getUsername()}"></a></span></p>
-                <p>total comments: <span th:text="${review.comments.size()}"></span></p>
-                <p>review score: <span th:text="${reviewScore.get(review.id)}"></span></p>
 
-                <div><p th:text="${review.text}">Review</p>
-                    <p><a th:href="@{/reviews/review/{id}/(id=${review.id})}">Read more</a></p>
-                </div>
-            </div>
+    <section class="grid-item main middle-columns">
+        <h1 th:text="${reviews.get(1).getCategory().getName()}">Category</h1>
+        <div class="border" th:each="review:${reviews}" style="cursor: pointer;"
+             th:onclick="'window.location.href = \'' + @{/reviews/review/{id}(id=${review.id})} + '\''">
+
+            <h5><span th:text="${review.title}">Title</span></h5>
+            <p th:text="${review.date}">Date</p>
+            <p>Posted by <a th:with="user=${review.user}" th:href="@{/user/user/{id}/(id=${user.id})}"
+                            th:text="${review.getUser().getUsername()}"></a></p>
+            <p>total comments: <span th:text="${review.comments.size()}"></span></p>
+            <p>review score: <span th:text="${reviewScore.get(review.id)}"></span></p>
+
         </div>
     </section>
 
