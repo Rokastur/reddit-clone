@@ -9,3 +9,12 @@ flex-direction:row;
 .justify-center{
 justify-content:center;
 }
+
+.align-center{
+align-items: center;
+}
+
+.narrow {
+  flex: 0 0 50px;
+  margin-right: 20px;
+}
