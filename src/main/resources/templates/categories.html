@@ -14,10 +14,13 @@
 
     <section class="grid-item header">
         <h1>HEADER</h1>
-        <div th:replace="fragments/main.html :: authentication"></div>
-        <div>
-            <a th:href="@{/categories/new}">create new category</a>
-        </div>
+        <section class="flex-container row justify-center">
+            <div th:replace="fragments/main.html :: authentication"></div>
+            <div>
+                <a th:href="@{/categories/new}">create new category</a>
+                <a th:href="@{/chat}">chat</a>
+            </div>
+        </section>
     </section>
 
 
