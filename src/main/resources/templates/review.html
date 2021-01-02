@@ -14,7 +14,7 @@
     <section class="grid-item header">
         <ul class="flex-container row justify-center">
             <li><a th:href="@{/categories/all}">Categories</a></li>
-            <li><a th:href="@{/reviews/form/(categoryId=${categoryId})}">New Review</a></li>
+            <li><a th:href="@{/reviews/form/(categoryId=${review.getCategory().getId()})}">New Review</a></li>
             <li>
                 <div th:replace="fragments/main.html :: authentication"></div>
             </li>
