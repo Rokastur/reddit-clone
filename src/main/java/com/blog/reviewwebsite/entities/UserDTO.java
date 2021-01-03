@@ -10,12 +10,12 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class UserDTO {
 
-    @NotEmpty
-    @Min(3)
+    @NotEmpty(message = "username must not be empty")
+    @Min(value = 3, message = "minimum length must be at least 3 characters")
     private String username;
 
-    @NotEmpty
-    @Min(3)
+    @NotEmpty(message = "password must not be empty")
+    @Min(value = 3, message = "minimum length must be at least 3 characters")
     private String password;
 
     private String confirmPassword;
