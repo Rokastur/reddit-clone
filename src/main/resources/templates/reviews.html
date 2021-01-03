@@ -48,11 +48,15 @@
             <div class="flex-container row align-center">
 
                 <div class="narrow">
-                    <form method="post" th:action="@{/vote/submit/upvote/{id}/(id=${review.id})}" class="inline">
+                    <form method="post"
+                          th:action="@{/vote/submit/upvote/{id}/(id=${review.id}, categoryId=${categoryId})}"
+                          class="inline">
                         <button type="submit" name="upvote" value="submit_upvote" class="arrow up pointer"></button>
                     </form>
                     <div><span th:text="${reviewScore.get(review.id)}"></span></div>
-                    <form method="post" th:action="@{/vote/submit/downvote/{id}/(id=${review.id})}" class="inline">
+                    <form method="post"
+                          th:action="@{/vote/submit/downvote/{id}/(id=${review.id}, categoryId=${categoryId})}"
+                          class="inline">
                         <button type="submit" name="upvote" value="submit_upvote" class="arrow down pointer"></button>
                     </form>
                 </div>
