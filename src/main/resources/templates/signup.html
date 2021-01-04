@@ -21,6 +21,8 @@
             <span>Password: <input th:field="*{password}" type="password"/></span>
             <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</span>
             <p>Verify password: <input th:field=*{confirmPassword} type="password"></p>
+            <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}">Password Error</span>
+
 
             <p><input value="create" type="submit"/></p>
 

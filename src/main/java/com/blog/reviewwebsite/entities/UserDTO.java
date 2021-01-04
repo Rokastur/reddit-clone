@@ -1,14 +1,16 @@
 package com.blog.reviewwebsite.entities;
 
+import com.blog.reviewwebsite.validator.MatchingPasswords;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@MatchingPasswords(password = "password",
+        confirmPassword = "confirmPassword")
 public class UserDTO {
 
     @NotEmpty(message = "username must not be empty")
