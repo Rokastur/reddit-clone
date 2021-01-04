@@ -5,7 +5,10 @@ import com.blog.reviewwebsite.services.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -68,11 +71,13 @@ public class UserController {
     }
 
     @PostMapping("/submit")
-    public String submitUser(UserDTO userDTO) {
-        if (userService.createUser(userDTO)) {
-            return "redirect:/login";
-        } else {
+    public String submitUser(@Valid @ModelAttribute("user") UserDTO user, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
             return "signup";
+        } else {
+            userService.createUser(user);
+            return "redirect:/login";
         }
     }
 

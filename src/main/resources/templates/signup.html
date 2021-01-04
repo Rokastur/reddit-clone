@@ -17,10 +17,14 @@
         <form method="post" th:action="@{/user/submit}" th:object="${user}">
 
             <p>User Name: <input th:field="*{username}" type="text"/></p>
-            <p>Password: <input th:field="*{password}" type="password"/></p>
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</span>
+            <span>Password: <input th:field="*{password}" type="password"/></span>
+            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</span>
             <p>Verify password: <input th:field=*{confirmPassword} type="password"></p>
 
             <p><input value="create" type="submit"/></p>
+
+
         </form>
     </section>
 </section>
