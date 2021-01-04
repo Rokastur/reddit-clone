@@ -21,7 +21,7 @@ public class PasswordValidator implements ConstraintValidator<MatchingPasswords,
         Object passwordValue = new BeanWrapperImpl(value).getPropertyValue(password);
         Object passwordMatchValue = new BeanWrapperImpl(value).getPropertyValue(confirmPassword);
 
-        //password being not null in validated beforehand; nullPointerException, therefore, won't be produced
+        //password being not null is validated beforehand; nullPointerException, therefore, won't be produced
         if (!passwordValue.equals(passwordMatchValue)) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).
