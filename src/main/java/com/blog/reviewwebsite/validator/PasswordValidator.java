@@ -23,6 +23,9 @@ public class PasswordValidator implements ConstraintValidator<MatchingPasswords,
 
         //password being not null is validated beforehand; nullPointerException, therefore, won't be produced
         if (!passwordValue.equals(passwordMatchValue)) {
+            /* to easily display error in html, this code is used to apply constraint to a field once
+            class fields are found to be not equal. */
+
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate()).
                     addPropertyNode("confirmPassword").addConstraintViolation();
