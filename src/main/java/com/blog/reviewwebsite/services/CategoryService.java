@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class CategoryService {
 
@@ -29,6 +31,10 @@ public class CategoryService {
         dbUser.addCategory(category);
         dbUser.addFollowedCategory(category);
         categoryRepository.save(category);
+    }
+
+    public Set<Category> getCategoriesAndInitializeFollowers() {
+        return categoryRepository.getCategoriesWithFollowersInitialized();
     }
 
     public Page<Category> getAllCategories(int pageNumber) {
