@@ -29,8 +29,8 @@ public class CommentService {
 
     public void saveOrUpdateComment(Comment comment, User user, Long id) {
         Review review = reviewRepository.getOne(id);
-        comment.setReview(review);
-        comment.setUser(user);
+        user.addComment(comment);
+        review.addComment(comment);
         commentRepository.save(comment);
     }
 
