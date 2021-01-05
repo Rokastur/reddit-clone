@@ -18,8 +18,8 @@ public class MessageService {
     }
 
     public void sendNewMessage(Chat chat, User user, Message message) {
-        message.setChat(chat);
-        message.setUser(user);
+        chat.addMessage(message);
+        user.addMessage(message);
         messageRepository.save(message);
     }
 
