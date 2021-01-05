@@ -4,6 +4,7 @@ import com.blog.reviewwebsite.entities.Chat;
 import com.blog.reviewwebsite.entities.Message;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.MessageRepository;
+import com.blog.reviewwebsite.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -12,14 +13,17 @@ import java.util.Set;
 public class MessageService {
 
     private MessageRepository messageRepository;
+    private UserRepository userRepository;
 
-    public MessageService(MessageRepository messageRepository) {
+    public MessageService(MessageRepository messageRepository, UserRepository userRepository) {
         this.messageRepository = messageRepository;
+        this.userRepository = userRepository;
     }
 
     public void sendNewMessage(Chat chat, User user, Message message) {
+        User dbUser = userRepository.getOne(user.getId());
         chat.addMessage(message);
-        user.addMessage(message);
+        dbUser.addMessage(message);
         messageRepository.save(message);
     }
 
