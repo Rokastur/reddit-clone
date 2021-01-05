@@ -34,10 +34,8 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public void deleteComment(Long reviewId, Long commentId) {
+    public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
-        Review review = reviewRepository.getOne(reviewId);
-        reviewRepository.save(review);
     }
 
     public Set<Comment> getAllCommentsByReview(Review review) {
