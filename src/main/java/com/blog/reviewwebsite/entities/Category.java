@@ -28,7 +28,12 @@ public class Category {
     private User user;
 
     @OneToMany(mappedBy = "category")
-    private Set<Review> reviewSet;
+    private Set<Review> reviewSet = new HashSet<>();
+
+    public void addReview(Review review) {
+        this.reviewSet.add(review);
+        review.setCategory(this);
+    }
 
     @ManyToMany(mappedBy = "followedCategories")
     private Set<User> followers = new HashSet<>();

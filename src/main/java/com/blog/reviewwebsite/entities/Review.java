@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "Review")
-public class Review extends Content{
+public class Review extends Content {
 
     @Column(name = "title")
     @NotBlank
@@ -54,7 +54,12 @@ public class Review extends Content{
     private User user;
 
     @OneToMany(mappedBy = "review")
-    private Set<Comment> comments;
+    private Set<Comment> comments = new HashSet<>();
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setReview(this);
+    }
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

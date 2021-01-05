@@ -42,20 +42,50 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<File> files;
 
+    public void addFile(File file) {
+        this.files.add(file);
+        file.setUser(this);
+    }
+
     @OneToMany(mappedBy = "user")
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
+        category.setUser(this);
+    }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+        review.setUser(this);
+    }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<Comment> comments;
+    private Set<Comment> comments = new HashSet<>();
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setUser(this);
+    }
 
     @OneToMany(mappedBy = "user")
-    private Set<Score> score;
+    private Set<Score> score = new HashSet<>();
+
+    public void addScore(Score score) {
+        this.score.add(score);
+        score.setUser(this);
+    }
 
     @OneToMany(mappedBy = "user")
-    private Set<Message> messages;
+    private Set<Message> messages = new HashSet<>();
+
+    public void addMessage(Message message) {
+        this.messages.add(message);
+        message.setUser(this);
+    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_chat",

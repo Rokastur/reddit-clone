@@ -23,7 +23,12 @@ public class Chat {
     private LocalDateTime date;
 
     @OneToMany(mappedBy = "chat")
-    private Set<Message> messages;
+    private Set<Message> messages = new HashSet<>();
+
+    public void addMessage(Message message) {
+        this.messages.add(message);
+        message.setChat(this);
+    }
 
     @ManyToMany(mappedBy = "chatSet", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<User> chatters = new HashSet<>();
