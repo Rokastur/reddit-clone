@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
             dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
             dbUser.setUsername(user.getUsername());
             Role role = roleService.getOneByName(Roles.USER);
-            dbUser.getRoles().add(role);
+            dbUser.addRole(role);
             userRepository.save(dbUser);
             return true;
         } else return false;
