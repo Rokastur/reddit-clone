@@ -54,6 +54,7 @@ public class UserController {
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("hasNextPage", reviews.hasNext());
         model.addAttribute("reviewCount", reviews.getContent().size());
+        model.addAttribute("commentCount", comments.getContent().size());
         model.addAttribute("reviews", reviews);
         return "user";
     }

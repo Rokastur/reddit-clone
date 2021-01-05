@@ -34,11 +34,11 @@
         <section>
             <h1><a th:text="${user.username}"></a></h1>
             <p>has <span th:text="${reviewCount}"></span> posts.</p>
+            <p>and <span th:text="${commentCount}"></span> comments.</p>
             <p>Their posts received <span
                     th:text="${postUpvotes}"></span> upvotes
             <p> and their comments have received <span
                     th:text="${commentUpvotes}"></span> upvotes </p>
-            </p>
             <p><span>user created on</span> <span th:text="${user.date}"></span></p>
             <p><span>is account hidden? </span><span th:text="${incognito}"></span></p>
         </section>
