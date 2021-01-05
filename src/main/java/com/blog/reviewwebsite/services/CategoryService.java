@@ -26,8 +26,8 @@ public class CategoryService {
 
     public void updateOrSaveCategory(Category category, User user) {
         User dbUser = userRepository.getOne(user.getId());
+        dbUser.addCategory(category);
         dbUser.addFollowedCategory(category);
-        category.setUser(dbUser);
         categoryRepository.save(category);
     }
 
