@@ -34,7 +34,7 @@ public class FileService {
         file.setData(mpFile.getBytes());
 
         User user = userService.getUser(userId);
-        file.setUser(user);
+        user.addFile(file);
         return fileRepository.save(file);
     }
 
