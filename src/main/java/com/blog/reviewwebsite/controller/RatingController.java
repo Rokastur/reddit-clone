@@ -27,9 +27,13 @@ public class RatingController {
     }
 
     @PostMapping("/submit/downvote/{id}")
-    public String submitDownvote(@PathVariable Long id, @AuthenticationPrincipal User user) {
+    public String submitDownvote(@PathVariable Long id, @AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") Long categoryId) {
         scoreService.voteOnReview(id, user, RatingType.DOWNVOTE);
-        return "redirect:/reviews/review/" + id;
+        if (categoryId != 0) {
+            return "redirect:/reviews/?categoryId=" + categoryId;
+        } else {
+            return "redirect:/reviews/review/" + id;
+        }
     }
 
     @PostMapping("/submit/upvote/comment/{id}/{commentId}")
