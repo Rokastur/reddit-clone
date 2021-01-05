@@ -32,7 +32,7 @@ public class Comment extends Content {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "commentScore",
             joinColumns = @JoinColumn(name = "comment_id"),
