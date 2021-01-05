@@ -43,6 +43,7 @@ public class CategoryService {
     }
 
     public Page<Category> getAllCategoriesUserFollows(User user, int pageNumber) {
+        getCategoriesAndInitializeFollowers();
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return categoryRepository.findAllFollowedByUser(user.getId(), pageable);
     }
