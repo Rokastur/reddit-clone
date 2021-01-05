@@ -10,7 +10,7 @@ import java.util.Set;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
 
-    @Query(value = "SELECT * FROM users_chat WHERE user_id= :userId", nativeQuery = true)
+    @Query(value = "SELECT chat_id AS id FROM users_chat WHERE user_id= :userId", nativeQuery = true)
     Set<Chat> getAllThisUserChats(Long userId);
 
 }
