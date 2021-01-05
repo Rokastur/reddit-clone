@@ -31,22 +31,30 @@ public class ReviewService {
     }
 
     public Review updateReview(Review oldReview, User user, Long categoryId) {
+        User dbUser = userService.getUser(user.getId());
+        Category category = categoryService.getOneById(categoryId);
         Review review;
-        if (oldReview.getId() == null) {
-            review = new Review();
-            Score score = new Score();
-            score.setUser(user);
-            score.setRatingType(RatingType.UPVOTE);
-            review.getReviewScore().add(score);
-        } else {
+        if (oldReview.getId() != null) {
             review = reviewRepository.getOne(oldReview.getId());
+        } else {
+            review = createNewReview(dbUser);
         }
-        review.setUser(user);
+        dbUser.addReview(review);
+        category.addReview(review);
         review.setHidden(false);
-        review.setCategory(categoryService.getOneById(categoryId));
         review.setText(oldReview.getText());
         review.setTitle(oldReview.getTitle());
         return reviewRepository.save(review);
+    }
+
+    //creates a new review, makes it upvoted by creator by default. updates relevant associations
+    public Review createNewReview(User user) {
+        Review review = new Review();
+        Score score = new Score();
+        score.setRatingType(RatingType.UPVOTE);
+        user.addScore(score);
+        review.addScore(score);
+        return review;
     }
 
     public void deleteReview(Long id) {
