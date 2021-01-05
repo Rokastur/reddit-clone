@@ -41,7 +41,7 @@ public class UserController {
         long followedCategoriesCount = categoryService.getAllCategoriesUserFollows(user, pageNumber).getTotalElements();
         int pageCount = reviewService.findAllReviewsByReviewer(pageNumber, user).getTotalPages();
 
-        model.addAttribute("file", fileService.getUsersProfilePicture(user));
+        model.addAttribute("file", fileService.getUsersProfilePictureConvertedToString(user));
         model.addAttribute("orderType", reviewOrderType);
         model.addAttribute("postUpvotes", scoreService.howManyTimesThisUsersPostsHaveBeenUpvoted(user));
         model.addAttribute("commentUpvotes", scoreService.howManyTimesThisUsersCommentsHaveBeenUpvoted(user));

@@ -57,7 +57,7 @@ public class FileService {
         fileRepository.delete(file);
     }
 
-    public String getUsersProfilePicture(User user) {
+    public String getUsersProfilePictureConvertedToString(User user) {
         if (userService.userHasFile(user)) {
             File file = fileRepository.getUserFile(user.getId());
             return retrieveImageEncodedInBase64(file);
