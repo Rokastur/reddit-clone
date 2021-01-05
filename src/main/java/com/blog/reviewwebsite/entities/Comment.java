@@ -24,7 +24,7 @@ public class Comment extends Content {
     @CreationTimestamp
     private LocalDateTime date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
