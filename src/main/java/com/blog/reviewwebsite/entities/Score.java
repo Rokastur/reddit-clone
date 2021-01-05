@@ -28,7 +28,7 @@ public class Score {
     @ManyToMany(mappedBy = "commentScore")
     private Set<Comment> commentScore = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }
