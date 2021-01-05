@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class FileService {
@@ -25,10 +26,7 @@ public class FileService {
 
     @Transactional
     public File storeFile(MultipartFile mpFile, Long userId) throws IOException {
-        if (getFileByUserId(userId) != null) {
-            File file = getFileByUserId(userId);
-            deleteFile(file);
-        }
+        deleteFileIfUserHasOne(userId);
         String filename = StringUtils.cleanPath(mpFile.getOriginalFilename());
         File file = new File();
         file.setName(filename);
@@ -38,6 +36,11 @@ public class FileService {
         User user = userService.getUser(userId);
         file.setUser(user);
         return fileRepository.save(file);
+    }
+
+    public void deleteFileIfUserHasOne(Long userId) {
+        Optional<File> file = Optional.ofNullable(getFileByUserId(userId));
+        file.ifPresent(this::deleteFile);
     }
 
     @Transactional
