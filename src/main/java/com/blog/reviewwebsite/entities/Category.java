@@ -23,7 +23,7 @@ public class Category {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
