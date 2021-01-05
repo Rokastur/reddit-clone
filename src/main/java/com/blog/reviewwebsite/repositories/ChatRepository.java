@@ -13,4 +13,7 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
     @Query(value = "SELECT chat_id AS id FROM users_chat WHERE user_id= :userId", nativeQuery = true)
     Set<Chat> getAllThisUserChats(Long userId);
 
+    @Query(value = "SELECT c FROM Chat c JOIN FETCH c.chatters")
+    Set<Chat> getChatsWithChattersInitialized();
+
 }

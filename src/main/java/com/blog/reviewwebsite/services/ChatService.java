@@ -38,6 +38,7 @@ public class ChatService {
     }
 
     public Set<Chat> getAllUserChats(User user) {
+        chatRepository.getChatsWithChattersInitialized();
         return chatRepository.getAllThisUserChats(user.getId());
     }
 
