@@ -99,20 +99,19 @@ public class ScoreService {
         if (score.isPresent()) {
             updateRatingType(score.get(), ratingType);
         } else {
-            score = Optional.ofNullable(createNewReviewScore(ratingType, review, user));
+            score = Optional.of(createNewReviewScore(ratingType, review, user));
         }
         return score.get();
     }
 
     public Score updateCommentScoreIfExistsElseCreateNew(User user, Comment comment, RatingType ratingType) {
-        Score score;
-        if (scoreRepository.getOneByUserAndComment(user.getId(), comment.getId()) != null) {
-            score = scoreRepository.getOneByUserAndComment(user.getId(), comment.getId());
-            updateRatingType(score, ratingType);
+        Optional<Score> score = Optional.ofNullable(scoreRepository.getOneByUserAndComment(user.getId(), comment.getId()));
+        if (score.isPresent()) {
+            updateRatingType(score.get(), ratingType);
         } else {
-            score = createNewCommentScore(ratingType, comment, user);
+            score = Optional.of(createNewCommentScore(ratingType, comment, user));
         }
-        return score;
+        return score.get();
     }
 
     public Score createNewReviewScore(RatingType ratingType, Review review, User user) {
