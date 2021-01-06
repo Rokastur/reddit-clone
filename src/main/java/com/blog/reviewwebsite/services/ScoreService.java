@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -94,14 +95,13 @@ public class ScoreService {
     }
 
     public Score updateReviewScoreIfExistsElseCreateNew(User user, Review review, RatingType ratingType) {
-        Score score;
-        if (scoreRepository.getOneByUserAndReview(user.getId(), review.getId()) != null) {
-            score = scoreRepository.getOneByUserAndReview(user.getId(), review.getId());
-            updateRatingType(score, ratingType);
+        Optional<Score> score = Optional.ofNullable(scoreRepository.getOneByUserAndReview(user.getId(), review.getId()));
+        if (score.isPresent()) {
+            updateRatingType(score.get(), ratingType);
         } else {
-            score = createNewReviewScore(ratingType, review, user);
+            score = Optional.ofNullable(createNewReviewScore(ratingType, review, user));
         }
-        return score;
+        return score.get();
     }
 
     public Score updateCommentScoreIfExistsElseCreateNew(User user, Comment comment, RatingType ratingType) {
