@@ -77,15 +77,18 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User followCategory(Long userId, Long id) {
-        Category category = categoryService.getOneById(id);
-        User user = userRepository.getOne(userId);
-        if (user.getFollowedCategories().contains(category)) {
-            user.removeFollowedCategory(category);
-        } else {
-            user.addFollowedCategory(category);
+    public void followCategory(User user, Long id) {
+        if (user == null) {
+            return;
         }
-        return userRepository.save(user);
+        Category category = categoryService.getOneById(id);
+        User dbUser = userRepository.getOne(user.getId());
+        if (dbUser.getFollowedCategories().contains(category)) {
+            dbUser.removeFollowedCategory(category);
+        } else {
+            dbUser.addFollowedCategory(category);
+        }
+        userRepository.save(user);
     }
 
     @Override

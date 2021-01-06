@@ -46,9 +46,7 @@ public class CategoryController {
 
     @PostMapping("/follow/{id}")
     public String followCategory(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        if (user.getId() != null) {
-            userService.followCategory(user.getId(), id);
-        }
+        userService.followCategory(user, id);
         return "redirect:/categories/all";
     }
 
