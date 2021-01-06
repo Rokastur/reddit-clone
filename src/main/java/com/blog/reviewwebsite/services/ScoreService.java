@@ -81,6 +81,9 @@ public class ScoreService {
 
     //TODO: voting methods for review and comment look very similar. Look for a way to use one method only. Maybe inheritance.
     public void voteOnReview(Long reviewId, User user, RatingType ratingType) {
+        if (user == null) {
+            return;
+        }
         Review review = reviewService.getReview(reviewId);
         User dbUser = userService.getUser(user.getId());
         Score score = updateReviewScoreIfExistsElseCreateNew(dbUser, review, ratingType);
@@ -88,6 +91,9 @@ public class ScoreService {
     }
 
     public void voteOnComment(Long commentId, User user, RatingType ratingType) {
+        if (user == null) {
+            return;
+        }
         Comment comment = commentService.getOneById(commentId);
         User dbUser = userService.getUser(user.getId());
         Score score = updateCommentScoreIfExistsElseCreateNew(dbUser, comment, ratingType);
