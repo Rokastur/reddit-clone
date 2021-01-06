@@ -44,16 +44,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public boolean createUser(UserDTO user) {
-        if (validNewUser(user) && passwordsMatch(user)) {
+    public void createUser(UserDTO user) {
+        if (validNewUser(user)) {
             User dbUser = new User();
             dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
             dbUser.setUsername(user.getUsername());
             Role role = roleService.getOneByName(Roles.USER);
             dbUser.addRole(role);
             saveUser(dbUser);
-            return true;
-        } else return false;
+        }
     }
 
     public void updateUserDescription(User user) {
@@ -100,7 +99,4 @@ public class UserService implements UserDetailsService {
         return !userRepository.findUserByUsername(user.getUsername()).isPresent();
     }
 
-    public boolean passwordsMatch(UserDTO user) {
-        return user.getPassword().equals(user.getConfirmPassword());
-    }
 }
