@@ -32,8 +32,8 @@ public class UserService implements UserDetailsService {
         this.roleService = roleService;
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
 
     public User getUser(Long id) {
@@ -51,15 +51,15 @@ public class UserService implements UserDetailsService {
             dbUser.setUsername(user.getUsername());
             Role role = roleService.getOneByName(Roles.USER);
             dbUser.addRole(role);
-            userRepository.save(dbUser);
+            saveUser(dbUser);
             return true;
         } else return false;
     }
 
-    public User updateUserDescription(User user) {
+    public void updateUserDescription(User user) {
         User dbUser = userRepository.getOne(user.getId());
         dbUser.setProfileDescription(user.getProfileDescription());
-        return userRepository.save(dbUser);
+        saveUser(user);
     }
 
     public void deleteUser(Long id) {
@@ -71,10 +71,10 @@ public class UserService implements UserDetailsService {
         return !user.getFiles().isEmpty();
     }
 
-    public User toggleIncognito(Long userId) {
+    public void toggleIncognito(Long userId) {
         User user = userRepository.getOne(userId);
         user.setIncognito(!user.isIncognito());
-        return userRepository.save(user);
+        saveUser(user);
     }
 
     public void followCategory(User user, Long id) {
@@ -88,7 +88,7 @@ public class UserService implements UserDetailsService {
         } else {
             dbUser.addFollowedCategory(category);
         }
-        userRepository.save(user);
+        saveUser(dbUser);
     }
 
     @Override
