@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/public/**", "/user/signup/", "/login/").permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers("/reviews/form/", "/reviews/edit/**", "/reviews/delete/**").authenticated()
-                .antMatchers("/categories/new/").authenticated()
+                .antMatchers("/categories/new/**").authenticated()
                 .antMatchers("/chat/**").authenticated()
                 .antMatchers("/message/**").authenticated()
                 .antMatchers("/user/delete/").authenticated()
