@@ -45,14 +45,12 @@ public class UserService implements UserDetailsService {
     }
 
     public void createUser(UserDTO user) {
-        if (validNewUser(user)) {
-            User dbUser = new User();
-            dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
-            dbUser.setUsername(user.getUsername());
-            Role role = roleService.getOneByName(Roles.USER);
-            dbUser.addRole(role);
-            saveUser(dbUser);
-        }
+        User dbUser = new User();
+        dbUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        dbUser.setUsername(user.getUsername());
+        Role role = roleService.getOneByName(Roles.USER);
+        dbUser.addRole(role);
+        saveUser(dbUser);
     }
 
     public void updateUserDescription(User user) {
@@ -93,10 +91,6 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findUserByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
-    }
-
-    public boolean validNewUser(UserDTO user) {
-        return !userRepository.findUserByUsername(user.getUsername()).isPresent();
     }
 
 }
