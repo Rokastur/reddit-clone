@@ -28,11 +28,7 @@ public class FileService {
     public File storeFile(MultipartFile mpFile, Long userId) throws IOException {
         deleteFileIfUserHasOne(userId);
         String filename = StringUtils.cleanPath(mpFile.getOriginalFilename());
-        File file = new File();
-        file.setName(filename);
-        file.setType(mpFile.getContentType());
-        file.setData(mpFile.getBytes());
-
+        File file = new File(filename, mpFile.getContentType(), mpFile.getBytes());
         User user = userService.getUser(userId);
         user.addFile(file);
         return fileRepository.save(file);
