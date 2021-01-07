@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -20,7 +18,7 @@ public class Score {
 
     @Column(name = "rating_type")
     @Enumerated(EnumType.STRING)
-    private RatingType ratingType = RatingType.NONE;
+    private RatingType ratingType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
