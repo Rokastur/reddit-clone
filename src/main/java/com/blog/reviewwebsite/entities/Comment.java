@@ -32,22 +32,12 @@ public class Comment extends Content {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
-    @ManyToMany
-    @JoinTable(
-            name = "commentScore",
-            joinColumns = @JoinColumn(name = "comment_id"),
-            inverseJoinColumns = @JoinColumn(name = "score_id")
-    )
-    private Set<Score> commentScore = new HashSet<>();
+    @OneToMany(mappedBy = "comment")
+    private Set<Score> score = new HashSet<>();
 
     public void addScore(Score score) {
-        commentScore.add(score);
-        score.getCommentScore().add(this);
-    }
-
-    public void removeScore(Score score) {
-        commentScore.remove(score);
-        score.getCommentScore().remove(this);
+        this.score.add(score);
+        score.setComment(this);
     }
 
 }

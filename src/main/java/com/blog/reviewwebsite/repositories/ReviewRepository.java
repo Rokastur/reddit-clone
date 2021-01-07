@@ -20,12 +20,12 @@ public interface ReviewRepository extends ContentRepository<Review> {
 
     String reviewCountQueryByCategory = "SELECT COUNT(*) FROM Review WHERE hidden = 'false' AND category_id= :categoryId";
 
-    @Query(value = "SELECT r.* FROM review r CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM review_score rs INNER JOIN score s ON s.id = rs.score_id WHERE rs.review_id = r.id) s WHERE category_id =:categoryId AND hidden = 'false' ORDER BY s.cnt_up - s.cnt_down DESC",
+    @Query(value = "SELECT r.* FROM review r CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM score INNER JOIN score s ON s.review_id = r.id ) s WHERE category_id =:categoryId AND hidden = 'false' ORDER BY s.cnt_up - s.cnt_down DESC",
             countQuery = reviewCountQueryByCategory,
             nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndCategoryOrderByTotalScoreDesc(Long categoryId, Pageable pageable);
 
-    @Query(value = "SELECT r.* FROM review r CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM review_score rs INNER JOIN score s ON s.id = rs.score_id WHERE rs.review_id = r.id) s WHERE category_id =:categoryId AND hidden = 'false' ORDER BY s.cnt_up - s.cnt_down ASC",
+    @Query(value = "SELECT r.* FROM review r CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM score INNER JOIN score s ON s.review_id = r.id ) s WHERE category_id =:categoryId AND hidden = 'false' ORDER BY s.cnt_up - s.cnt_down ASC",
             countQuery = reviewCountQueryByCategory,
             nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndCategoryOrderByTotalScoreAsc(Long categoryId, Pageable pageable);
@@ -54,13 +54,14 @@ public interface ReviewRepository extends ContentRepository<Review> {
 
     String reviewCountQueryByUser = "SELECT COUNT(*) FROM Review WHERE hidden = 'false' AND user_id= :userId";
 
-    @Query(value = "SELECT r.* FROM review r CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM review_score rs INNER JOIN score s ON s.id = rs.score_id WHERE rs.review_id = r.id) s WHERE user_id =:userId AND hidden = 'false' ORDER BY s.cnt_up - s.cnt_down DESC",
+    @Query(value = "SELECT r.* FROM review r CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM score INNER JOIN score s ON s.review_id = r.id ) s WHERE user_id =:userId AND hidden = 'false' ORDER BY s.cnt_up - s.cnt_down DESC",
             countQuery = reviewCountQueryByUser,
             nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndUserOrderByTotalScoreDesc(Long userId, Pageable pageable);
 
-    @Query(value = "SELECT r.* FROM review r CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM review_score rs INNER JOIN score s ON s.id = rs.score_id WHERE rs.review_id = r.id) s WHERE user_id =:userId AND hidden = 'false' ORDER BY s.cnt_up - s.cnt_down ASC",
-            countQuery = reviewCountQueryByUser, nativeQuery = true)
+    @Query(value = "SELECT r.* FROM review r CROSS JOIN LATERAL (SELECT COUNT(*) FILTER(WHERE s.rating_type = 'UPVOTE') AS cnt_up, COUNT(*) FILTER(WHERE s.rating_type = 'DOWNVOTE') AS cnt_down FROM score INNER JOIN score s ON s.review_id = r.id ) s WHERE user_id =:userId AND hidden = 'false' ORDER BY s.cnt_up - s.cnt_down ASC",
+            countQuery = reviewCountQueryByUser,
+            nativeQuery = true)
     Page<Review> findAllByHiddenFalseAndUserOrderByTotalScoreAsc(Long userId, Pageable pageable);
 
     @Query(value = "SELECT * FROM review WHERE hidden = 'false' AND user_id =:userId ORDER BY DATE DESC",

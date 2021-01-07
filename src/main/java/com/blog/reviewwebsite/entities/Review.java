@@ -31,24 +31,6 @@ public class Review extends Content {
     @CreationTimestamp
     private LocalDateTime date;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "reviewScore",
-            joinColumns = @JoinColumn(name = "review_id"),
-            inverseJoinColumns = @JoinColumn(name = "score_id")
-    )
-    private Set<Score> reviewScore = new HashSet<>();
-
-    public void addScore(Score score) {
-        reviewScore.add(score);
-        score.getReviewScore().add(this);
-    }
-
-    public void removeScore(Score score) {
-        reviewScore.remove(score);
-        score.getReviewScore().remove(this);
-    }
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -59,6 +41,14 @@ public class Review extends Content {
     public void addComment(Comment comment) {
         this.comments.add(comment);
         comment.setReview(this);
+    }
+
+    @OneToMany(mappedBy = "review")
+    private Set<Score> score = new HashSet<>();
+
+    public void addScore(Score score) {
+        this.score.add(score);
+        score.setReview(this);
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

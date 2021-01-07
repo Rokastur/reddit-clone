@@ -22,11 +22,13 @@ public class Score {
     @Enumerated(EnumType.STRING)
     private RatingType ratingType = RatingType.NONE;
 
-    @ManyToMany(mappedBy = "reviewScore")
-    private Set<Review> reviewScore = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
+    private Review review;
 
-    @ManyToMany(mappedBy = "commentScore")
-    private Set<Comment> commentScore = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
