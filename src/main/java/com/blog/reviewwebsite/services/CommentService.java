@@ -29,6 +29,14 @@ public class CommentService {
         return commentRepository.getOne(id);
     }
 
+    public Comment getCommentReference(Long id) {
+        return commentRepository.getOne(id);
+    }
+
+    public Comment getCommentEntity(Long id) {
+        return commentRepository.findById(id).get();
+    }
+
     public void saveOrUpdateComment(Comment comment, User user, Long id) {
         Review review = reviewRepository.getOne(id);
         User dbUser = userService.getUserEntity(user.getId());
