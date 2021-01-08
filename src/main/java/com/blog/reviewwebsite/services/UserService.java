@@ -1,7 +1,6 @@
 package com.blog.reviewwebsite.services;
 
 import com.blog.reviewwebsite.controller.Roles;
-import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Role;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.entities.UserDTO;
@@ -20,15 +19,13 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
-    private CategoryService categoryService;
     private RoleService roleService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, CategoryService categoryService, RoleService roleService) {
+    public UserService(UserRepository userRepository, RoleService roleService) {
         this.userRepository = userRepository;
-        this.categoryService = categoryService;
         this.roleService = roleService;
     }
 
@@ -80,20 +77,6 @@ public class UserService implements UserDetailsService {
         User user = userRepository.getOne(userId);
         user.setIncognito(!user.isIncognito());
         saveUser(user);
-    }
-
-    public void followCategory(User user, Long id) {
-        if (user == null) {
-            return;
-        }
-        Category category = categoryService.getOneById(id);
-        User dbUser = userRepository.getOne(user.getId());
-        if (dbUser.getFollowedCategories().contains(category)) {
-            dbUser.removeFollowedCategory(category);
-        } else {
-            dbUser.addFollowedCategory(category);
-        }
-        saveUser(dbUser);
     }
 
     @Override

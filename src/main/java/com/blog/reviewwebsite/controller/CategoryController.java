@@ -3,7 +3,6 @@ package com.blog.reviewwebsite.controller;
 import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.services.CategoryService;
-import com.blog.reviewwebsite.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,12 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
 
     private CategoryService categoryService;
-    private UserService userService;
     private ContentOrderMap orderMap;
 
-    public CategoryController(CategoryService categoryService, UserService userService, ContentOrderMap orderMap) {
+    public CategoryController(CategoryService categoryService, ContentOrderMap orderMap) {
         this.categoryService = categoryService;
-        this.userService = userService;
         this.orderMap = orderMap;
     }
 
@@ -46,7 +43,7 @@ public class CategoryController {
 
     @PostMapping("/follow/{id}")
     public String followCategory(@PathVariable Long id, @AuthenticationPrincipal User user) {
-        userService.followCategory(user, id);
+        categoryService.followCategory(user, id);
         return "redirect:/categories/all";
     }
 

@@ -3,7 +3,6 @@ package com.blog.reviewwebsite.services;
 import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.CategoryRepository;
-import com.blog.reviewwebsite.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +14,11 @@ import java.util.Set;
 public class CategoryService {
 
     private CategoryRepository categoryRepository;
-    private UserRepository userRepository;
+    private UserService userService;
 
-    public CategoryService(CategoryRepository categoryRepository, UserRepository userRepository) {
+    public CategoryService(CategoryRepository categoryRepository, UserService userService) {
         this.categoryRepository = categoryRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public Category getOneById(Long id) {
@@ -27,9 +26,23 @@ public class CategoryService {
     }
 
     public void updateOrSaveCategory(Category category, User user) {
-        User dbUser = userRepository.getOne(user.getId());
+        User dbUser = userService.getUserEntity(user.getId());
         dbUser.addCategory(category);
         dbUser.addFollowedCategory(category);
+        categoryRepository.save(category);
+    }
+
+    public void followCategory(User user, Long id) {
+        if (user == null) {
+            return;
+        }
+        Category category = categoryRepository.findById(id).get();
+        User dbUser = userService.getUserEntity(user.getId());
+        if (dbUser.getFollowedCategories().contains(category)) {
+            dbUser.removeFollowedCategory(category);
+        } else {
+            dbUser.addFollowedCategory(category);
+        }
         categoryRepository.save(category);
     }
 
