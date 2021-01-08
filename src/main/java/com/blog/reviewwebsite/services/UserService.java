@@ -40,6 +40,14 @@ public class UserService implements UserDetailsService {
         return userRepository.getOne(id);
     }
 
+    public User getUserReference(Long id) {
+        return userRepository.getOne(id);
+    }
+
+    public User getUserEntity(Long id) {
+        return userRepository.findById(id).get();
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
