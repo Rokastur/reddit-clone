@@ -16,12 +16,12 @@ import java.util.Set;
 public class CommentService {
 
     private CommentRepository commentRepository;
-    private ReviewRepository reviewRepository;
+    private ReviewService reviewService;
     private UserService userService;
 
-    public CommentService(CommentRepository commentRepository, ReviewRepository reviewRepository, UserService userService) {
+    public CommentService(CommentRepository commentRepository, ReviewService reviewService, UserService userService) {
         this.commentRepository = commentRepository;
-        this.reviewRepository = reviewRepository;
+        this.reviewService = reviewService;
         this.userService = userService;
     }
 
@@ -38,7 +38,7 @@ public class CommentService {
     }
 
     public void saveOrUpdateComment(Comment comment, User user, Long id) {
-        Review review = reviewRepository.getOne(id);
+        Review review = reviewService.getReviewEntity(id);
         User dbUser = userService.getUserEntity(user.getId());
         dbUser.addComment(comment);
         review.addComment(comment);
