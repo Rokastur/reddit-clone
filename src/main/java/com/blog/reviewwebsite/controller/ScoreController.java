@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/vote")
-public class RatingController {
+public class ScoreController {
 
     private ScoreService scoreService;
 
-    public RatingController(ScoreService scoreService) {
+    public ScoreController(ScoreService scoreService) {
         this.scoreService = scoreService;
     }
 
