@@ -18,7 +18,7 @@ public class Score {
 
     @Column(name = "rating_type")
     @Enumerated(EnumType.STRING)
-    private RatingType ratingType;
+    private RatingType ratingType = RatingType.NONE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
