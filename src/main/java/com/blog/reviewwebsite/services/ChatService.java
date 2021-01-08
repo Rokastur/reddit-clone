@@ -29,14 +29,15 @@ public class ChatService {
     public void createNewChat(User initiator, ChatUsers chatUsersWrapper) {
         Chat chat = new Chat();
         for (Long userId : chatUsersWrapper.getUserIdList()) {
-            User user = userService.getUser(userId);
+            User user = userService.getUserEntity(userId);
             user.addChatSet(chat);
         }
-        User init = userService.getUser(initiator.getId());
+        User init = userService.getUserEntity(initiator.getId());
         init.addChatSet(chat);
         chatRepository.save(chat);
     }
 
+    //TODO can be done with a single query
     public Set<Chat> getAllUserChats(User user) {
         chatRepository.getChatsWithChattersInitialized();
         return chatRepository.getAllThisUserChats(user.getId());
