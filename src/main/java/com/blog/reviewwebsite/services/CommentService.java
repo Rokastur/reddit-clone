@@ -5,7 +5,6 @@ import com.blog.reviewwebsite.entities.Review;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.CommentRepository;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
-import com.blog.reviewwebsite.repositories.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,12 +17,12 @@ public class CommentService {
 
     private CommentRepository commentRepository;
     private ReviewRepository reviewRepository;
-    private UserRepository userRepository;
+    private UserService userService;
 
-    public CommentService(CommentRepository commentRepository, ReviewRepository reviewRepository, UserRepository userRepository) {
+    public CommentService(CommentRepository commentRepository, ReviewRepository reviewRepository, UserService userService) {
         this.commentRepository = commentRepository;
         this.reviewRepository = reviewRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public Comment getOneById(Long id) {
@@ -32,7 +31,7 @@ public class CommentService {
 
     public void saveOrUpdateComment(Comment comment, User user, Long id) {
         Review review = reviewRepository.getOne(id);
-        User dbUser = userRepository.getOneWithCommentsInitialized(user.getId());
+        User dbUser = userService.getUserEntity(user.getId());
         dbUser.addComment(comment);
         review.addComment(comment);
         commentRepository.save(comment);
