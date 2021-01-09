@@ -11,7 +11,7 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
     @Query(value = "SELECT * FROM score WHERE user_id =:userId AND review_id =:reviewId", nativeQuery = true)
     Score getOneByUserAndReview(Long userId, Long reviewId);
 
-    @Query(value = "SELECT (SELECT COUNT(*) FROM SCORE WHERE rating_type = 'UPVOTE' AND review_id =: reviewId) - (SELECT COUNT(*) FROM SCORE WHERE rating_type = 'DOWNVOTE' AND review_id =:reviewId) as score", nativeQuery = true)
+    @Query(value = "SELECT (SELECT COUNT(*) FROM SCORE WHERE rating_type = 'UPVOTE' AND review_id =:reviewId) - (SELECT COUNT(*) FROM SCORE WHERE rating_type = 'DOWNVOTE' AND review_id =:reviewId) as score", nativeQuery = true)
     long getReviewScore(Long reviewId);
 
     @Query(value = "SELECT COUNT(*) FROM score WHERE rating_type = 'UPVOTE' AND review_id =:reviewId", nativeQuery = true)
