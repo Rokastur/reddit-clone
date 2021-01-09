@@ -77,6 +77,10 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
+    public Set<Review> getAllBookmarkedReviewsByUser(User user) {
+        return reviewRepository.getAllBookmarkedReviewsByUser(user.getId());
+    }
+
     public Page<Review> findAllReviewsByReviewer(int pageNumber, User user) {
         Pageable pageable = PageRequest.of(pageNumber, 4);
         return reviewRepository.findAllByUser(user, pageable);

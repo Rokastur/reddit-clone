@@ -166,6 +166,16 @@
             </ul>
         </section>
 
+        <section>
+            <h1>Bookmarked Reviews</h1>
+            <p>this user bookmarked <span th:text="${bookmarkedReviewsCount}"></span> reviews</p>
+            <ul>
+                <li th:each="review:${bookmarkedReviews}">
+                    <p><span th:text="${review.title}"></span> by <span th:text="${review.user.username}"></span></p>
+                </li>
+            </ul>
+        </section>
+
     </section>
 </section>
 </body>

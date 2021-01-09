@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/user")
@@ -38,6 +39,7 @@ public class UserController {
         Page<Review> reviews = orderMap.reviewsByOrderTypeAndUser.get(reviewOrderType);
         Page<Comment> comments = orderMap.commentsByOrderTypeAndUser.get(commentOrderType);
         Page<Category> categories = categoryService.getAllCategoriesUserFollows(user, pageNumber);
+        Set<Review> bookmarkedReviews = reviewService.getAllBookmarkedReviewsByUser(user);
         long followedCategoriesCount = categoryService.getAllCategoriesUserFollows(user, pageNumber).getTotalElements();
         int pageCount = reviewService.findAllReviewsByReviewer(pageNumber, user).getTotalPages();
 
@@ -56,6 +58,8 @@ public class UserController {
         model.addAttribute("reviewCount", reviews.getContent().size());
         model.addAttribute("commentCount", comments.getContent().size());
         model.addAttribute("reviews", reviews);
+        model.addAttribute("bookmarkedReviews", bookmarkedReviews);
+        model.addAttribute("bookmarkedReviewsCount", bookmarkedReviews.size());
         return "user";
     }
 
