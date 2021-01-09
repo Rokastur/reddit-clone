@@ -30,7 +30,7 @@ public class CommentService {
     }
 
     public void saveOrUpdateComment(Comment comment, User user, Long id) {
-        Review review = reviewService.getReviewEntity(id);
+        Review review = reviewService.getReview(id);
         User dbUser = userService.getUser(user.getId());
         dbUser.addComment(comment);
         review.addComment(comment);
