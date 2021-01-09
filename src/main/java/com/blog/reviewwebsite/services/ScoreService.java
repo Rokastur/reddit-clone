@@ -33,27 +33,11 @@ public class ScoreService {
     private Map<Long, Long> reviewScoreMap = new HashMap<>();
 
     public long getReviewScore(Review review) {
-        return getReviewUpvoteCount(review) - getReviewDownvoteCount(review);
-    }
-
-    public long getReviewUpvoteCount(Review review) {
-        return scoreRepository.getUpvoteCountByReview(review.getId());
-    }
-
-    public long getReviewDownvoteCount(Review review) {
-        return scoreRepository.getDownvoteCountByReview(review.getId());
+        return scoreRepository.getReviewScore(review.getId());
     }
 
     public long getCommentScore(Comment comment) {
-        return getCommentUpvoteCount(comment) - getCommentDownvoteCount(comment);
-    }
-
-    public long getCommentUpvoteCount(Comment comment) {
-        return scoreRepository.getUpvoteCountByComment(comment.getId());
-    }
-
-    public long getCommentDownvoteCount(Comment comment) {
-        return scoreRepository.getDownvoteCountByComment(comment.getId());
+        return scoreRepository.getCommentScore(comment.getId());
     }
 
     public void mapScoreToCategoryReviewsId(Category category) {
