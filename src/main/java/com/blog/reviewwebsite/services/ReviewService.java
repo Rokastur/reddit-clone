@@ -30,6 +30,19 @@ public class ReviewService {
         return reviewRepository.getOne(id);
     }
 
+    public void bookmarkReview(User user, Long id) {
+        if (user == null) {
+            return;
+        }
+        Review review = getReview(id);
+        if (user.getBookmarkedReviews().contains(review)) {
+            user.removeFromBookmarkedReviews(review);
+        } else {
+            user.addToBookmarkedReviews(review);
+        }
+        reviewRepository.save(review);
+    }
+
     public Review updateReview(Review oldReview, User user, Long categoryId) {
         User dbUser = userService.getUser(user.getId());
         Category category = categoryService.getOneById(categoryId);
