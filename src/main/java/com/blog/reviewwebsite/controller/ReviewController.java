@@ -67,9 +67,9 @@ public class ReviewController {
     }
 
     @PostMapping("/bookmark/{id}")
-    public String bookmarkReview(@PathVariable Long id, @AuthenticationPrincipal User user){
+    public String bookmarkReview(@PathVariable Long id, @AuthenticationPrincipal User user) {
         reviewService.bookmarkReview(user, id);
-        return "redirect:/reviews/review/"+id;
+        return "redirect:/reviews/review/" + id;
     }
 
     @PostMapping("/submit")
