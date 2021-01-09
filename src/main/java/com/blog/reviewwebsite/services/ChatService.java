@@ -29,10 +29,10 @@ public class ChatService {
     public void createNewChat(User initiator, ChatUsers chatUsersWrapper) {
         Chat chat = new Chat();
         for (Long userId : chatUsersWrapper.getUserIdList()) {
-            User user = userService.getUserEntity(userId);
+            User user = userService.getUser(userId);
             user.addChatSet(chat);
         }
-        User init = userService.getUserEntity(initiator.getId());
+        User init = userService.getUser(initiator.getId());
         init.addChatSet(chat);
         chatRepository.save(chat);
     }

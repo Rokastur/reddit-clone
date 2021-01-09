@@ -26,7 +26,7 @@ public class CategoryService {
     }
 
     public void updateOrSaveCategory(Category category, User user) {
-        User dbUser = userService.getUserEntity(user.getId());
+        User dbUser = userService.getUser(user.getId());
         dbUser.addCategory(category);
         dbUser.addFollowedCategory(category);
         categoryRepository.save(category);
@@ -37,7 +37,7 @@ public class CategoryService {
             return;
         }
         Category category = categoryRepository.findById(id).get();
-        User dbUser = userService.getUserEntity(user.getId());
+        User dbUser = userService.getUser(user.getId());
         if (dbUser.getFollowedCategories().contains(category)) {
             dbUser.removeFollowedCategory(category);
         } else {

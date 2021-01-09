@@ -30,20 +30,12 @@ public class ReviewService {
         return reviewRepository.getOne(id);
     }
 
-    public Review getReviewReference(Long id) {
-        return reviewRepository.getOne(id);
-    }
-
-    public Review getReviewEntity(Long id) {
-        return reviewRepository.findById(id).get();
-    }
-
     public Review updateReview(Review oldReview, User user, Long categoryId) {
-        User dbUser = userService.getUserReference(user.getId());
+        User dbUser = userService.getUser(user.getId());
         Category category = categoryService.getOneById(categoryId);
         Review review;
         if (oldReview.getId() != null) {
-            review = getReviewEntity(oldReview.getId());
+            review = getReview(oldReview.getId());
         } else {
             review = createNewReview(dbUser);
         }
