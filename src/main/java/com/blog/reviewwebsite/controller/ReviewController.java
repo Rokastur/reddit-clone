@@ -66,6 +66,12 @@ public class ReviewController {
         return "review";
     }
 
+    @PostMapping("/bookmark/{id}")
+    public String bookmarkReview(@PathVariable Long id, @AuthenticationPrincipal User user){
+        reviewService.bookmarkReview(user, id);
+        return "redirect:/reviews/review/"+id;
+    }
+
     @PostMapping("/submit")
     private String form(@Valid @ModelAttribute Review review, BindingResult result, Model model, @AuthenticationPrincipal User user, @RequestParam(defaultValue = "0") Long categoryId) {
         if (result.hasErrors()) {
