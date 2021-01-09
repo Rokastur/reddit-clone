@@ -1,9 +1,7 @@
 package com.blog.reviewwebsite.services;
 
-import com.blog.reviewwebsite.controller.RatingType;
 import com.blog.reviewwebsite.entities.Category;
 import com.blog.reviewwebsite.entities.Review;
-import com.blog.reviewwebsite.entities.Score;
 import com.blog.reviewwebsite.entities.User;
 import com.blog.reviewwebsite.repositories.ReviewRepository;
 import org.springframework.data.domain.Page;
@@ -44,30 +42,20 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public Review updateReview(Review oldReview, User user, Long categoryId) {
-        User dbUser = userService.getUser(user.getId());
-        Category category = categoryService.getOneById(categoryId);
+    public Review updateOrCreateReview(Review oldReview, User user, Long categoryId) {
         Review review;
         if (oldReview.getId() != null) {
-            review = getReview(oldReview.getId());
+            review = reviewRepository.getOne(oldReview.getId());
         } else {
-            review = createNewReview(dbUser);
+            review = new Review();
         }
+        User dbUser = userService.getUser(user.getId());
         dbUser.addReview(review);
+        Category category = categoryService.getOneById(categoryId);
         category.addReview(review);
-        review.setHidden(false);
-        review.setText(oldReview.getText());
         review.setTitle(oldReview.getTitle());
-        return reviewRepository.save(review);
-    }
-
-    //creates a new review, makes it upvoted by creator by default. updates relevant associations
-    public Review createNewReview(User user) {
-        Review review = new Review();
-        Score score = new Score();
-        score.setRatingType(RatingType.UPVOTE);
-        user.addScore(score);
-        review.addScore(score);
+        review.setText(oldReview.getText());
+        reviewRepository.save(review);
         return review;
     }
 

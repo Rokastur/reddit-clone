@@ -77,8 +77,8 @@ public class ReviewController {
         if (result.hasErrors()) {
             return "form";
         } else {
-            reviewService.updateReview(review, user, categoryId);
-            model.addAttribute("review", review);
+            Review newReview = reviewService.updateOrCreateReview(review, user, categoryId);
+            scoreService.voteOnReview(newReview.getId(), user, RatingType.UPVOTE);
             return "redirect:/reviews/?categoryId=" + categoryId;
         }
     }
