@@ -25,7 +25,7 @@ public class Review extends Content {
     private String text;
 
     @Column(name = "hidden")
-    private Boolean hidden;
+    private Boolean hidden = false;
 
     @Column(name = "date")
     @CreationTimestamp
