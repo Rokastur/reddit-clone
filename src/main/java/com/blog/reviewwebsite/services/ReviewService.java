@@ -35,10 +35,11 @@ public class ReviewService {
             return;
         }
         Review review = getReview(id);
-        if (user.getBookmarkedReviews().contains(review)) {
-            user.removeFromBookmarkedReviews(review);
+        User dbUser = userService.getUser(user.getId());
+        if (dbUser.getBookmarkedReviews().contains(review)) {
+            dbUser.removeFromBookmarkedReviews(review);
         } else {
-            user.addToBookmarkedReviews(review);
+            dbUser.addToBookmarkedReviews(review);
         }
         reviewRepository.save(review);
     }
