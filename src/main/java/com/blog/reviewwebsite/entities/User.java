@@ -102,6 +102,17 @@ public class User implements UserDetails {
         chat.getChatters().remove(this);
     }
 
+    @ManyToMany
+    @JoinTable(name = "saved_reviews",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "review_id"))
+    private Set<Review> savedReviews = new HashSet<>();
+
+    public void addToSavedReviews(Review review) {
+        savedReviews.add(review);
+        review.getUsersWhoSavedReview().add(this);
+    }
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "followedCategories",
