@@ -16,7 +16,7 @@ public interface ReviewRepository extends ContentRepository<Review> {
 
     Set<Review> findAllByHiddenFalseAndCategory(Category category);
 
-    @Query(value = "SELECT review_id AS id FROM bookmarked_reviews WHERE user_id =:userId ", nativeQuery = true)
+    @Query(value = "SELECT * FROM review r JOIN bookmarked_reviews br ON r.id = br.review_id WHERE br.user_id =:userId", nativeQuery = true)
     Set<Review> getAllBookmarkedReviewsByUser(Long userId);
 
 //    v ----------------- order types for reviews by category ----------------- v
