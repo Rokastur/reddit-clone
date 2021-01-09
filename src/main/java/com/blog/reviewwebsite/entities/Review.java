@@ -55,7 +55,7 @@ public class Review extends Content {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToMany(mappedBy = "savedReviews")
-    private Set<User> usersWhoSavedReview = new HashSet<>();
+    @ManyToMany(mappedBy = "bookmarkedReviews")
+    private Set<User> usersWhoBookmarkedReview = new HashSet<>();
 
 }

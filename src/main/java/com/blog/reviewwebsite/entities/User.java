@@ -103,14 +103,14 @@ public class User implements UserDetails {
     }
 
     @ManyToMany
-    @JoinTable(name = "saved_reviews",
+    @JoinTable(name = "bookmarked_reviews",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "review_id"))
-    private Set<Review> savedReviews = new HashSet<>();
+    private Set<Review> bookmarkedReviews = new HashSet<>();
 
-    public void addToSavedReviews(Review review) {
-        savedReviews.add(review);
-        review.getUsersWhoSavedReview().add(this);
+    public void addToBookmarkedReviews(Review review) {
+        bookmarkedReviews.add(review);
+        review.getUsersWhoBookmarkedReview().add(this);
     }
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
