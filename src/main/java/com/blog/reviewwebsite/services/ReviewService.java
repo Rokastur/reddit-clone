@@ -39,11 +39,11 @@ public class ReviewService {
     }
 
     public Review updateReview(Review oldReview, User user, Long categoryId) {
-        User dbUser = userService.getUser(user.getId());
+        User dbUser = userService.getUserReference(user.getId());
         Category category = categoryService.getOneById(categoryId);
         Review review;
         if (oldReview.getId() != null) {
-            review = reviewRepository.getOne(oldReview.getId());
+            review = getReviewEntity(oldReview.getId());
         } else {
             review = createNewReview(dbUser);
         }
