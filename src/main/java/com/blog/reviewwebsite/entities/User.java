@@ -113,6 +113,11 @@ public class User implements UserDetails {
         review.getUsersWhoBookmarkedReview().add(this);
     }
 
+    public void removeFromBookmarkedReviews(Review review) {
+        bookmarkedReviews.remove(review);
+        review.getUsersWhoBookmarkedReview().remove(this);
+    }
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "followedCategories",
