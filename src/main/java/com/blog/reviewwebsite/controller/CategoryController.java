@@ -23,7 +23,6 @@ public class CategoryController {
 
     @GetMapping("/all")
     public String getAllCategories(@RequestParam(defaultValue = "0") int pageNumber, Model model, @RequestParam(defaultValue = "DEFAULT") OrderType categoriesOrderType) {
-        categoryService.getCategoriesAndInitializeFollowers();
         orderMap.mapCategoriesToOrderType(pageNumber);
         Page<Category> categories = orderMap.categoriesByOrderType.get(categoriesOrderType);
         int pageCount = categoryService.getAllCategories(pageNumber).getTotalPages();
