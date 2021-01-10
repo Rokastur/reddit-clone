@@ -7,12 +7,10 @@ import com.blog.reviewwebsite.services.ChatService;
 import com.blog.reviewwebsite.services.MessageService;
 import com.blog.reviewwebsite.services.UserService;
 import com.blog.reviewwebsite.wrapper.ChatUsers;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
 @RequestMapping("/chat")
