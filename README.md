@@ -19,6 +19,12 @@ If user sets their profile to private (incognito), most of the information gets 
 
 Most of the content - categories, posts, comments can be ordered by number of criteria, such as date, score, etc. 
 
+
+###### chat
+
+also, includes chat functionality. authenticated users may create chat rooms or participate in one if they are added by someone else.
+chat room has no limit on the amount of chatters.
+
 UI is rudimentary.
 
 -- work in progress --
