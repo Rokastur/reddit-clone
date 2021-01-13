@@ -47,7 +47,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             nativeQuery = true)
     Page<Category> findAllOrderByOldestPost(Pageable pageable);
 
-    @Query(value = "SELECT category_id AS id FROM followed_categories WHERE user_id= :userId",
+    @Query(value = "SELECT * FROM category c JOIN followed_categories fc ON c.id = fc.category_id WHERE fc.user_id =:userId",
             countQuery = "SELECT COUNT(*) FROM followed_categories WHERE user_id =:userId",
             nativeQuery = true)
     Page<Category> findAllFollowedByUser(Long userId, Pageable pageable);
