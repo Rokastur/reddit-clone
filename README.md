@@ -19,7 +19,7 @@ If user sets their profile to private (incognito), most of the information gets 
 
 Most of the content - categories, posts, comments can be ordered by number of criteria, such as date, score, etc. 
 
-UI is mostly rudimentary.
+UI is rudimentary.
 
 -- work in progress --
 
